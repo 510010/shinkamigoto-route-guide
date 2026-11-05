@@ -10,6 +10,11 @@
   max_wave_m, period_at_max_s, hours_covered（その日の3時間刻み行数、最大8）
   抽出は `scripts/collect_waves.py`（重複追記なし）。
 - `wave_raw/` — 取得した生CSVの控え（`YYYY-MM-DD_wave_guid_<海域番号>.csv`、Shift_JISのまま）。
+- `wind_forecasts.csv` — Open-Meteo の風予報から抽出した日最大風速など（2026-11-06 開始）。
+  列： capture_date, captured_at, point（航路中間点6地点： 奈良尾/有川/鯛ノ浦/若松/崎戸/博多航路）,
+  lat, lon, target_date, lead_days（1〜3）, max_wind_ms, dir_at_max_deg, max_gust_ms, hours_covered
+  抽出は `scripts/collect_wind.py`（重複追記なし）。生JSONは `wind_raw/` に残す。
+  波の正本は気象庁 waveinf のまま。風はこれが唯一の出典。
 - `operation_results.csv` — 野母商船・五島旅客船・崎戸商船の運航実績（日次）。  列： date, operator_id（nomo/ryokakusen/sakito）, unit（全便/航路/便）, detail,
   status（運航/欠航（一部）/欠航（全便）/条件付き/運休（定期）/不明）, source, captured_at, note
 - `goto_sangyo_results.csv` — 五島産業汽船の便別実績（2025-12-26〜2026-11-05、1,146便）。
