@@ -240,7 +240,9 @@ function findFare(operatorId, fromId, toId, category, vesselType) {
   return best;
 }
 function fareMonthNote(fare) {
-  if (!fare || !fare.valid_from) return '';
+  // 「（YYYY年M月分）」は、燃料調整金で月ごとに運賃が変わる九州商船だけに付ける。
+  // 他社は valid_from が改定日であって月変動ではないため付けない。
+  if (!fare || fare.operator_id !== 'kyushu' || !fare.valid_from) return '';
   const [y, m] = fare.valid_from.split('-');
   return '（' + y + '年' + Number(m) + '月分）';
 }
@@ -338,7 +340,22 @@ function tripCard(c, idx) {
   const depMin = timeToMin(fromStop.dep) + (fromStop.dep_off || 0) * 1440;
   const arrMin = timeToMin(toStop.arr) + (toStop.arr_off || 0) * 1440;
   const relArr = (toStop.arr_off || 0) - (fromStop.dep_off || 0);
-  const fare = findFare(trip.operator_id, fromStop.port_id, toStop.port_id, 'general', trip.vessel_type || route.vessel_type);
+  const vesselType = trip.vessel_type || route.vessel_type;
+  const fare = findFare(trip.operator_id, fromStop.port_id, toStop.port_id, 'general', vesselType);
+  const resFare = findFare(trip.operator_id, fromStop.port_id, toStop.port_id, 'resident', vesselType);
+  const hasResFare = !!(resFare && resFare.adult_oneway !== '' && resFare.adult_oneway != null);
+  // カード面の運賃行：一般大人片道に島民割引大人片道を併記（島民運賃がある区間のみ）。
+  // 月表記は九州商船の場合のみ、両区分共通で末尾に1回だけ付ける。
+  let fareLine;
+  if (fare || hasResFare) {
+    const parts = [];
+    if (fare) parts.push('<span class="fare-part">一般大人片道 ' + yen(fare.adult_oneway) + '</span>');
+    if (hasResFare) parts.push('<span class="fare-part">島民割引 ' + yen(resFare.adult_oneway) + '</span>');
+    const mn = fareMonthNote(fare) || (hasResFare ? fareMonthNote(resFare) : '');
+    fareLine = parts.join(' ／ ') + (mn ? ' <span class="fare-note">' + esc(mn) + '</span>' : '');
+  } else {
+    fareLine = '<span class="fare-note">運賃は詳細・公式でご確認ください</span>';
+  }
   const vesselLabel = (trip.vessel_type || route.vessel_type || '') + (trip.vessel_name && trip.vessel_name !== trip.vessel_type ? '（' + trip.vessel_name + '）' : '');
   return `
   <article class="trip-card" data-idx="${idx}" tabindex="0" aria-label="便の詳細を開く">
@@ -352,7 +369,7 @@ function tripCard(c, idx) {
       <span class="trip-time-big">${esc(toStop.arr)}${offLabel(relArr)}</span>
       <span class="trip-dur">${esc(portName(fromStop.port_id))} 発 ／ ${esc(portName(toStop.port_id))} 着 ・ ${durText(arrMin - depMin)}</span>
     </div>
-    <div class="trip-fare">${fare ? '一般大人片道 ' + yen(fare.adult_oneway) + ' <span class="fare-note">' + esc(fareMonthNote(fare)) + '</span>' : '<span class="fare-note">運賃は詳細・公式でご確認ください</span>'}</div>
+    <div class="trip-fare">${fareLine}</div>
     <div class="trip-detail" hidden></div>
   </article>`;
 }
