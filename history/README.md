@@ -22,6 +22,18 @@
   （同ページのパネルには運休の明記と共に便が「運航」アイコンで並んでおり、
   GASログの「長崎発・高速・欠航ゼロ」はこれを取り込んだもの）。
   GASシート 運航結果_log（2025-12-25〜）と二重蓄積で、相互の突き合わせ用。
+- `wave_actuals.csv` — 波の実況ペア。気象庁CSVの解析区間（取得時刻以前）から作る日最大波高。
+  列： area_no, area_name, date, max_wave_m, period_at_max_s, hours_covered, updated_at
+  collect_waves.py が upsert する。予報（wave_forecasts）と実績を突き合わせる検証用。
+- `status_changes.csv` — 便のステータス変化ログ（昼→夕方の遷移）。
+  列： changed_at, date, route, vessel, port, time, from_status, to_status
+  collect_operations.py が前回取得値と異なる便を自動追記する。「未定（△）がいつ欠航に
+  変わったか」の分析用。昼キャプチャ（cron `kamigoto-midday-capture`、11時台）と
+  夕方収集の2回/日で拾う。
+- 実績ファイルの `reason` 列： 欠航理由のタグ（天候/ドック・整備/故障/乗務員/計画運休/
+  その他/不明）。九州商船は data/exceptions.csv のドック期間に当たる佐世保航路の欠航を
+  「ドック・整備」、他を「天候」と自動判定する。五島産業・崎戸は文面（海上時化等）より「天候」。
+  野母・五島旅客船・崎戸の日次行は夕方収集が文面から判定する。
 - `operation_results.csv` — 野母商船・五島旅客船・崎戸商船の運航実績（日次）。  列： date, operator_id（nomo/ryokakusen/sakito）, unit（全便/航路/便）, detail,
   status（運航/欠航（一部）/欠航（全便）/条件付き/運休（定期）/不明）, source, captured_at, note
 - `goto_sangyo_results.csv` — 五島産業汽船の便別実績（2025-12-26〜2026-11-05、1,146便）。

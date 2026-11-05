@@ -26,8 +26,32 @@ JST = timezone(timedelta(hours=9))
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HIST = os.path.join(BASE, "history")
 KYUSHU_CSV = os.path.join(HIST, "kyushu_results.csv")
+KYUSHU_HEADER = ["date", "route", "vessel", "port", "time", "status",
+                 "reason", "captured_at"]
+CHANGES_CSV = os.path.join(HIST, "status_changes.csv")
 GOTO_CSV = os.path.join(HIST, "goto_sangyo_results.csv")
+GOTO_HEADER = ["date", "port", "time", "status", "note", "reason"]
 GOTO_MOKO_FROM = "2026-11-06"
+
+
+def dock_windows():
+    """data/exceptions.csv から九州商船のドック期間（佐世保航路）を返す。"""
+    path = os.path.join(BASE, "data", "exceptions.csv")
+    wins = []
+    if os.path.exists(path):
+        with open(path, newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                if row["scope"].startswith("kyushu-") and "ドック" in row["note"]:
+                    wins.append((row["date_from"], row["date_to"]))
+    return wins
+
+
+def kyushu_reason(row, wins):
+    if row[5] != "✕":
+        return ""
+    if row[1] == "佐世保〜上五島" and any(a <= row[0] <= b for a, b in wins):
+        return "ドック・整備"
+    return "天候"
 
 ROUTES = {"nagasaki_goto": "長崎〜五島", "sasebo_kamigoto": "佐世保〜上五島"}
 VESSELS = {"ジェットフォイル": "JF", "フェリー": "Fe", "高速船": "高速"}
@@ -119,7 +143,11 @@ def upsert_csv(path, header, key_idx, new_rows):
     if os.path.exists(path):
         with open(path, newline="", encoding="utf-8") as f:
             for row in csv.DictReader(f):
-                store[tuple(row[header[i]] for i in key_idx)] = [row[h] for h in header]
+                vals = [row.get(h, "") for h in header]
+                if "reason" in header and not vals[header.index("reason")] \
+                        and vals[header.index("status")] == "✕":
+                    vals[header.index("reason")] = "天候"  # 旧形式行の移行
+                store[tuple(vals[i] for i in key_idx)] = vals
     for r in new_rows:
         store[tuple(r[i] for i in key_idx)] = r
     with open(path, "w", newline="", encoding="utf-8") as f:
@@ -130,23 +158,61 @@ def upsert_csv(path, header, key_idx, new_rows):
     return len(store)
 
 
+def read_store(path, header):
+    store = {}
+    if os.path.exists(path):
+        with open(path, newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                store[tuple(row.get(h, "") for h in header[:5])] = row
+    return store
+
+
 def main():
     now = datetime.now(JST)
+    wins = dock_windows()
     html = fetch("https://kyusho.co.jp/status")
     rows, warnings = parse_kyushu(html, now)
-    n = upsert_csv(KYUSHU_CSV,
-                   ["date", "route", "vessel", "port", "time", "status", "captured_at"],
-                   [0, 1, 2, 3, 4], rows)
-    print(f"kyushu: parsed {len(rows)} rows, total {n}")
+    for r in rows:
+        r.insert(6, kyushu_reason(r, wins))
+    # upsert + ステータス変化ログ
+    store = {}
+    if os.path.exists(KYUSHU_CSV):
+        with open(KYUSHU_CSV, newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                store[(row["date"], row["route"], row["vessel"], row["port"],
+                       row["time"])] = [row.get(h, "") for h in KYUSHU_HEADER]
+    changes = []
+    for r in rows:
+        k = tuple(r[i] for i in (0, 1, 2, 3, 4))
+        if k in store and store[k][5] != r[5]:
+            changes.append([now.strftime("%Y-%m-%d %H:%M"), r[0], r[1], r[2],
+                            r[3], r[4], store[k][5], r[5]])
+        store[k] = r
+    with open(KYUSHU_CSV, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(KYUSHU_HEADER)
+        for k in sorted(store):
+            w.writerow(store[k])
+    if changes:
+        new_chg = not os.path.exists(CHANGES_CSV)
+        with open(CHANGES_CSV, "a", newline="", encoding="utf-8") as f:
+            w = csv.writer(f)
+            if new_chg:
+                w.writerow(["changed_at", "date", "route", "vessel", "port",
+                            "time", "from_status", "to_status"])
+            w.writerows(changes)
+    print(f"kyushu: parsed {len(rows)} rows, total {len(store)}, changes {len(changes)}")
     for wmsg in warnings:
         print("WARN:", wmsg, file=sys.stderr)
 
     top = fetch("https://www.goto-sangyo.co.jp/")
     text = strip_tags(top)
     cap = [(now.strftime("%Y/%m/%d %H:%M:%S"), now.strftime("%Y/%m/%d"), text)]
-    grows = [r for r in parse_captures(cap) if r[0] >= GOTO_MOKO_FROM]
-    n2 = upsert_csv(GOTO_CSV, ["date", "port", "time", "status", "note"],
-                    [0, 1, 2], grows)
+    grows = []
+    for r in parse_captures(cap):
+        if r[0] >= GOTO_MOKO_FROM:
+            grows.append(r + ["天候" if r[3] == "✕" else ""])
+    n2 = upsert_csv(GOTO_CSV, GOTO_HEADER, [0, 1, 2], grows)
     print(f"goto: parsed {len(grows)} rows (>= {GOTO_MOKO_FROM}), total {n2}")
 
 

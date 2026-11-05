@@ -7,6 +7,10 @@ history/wave_forecasts.csv に追記する。生CSVも history/wave_raw/ に残�
 
 使い方: python3 scripts/collect_waves.py
 重複（同じ取得日・海域・対象日）は追記しない。
+
+あわせて「実況ペア」として、取得時刻以前の行（解析値）から
+history/wave_actuals.csv に日最大波高を upsert する（キー： 海域・日付）。
+予報が当たったかの検証用。数日後の取得で値が更新されうるため updated_at を残す。
 """
 import csv
 import io
@@ -19,6 +23,9 @@ JST = timezone(timedelta(hours=9))
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HIST = os.path.join(BASE, "history")
 OUT_CSV = os.path.join(HIST, "wave_forecasts.csv")
+ACT_CSV = os.path.join(HIST, "wave_actuals.csv")
+ACT_HEADER = ["area_no", "area_name", "date", "max_wave_m", "period_at_max_s",
+              "hours_covered", "updated_at"]
 RAW_DIR = os.path.join(HIST, "wave_raw")
 
 AREAS = {
@@ -93,6 +100,33 @@ def main():
                             f"{max_wave:.1f}", f"{period_at_max:.1f}",
                             len(day)])
                 added.append(key)
+
+    # 実況ペア： 取得時刻以前の行から日最大を upsert
+    store = {}
+    if os.path.exists(ACT_CSV):
+        with open(ACT_CSV, newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                store[(row["area_no"], row["date"])] = [row[h] for h in ACT_HEADER]
+    for area_no, area_name in AREAS.items():
+        text = fetch(area_no)
+        rows = [(t, p, wv) for (t, p, wv) in parse(text) if t <= now.replace(tzinfo=None)]
+        by_date = {}
+        for t, p, wv in rows:
+            by_date.setdefault(t.date(), []).append((p, wv))
+        for d, day in by_date.items():
+            if d > cap_date:
+                continue
+            period_at_max, max_wave = max(day, key=lambda x: x[1])
+            store[(str(area_no), d.isoformat())] = [
+                str(area_no), area_name, d.isoformat(), f"{max_wave:.1f}",
+                f"{period_at_max:.1f}", len(day),
+                now.strftime("%Y-%m-%d %H:%M")]
+    with open(ACT_CSV, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(ACT_HEADER)
+        for k in sorted(store):
+            w.writerow(store[k])
+    print(f"actuals upserted, total {len(store)}")
     print(f"added {len(added)} rows: {added}")
 
 
