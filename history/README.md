@@ -15,6 +15,13 @@
   lat, lon, target_date, lead_days（1〜3）, max_wind_ms, dir_at_max_deg, max_gust_ms, hours_covered
   抽出は `scripts/collect_wind.py`（重複追記なし）。生JSONは `wind_raw/` に残す。
   波の正本は気象庁 waveinf のまま。風はこれが唯一の出典。
+- `kyushu_results.csv` — 九州商船の便別実績（2026-11-06〜、モコ側の蓄積）。
+  列： date, route（長崎〜五島/佐世保〜上五島）, vessel（JF/Fe/高速）, port, time, status（◯/✕/△）, captured_at
+  出典は公式の運航状況ページで、`scripts/collect_operations.py` が毎夕 upsert する。
+  長崎〜有川航路は2025-08-25から全便運休中のため含まない
+  （同ページのパネルには運休の明記と共に便が「運航」アイコンで並んでおり、
+  GASログの「長崎発・高速・欠航ゼロ」はこれを取り込んだもの）。
+  GASシート 運航結果_log（2025-12-25〜）と二重蓄積で、相互の突き合わせ用。
 - `operation_results.csv` — 野母商船・五島旅客船・崎戸商船の運航実績（日次）。  列： date, operator_id（nomo/ryokakusen/sakito）, unit（全便/航路/便）, detail,
   status（運航/欠航（一部）/欠航（全便）/条件付き/運休（定期）/不明）, source, captured_at, note
 - `goto_sangyo_results.csv` — 五島産業汽船の便別実績（2025-12-26〜2026-11-05、1,146便）。
@@ -35,9 +42,11 @@
 
 - 追記のみ。過去行の書き換え・削除はしない（誤りに気づいたら note で訂正行を足す）。
 - 九州商船の便別実績の正本はユーザーのGASシート「欠航率調べ_波予報と欠航情報」の
-  運航結果_log。ここの kyushu_status.txt はGAS停止時の保険。
-- 五島産業汽船の便別実績の正本も同シートの 五島産業_raw（生文）。snapshots の goto_top.txt は
-  こちら側の控え。
+  運航結果_log。2026-11-06 からはモコ側でも kyushu_results.csv に二重蓄積する
+  （ユーザーの決定。どちらが止まっても途切れないようにし、食い違いの検知にも使う）。
+  snapshots の kyushu_status.txt は原文確認用の控え。
+- 五島産業汽船の便別実績は goto_sangyo_results.csv（〜2026-11-05 は GAS の 五島産業_raw 由来、
+  以降はモコ側の夕方解析）。snapshots の goto_top.txt は控え。
 - 崎戸商船の日次ステータスは SmartGOTO 新上五島町版「まちニュース」
   （https://smart-goto.jp/shinkamigoto/ 、ログイン不要で公開）に崎戸商船本人が #船便 で
   投稿している（2026-11-06 確認。例：2026-11-05 は時化で全便欠航）。これを第一の取得源とする。
