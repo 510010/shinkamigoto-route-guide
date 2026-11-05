@@ -773,6 +773,22 @@ async function init() {
     }
     location.reload();
   });
+  // Android Chrome のインストールプロンプトが出せる場合だけボタンを表示する
+  let deferredInstallPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    const btn = $('#install-app');
+    if (btn) btn.hidden = false;
+  });
+  const installBtn = $('#install-app');
+  if (installBtn) installBtn.addEventListener('click', async () => {
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    installBtn.hidden = true;
+  });
 
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     // 新しい SW に切り替わったら一度だけ自動リロードして最新の画面にする。

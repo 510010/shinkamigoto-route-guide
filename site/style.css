@@ -304,6 +304,7 @@ table.fare-mini td:first-child, table.fare-table td:first-child { text-align: le
 }
 .lead { color: var(--ink); }
 .small { font-size: .85rem; color: var(--muted); }
+.guide-list { margin: .2rem 0 .8rem; padding-left: 1.4rem; line-height: 1.6; }
 
 .site-footer {
   border-top: 1px solid var(--line);
