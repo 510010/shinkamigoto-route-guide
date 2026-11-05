@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0b5394"/>
+  <!-- waves -->
+  <path d="M0 392 q64-36 128 0 t128 0 t128 0 t128 0 V512 H0 Z" fill="#4dabf7"/>
+  <path d="M0 436 q64-36 128 0 t128 0 t128 0 t128 0 V512 H0 Z" fill="#1971c2"/>
+  <!-- hull -->
+  <path d="M96 356 L416 356 L372 420 L140 420 Z" fill="#ffffff"/>
+  <!-- body -->
+  <rect x="140" y="276" width="232" height="52" rx="10" fill="#ffffff"/>
+  <rect x="176" y="222" width="160" height="42" rx="10" fill="#e7f5ff"/>
+  <!-- funnel -->
+  <rect x="300" y="176" width="34" height="52" rx="6" fill="#ffd43b"/>
+  <!-- mast -->
+  <rect x="196" y="168" width="10" height="60" fill="#ffffff"/>
+  <!-- windows -->
+  <g fill="#0b5394">
+    <rect x="160" y="290" width="26" height="18" rx="4"/>
+    <rect x="200" y="290" width="26" height="18" rx="4"/>
+    <rect x="240" y="290" width="26" height="18" rx="4"/>
+    <rect x="280" y="290" width="26" height="18" rx="4"/>
+    <rect x="320" y="290" width="26" height="18" rx="4"/>
+  </g>
+</svg>

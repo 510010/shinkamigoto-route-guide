@@ -1,0 +1,16 @@
+pattern_id,operator_id,name,kind,valid_from,valid_to
+kyushu-b-1,kyushu,秋冬ダイヤB,季節,2026-11-01,2027-01-06
+kyushu-normal-2,kyushu,通常ダイヤ,通常,2026-04-01,2027-03-31
+kyushu-normal-3,kyushu,通常ダイヤ,通常,,
+kyushu-a-4,kyushu,秋冬ダイヤA,季節,2026-10-01,2026-10-31
+kyushu-c-5,kyushu,ドックダイヤC,例外（ドック）,2027-01-07,2027-01-22
+kyushu-b-6,kyushu,ドックダイヤB,例外（ドック）,2027-01-23,2027-02-14
+kyushu-a-7,kyushu,ドックダイヤA,例外（ドック）,2027-02-15,2027-02-28
+kyushu-normal-8,kyushu,ドックダイヤ,例外（ドック）,2026-11-11,2026-11-27
+kyushu-normal-9,kyushu,ドックダイヤ,例外（ドック）,2026-10-05,2026-10-18
+goto-sangyo-3-1-9-30-1,goto-sangyo,夏期（3/1-9/30）,季節,2026-03-01,2026-09-30
+goto-sangyo-10-1-2-28-2,goto-sangyo,冬期（10/1-2/28）,季節,2025-10-01,2026-02-28
+nomo-1-1-1,nomo,1日1往復・毎日（計画運休日・ドック期間を除く）,例外（ドック）,2014-07-08,
+goto-ryokakusen-normal-1,goto-ryokakusen,通常ダイヤ,通常,,
+sakito-4-1-9-30-1,sakito,夏期（4/1-9/30）,季節,2026-04-01,2026-09-30
+sakito-10-1-3-31-2,sakito,冬期（10/1-3/31）,季節,2026-10-01,2027-03-31

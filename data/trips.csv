@@ -1,0 +1,87 @@
+trip_id,route_id,pattern_id,vessel_name,direction,note
+kyushu-jf-u1-p1,kyushu-nagasaki-goto-jf,kyushu-b-1,ジェットフォイル,福江→長崎,連続運航を方向別に分解
+kyushu-jf-d1-p1,kyushu-nagasaki-goto-jf,kyushu-b-1,ジェットフォイル,長崎→奈良尾,福江経由
+kyushu-jf-u2-p1,kyushu-nagasaki-goto-jf,kyushu-b-1,ジェットフォイル,奈良尾→長崎,
+kyushu-jf-d2-p1,kyushu-nagasaki-goto-jf,kyushu-b-1,ジェットフォイル,長崎→福江,奈良尾寄港なし
+kyushu-jf-u3-p1,kyushu-nagasaki-goto-jf,kyushu-b-1,ジェットフォイル,福江→長崎,奈良尾寄港なし
+kyushu-jf-d3-p1,kyushu-nagasaki-goto-jf,kyushu-b-1,ジェットフォイル,長崎→奈良尾,福江経由
+kyushu-jf-u4-p1,kyushu-nagasaki-goto-jf,kyushu-b-1,ジェットフォイル,奈良尾→長崎,
+kyushu-jf-d4-p1,kyushu-nagasaki-goto-jf,kyushu-b-1,ジェットフォイル,長崎→福江,奈良尾経由
+kyushu-f-u1-p2,kyushu-nagasaki-goto-ferry,kyushu-normal-2,フェリー,福江→長崎,ドック・盆ダイヤ期間を除く
+kyushu-f-d1-p2,kyushu-nagasaki-goto-ferry,kyushu-normal-2,フェリー,長崎→奈良尾,福江・奈留経由; ドック・盆ダイヤ期間を除く
+kyushu-f-u2-p2,kyushu-nagasaki-goto-ferry,kyushu-normal-2,フェリー,奈良尾→長崎,ドック・盆ダイヤ期間を除く
+kyushu-f-d2-p2,kyushu-nagasaki-goto-ferry,kyushu-normal-2,フェリー,長崎→福江,奈良尾経由; ドック・盆ダイヤ期間を除く
+kyushu-f-u3-p2,kyushu-nagasaki-goto-ferry,kyushu-normal-2,フェリー,福江→長崎,ドック・盆ダイヤ期間を除く
+kyushu-f-d3-p2,kyushu-nagasaki-goto-ferry,kyushu-normal-2,フェリー,長崎→福江,奈良尾寄港なし; ドック・盆ダイヤ期間を除く
+kyushu-sq-u1-p3,kyushu-sasebo-kamigoto-hs,kyushu-normal-3,高速船（シークイーン）,有川→佐世保,ドック時休航 2027-02-01〜26予定
+kyushu-sq-d1-p3,kyushu-sasebo-kamigoto-hs,kyushu-normal-3,高速船（シークイーン）,佐世保→有川,小値賀・宇久平経由で有川終着（有川は中間寄港と終着の2回）
+kyushu-sq-u2-p3,kyushu-sasebo-kamigoto-hs,kyushu-normal-3,高速船（シークイーン）,有川→佐世保,SQ-D1の折返し（有川に長時間停泊）
+kyushu-sq-d2-p3,kyushu-sasebo-kamigoto-hs,kyushu-normal-3,高速船（シークイーン）,佐世保→有川,脚注適用（10/1〜2/28は16:55発。通常表記は17:15発）
+kyushu-sl-u1-p3,kyushu-sasebo-kamigoto-hs,kyushu-normal-3,高速船（シーレイディ）,小値賀→佐世保,ドック時休航 2026-12-05〜18予定; 宇久平経由
+kyushu-sl-d1-p3,kyushu-sasebo-kamigoto-hs,kyushu-normal-3,高速船（シーレイディ）,佐世保→宇久平,小値賀経由
+kyushu-sl-u2-p3,kyushu-sasebo-kamigoto-hs,kyushu-normal-3,高速船（シーレイディ）,宇久平→佐世保,SL-D1の折返し
+kyushu-sl-d2-p3,kyushu-sasebo-kamigoto-hs,kyushu-normal-3,高速船（シーレイディ）,佐世保→小値賀,脚注適用（10/1〜2/28。通常表記は16:10発）; 宇久平経由
+kyushu-sf-u1-p2,kyushu-sasebo-kamigoto-ferry,kyushu-normal-2,フェリー,宇久平→佐世保,いのり; 小値賀経由; ドックダイヤ期間（FNこしき 2026-11-11〜27等）を除く
+kyushu-sf-d1-p2,kyushu-sasebo-kamigoto-ferry,kyushu-normal-2,フェリー,佐世保→有川,FNこしき; ドックダイヤ期間を除く
+kyushu-sf-u2-p2,kyushu-sasebo-kamigoto-ferry,kyushu-normal-2,フェリー,有川→佐世保,FNこしき; ドックダイヤ期間を除く
+kyushu-sf-d2-p2,kyushu-sasebo-kamigoto-ferry,kyushu-normal-2,フェリー,佐世保→小値賀,いのり; 宇久平経由; ドックダイヤ期間を除く
+kyushu-sf-u3-p2,kyushu-sasebo-kamigoto-ferry,kyushu-normal-2,フェリー,小値賀→佐世保,いのり; ドックダイヤ期間を除く
+kyushu-sf-d3-p2,kyushu-sasebo-kamigoto-ferry,kyushu-normal-2,フェリー,佐世保→有川,FNこしき; ドックダイヤ期間を除く
+kyushu-sf-u4-p2,kyushu-sasebo-kamigoto-ferry,kyushu-normal-2,フェリー,有川→佐世保,FNこしき; ドックダイヤ期間を除く
+kyushu-sf-d4-p2,kyushu-sasebo-kamigoto-ferry,kyushu-normal-2,フェリー,佐世保→宇久平,いのり; 小値賀経由; ドックダイヤ期間を除く
+kyushu-ja-u1-p4,kyushu-nagasaki-goto-jf,kyushu-a-4,ジェットフォイル,福江→長崎,
+kyushu-ja-d1-p4,kyushu-nagasaki-goto-jf,kyushu-a-4,ジェットフォイル,長崎→奈良尾,福江経由
+kyushu-ja-u2-p4,kyushu-nagasaki-goto-jf,kyushu-a-4,ジェットフォイル,奈良尾→長崎,
+kyushu-ja-d2-p4,kyushu-nagasaki-goto-jf,kyushu-a-4,ジェットフォイル,長崎→福江,奈良尾寄港なし
+kyushu-ja-u3-p4,kyushu-nagasaki-goto-jf,kyushu-a-4,ジェットフォイル,福江→長崎,奈良尾寄港なし
+kyushu-ja-d3-p4,kyushu-nagasaki-goto-jf,kyushu-a-4,ジェットフォイル,長崎→奈良尾,福江経由
+kyushu-ja-u4-p4,kyushu-nagasaki-goto-jf,kyushu-a-4,ジェットフォイル,奈良尾→長崎,
+kyushu-ja-d4-p4,kyushu-nagasaki-goto-jf,kyushu-a-4,ジェットフォイル,長崎→福江,奈良尾経由
+kyushu-jc-d1-p5,kyushu-nagasaki-goto-jf,kyushu-c-5,ジェットフォイル,長崎→奈良尾,福江経由
+kyushu-jc-u1-p5,kyushu-nagasaki-goto-jf,kyushu-c-5,ジェットフォイル,奈良尾→長崎,
+kyushu-jc-d2-p5,kyushu-nagasaki-goto-jf,kyushu-c-5,ジェットフォイル,長崎→奈良尾,福江経由
+kyushu-jc-u2-p5,kyushu-nagasaki-goto-jf,kyushu-c-5,ジェットフォイル,奈良尾→長崎,
+kyushu-jb-d1-p6,kyushu-nagasaki-goto-jf,kyushu-b-6,ジェットフォイル,長崎→奈良尾,福江経由
+kyushu-jb-u1-p6,kyushu-nagasaki-goto-jf,kyushu-b-6,ジェットフォイル,奈良尾→長崎,
+kyushu-jb-d2-p6,kyushu-nagasaki-goto-jf,kyushu-b-6,ジェットフォイル,長崎→福江,奈良尾経由
+kyushu-jb-u2-p6,kyushu-nagasaki-goto-jf,kyushu-b-6,ジェットフォイル,福江→長崎,
+kyushu-jd-d1-p7,kyushu-nagasaki-goto-jf,kyushu-a-7,ジェットフォイル,長崎→奈良尾,2026-07-06〜15にも同一ダイヤ適用；福江経由
+kyushu-jd-u1-p7,kyushu-nagasaki-goto-jf,kyushu-a-7,ジェットフォイル,奈良尾→長崎,2026-07-06〜15にも同一ダイヤ適用
+kyushu-jd-d2-p7,kyushu-nagasaki-goto-jf,kyushu-a-7,ジェットフォイル,長崎→福江,2026-07-06〜15にも同一ダイヤ適用；奈良尾寄港なし
+kyushu-jd-u2-p7,kyushu-nagasaki-goto-jf,kyushu-a-7,ジェットフォイル,福江→長崎,2026-07-06〜15にも同一ダイヤ適用；奈良尾寄港なし
+kyushu-jd-d3-p7,kyushu-nagasaki-goto-jf,kyushu-a-7,ジェットフォイル,長崎→奈良尾,2026-07-06〜15にも同一ダイヤ適用；福江経由
+kyushu-jd-u3-p7,kyushu-nagasaki-goto-jf,kyushu-a-7,ジェットフォイル,奈良尾→長崎,2026-07-06〜15にも同一ダイヤ適用
+kyushu-sd-u1-p8,kyushu-sasebo-kamigoto-ferry,kyushu-normal-8,フェリー,宇久平→佐世保,いに; 小値賀経由; 時刻は通常ダイヤと同じ
+kyushu-sd-d1-p8,kyushu-sasebo-kamigoto-ferry,kyushu-normal-8,フェリー,佐世保→有川,FNこしき入渠のため全便いに運航（注記からの解釈）。通常ダイヤのFNこしき2往復（佐世保8:00発・13:45発の有川往復）は本期間設定なし
+kyushu-sd-u2-p8,kyushu-sasebo-kamigoto-ferry,kyushu-normal-8,フェリー,有川→佐世保,FNこしき入渠のため全便いに運航（注記からの解釈）。通常ダイヤのFNこしき2往復（佐世保8:00発・13:45発の有川往復）は本期間設定なし
+kyushu-sd-d2-p8,kyushu-sasebo-kamigoto-ferry,kyushu-normal-8,フェリー,佐世保→宇久平,いに; 小値賀経由
+kyushu-fd-u1-p9,kyushu-nagasaki-goto-ferry,kyushu-normal-9,フェリー,福江→長崎,適用期間: 2026-04-03〜04-16（万葉入渠・椿運航）および2026-10-05〜10-18（椿入渠・万葉運航）。連続期間ではない; 奈留・奈良尾経由
+kyushu-fd-d1-p9,kyushu-nagasaki-goto-ferry,kyushu-normal-9,フェリー,長崎→福江,適用期間: 2026-04-03〜04-16（万葉入渠・椿運航）および2026-10-05〜10-18（椿入渠・万葉運航）。連続期間ではない; 奈良尾経由
+kyushu-fd-u2-p9,kyushu-nagasaki-goto-ferry,kyushu-normal-9,フェリー,福江→長崎,適用期間: 2026-04-03〜04-16（万葉入渠・椿運航）および2026-10-05〜10-18（椿入渠・万葉運航）。連続期間ではない
+kyushu-fd-d2-p9,kyushu-nagasaki-goto-ferry,kyushu-normal-9,フェリー,長崎→福江,適用期間: 2026-04-03〜04-16（万葉入渠・椿運航）および2026-10-05〜10-18（椿入渠・万葉運航）。連続期間ではない
+goto-sangyo-1-p1,goto-sangyo-tainoura-nagasaki,goto-sangyo-3-1-9-30-1,びっぐあーす2号,鯛ノ浦→長崎,夏期通常ダイヤ。2026年版公式PDF（2026-02-17発表）で確認できたのは2026-03-01～06-30分（3/1-3/17はVアイランド運航、3/18以降びっぐあーす2号）。7月以降は公式で「決定次第発表」。特別ダイヤ・増便ダイヤは含めない
+goto-sangyo-1-p1-2,goto-sangyo-tainoura-nagasaki,goto-sangyo-3-1-9-30-1,びっぐあーす2号,長崎→鯛ノ浦,夏期通常ダイヤ。2026年版公式PDF（2026-02-17発表）で確認できたのは2026-03-01～06-30分（3/1-3/17はVアイランド運航、3/18以降びっぐあーす2号）。7月以降は公式で「決定次第発表」。特別ダイヤ・増便ダイヤは含めない
+goto-sangyo-2-p1,goto-sangyo-tainoura-nagasaki,goto-sangyo-3-1-9-30-1,びっぐあーす2号,鯛ノ浦→長崎,夏期通常ダイヤ。2026年版公式PDF（2026-02-17発表）で確認できたのは2026-03-01～06-30分（3/1-3/17はVアイランド運航、3/18以降びっぐあーす2号）。7月以降は公式で「決定次第発表」。特別ダイヤ・増便ダイヤは含めない
+goto-sangyo-2-p1-2,goto-sangyo-tainoura-nagasaki,goto-sangyo-3-1-9-30-1,びっぐあーす2号,長崎→鯛ノ浦,夏期通常ダイヤ。2026年版公式PDF（2026-02-17発表）で確認できたのは2026-03-01～06-30分（3/1-3/17はVアイランド運航、3/18以降びっぐあーす2号）。7月以降は公式で「決定次第発表」。特別ダイヤ・増便ダイヤは含めない
+goto-sangyo-1-p2,goto-sangyo-tainoura-nagasaki,goto-sangyo-10-1-2-28-2,びっぐあーす,鯛ノ浦→長崎,冬期通常ダイヤ（公式航路ページおよび2025-10-31発表PDFの冬期通常ダイヤで確認）。期間限定の増便ダイヤ（2025-11-10～2026-01-12等、3往復）・特別臨時ダイヤ・ドックダイヤ（2026-01-13～03-17はVアイランドで2往復）は含めない
+goto-sangyo-1-p2-2,goto-sangyo-tainoura-nagasaki,goto-sangyo-10-1-2-28-2,びっぐあーす,長崎→鯛ノ浦,冬期通常ダイヤ（公式航路ページおよび2025-10-31発表PDFの冬期通常ダイヤで確認）。期間限定の増便ダイヤ（2025-11-10～2026-01-12等、3往復）・特別臨時ダイヤ・ドックダイヤ（2026-01-13～03-17はVアイランドで2往復）は含めない
+goto-sangyo-2-p2,goto-sangyo-tainoura-nagasaki,goto-sangyo-10-1-2-28-2,びっぐあーす,鯛ノ浦→長崎,冬期通常ダイヤ（公式航路ページおよび2025-10-31発表PDFの冬期通常ダイヤで確認）。期間限定の増便ダイヤ（2025-11-10～2026-01-12等、3往復）・特別臨時ダイヤ・ドックダイヤ（2026-01-13～03-17はVアイランドで2往復）は含めない
+goto-sangyo-2-p2-2,goto-sangyo-tainoura-nagasaki,goto-sangyo-10-1-2-28-2,びっぐあーす,長崎→鯛ノ浦,冬期通常ダイヤ（公式航路ページおよび2025-10-31発表PDFの冬期通常ダイヤで確認）。期間限定の増便ダイヤ（2025-11-10～2026-01-12等、3往復）・特別臨時ダイヤ・ドックダイヤ（2026-01-13～03-17はVアイランドで2往復）は含めない
+nomo-down-p1,nomo-hakata-fukue,nomo-1-1-1,太古,下り,博多23:45発（出発日基準）。博多以外の寄港地は翌日到着
+nomo-up-p1,nomo-hakata-fukue,nomo-1-1-1,太古,上り,上り便は奈留に寄港しない（始発）
+goto-ryokakusen-ocean-1-p1,ryokakusen-ocean,goto-ryokakusen-normal-1,OCEAN,奈留→福江,https://goto-ryokyakusen.com/guide/
+goto-ryokakusen-ocean-2-p1,ryokakusen-ocean,goto-ryokakusen-normal-1,OCEAN,福江→若松,https://goto-ryokyakusen.com/guide/
+goto-ryokakusen-ocean-3-p1,ryokakusen-ocean,goto-ryokakusen-normal-1,OCEAN,若松→福江,https://goto-ryokyakusen.com/guide/
+goto-ryokakusen-ocean-4-p1,ryokakusen-ocean,goto-ryokakusen-normal-1,OCEAN,福江→若松,https://goto-ryokyakusen.com/guide/
+goto-ryokakusen-ocean-5-p1,ryokakusen-ocean,goto-ryokakusen-normal-1,OCEAN,若松→福江,https://goto-ryokyakusen.com/guide/
+goto-ryokakusen-ocean-6-p1,ryokakusen-ocean,goto-ryokakusen-normal-1,OCEAN,福江→奈留,https://goto-ryokyakusen.com/guide/
+goto-ryokakusen-taiyo-1-p1,ryokakusen-taiyo,goto-ryokakusen-normal-1,TAIYO,若松→福江,https://goto-ryokyakusen.com/guide/
+goto-ryokakusen-taiyo-2-p1,ryokakusen-taiyo,goto-ryokakusen-normal-1,TAIYO,福江→奈留,https://goto-ryokyakusen.com/guide/
+goto-ryokakusen-taiyo-3-p1,ryokakusen-taiyo,goto-ryokakusen-normal-1,TAIYO,奈留→福江,https://goto-ryokyakusen.com/guide/
+goto-ryokakusen-taiyo-4-p1,ryokakusen-taiyo,goto-ryokakusen-normal-1,TAIYO,福江→土井浦,奈留に寄港しない便
+goto-ryokakusen-taiyo-5-p1,ryokakusen-taiyo,goto-ryokakusen-normal-1,TAIYO,土井浦→福江,別名: 土井ノ浦
+goto-ryokakusen-taiyo-6-p1,ryokakusen-taiyo,goto-ryokakusen-normal-1,TAIYO,福江→若松,https://goto-ryokyakusen.com/guide/
+sakito-1-p1,sakito-tomosumi-sasebo,sakito-4-1-9-30-1,みしま,往路（友住→佐世保）,1月1日は全便運休。夏期・冬期とも毎年同期間で繰り返すダイヤ（西海市時刻表PDF 令和7年10月版で確認、佐世保旅客船協会ページとも一致）
+sakito-1-p1-2,sakito-tomosumi-sasebo,sakito-4-1-9-30-1,みしま,復路（佐世保→友住）,1月1日は全便運休。夏期・冬期とも毎年同期間で繰り返すダイヤ（西海市時刻表PDF 令和7年10月版で確認、佐世保旅客船協会ページとも一致）
+sakito-1-p2,sakito-tomosumi-sasebo,sakito-10-1-3-31-2,みしま,往路（友住→佐世保）,1月1日は全便運休。夏期・冬期とも毎年同期間で繰り返すダイヤ（西海市時刻表PDF 令和7年10月版で確認、佐世保旅客船協会ページとも一致）
+sakito-1-p2-2,sakito-tomosumi-sasebo,sakito-10-1-3-31-2,みしま,復路（佐世保→友住）,1月1日は全便運休。夏期・冬期とも毎年同期間で繰り返すダイヤ（西海市時刻表PDF 令和7年10月版で確認、佐世保旅客船協会ページとも一致）

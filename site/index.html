@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>上五島航路案内</title>
+<meta name="description" content="新上五島町に関わる船舶の時刻表・運賃を調べられる非公式の案内サイトです。">
+<meta name="theme-color" content="#0b5394">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-title">
+      <span class="header-icon" aria-hidden="true">⛴</span>
+      <div>
+        <h1>上五島航路案内</h1>
+        <p class="header-sub">新上五島町の船の時刻表・運賃（非公式）</p>
+      </div>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="ページ切替">
+    <button class="tab-btn active" data-tab="timetable" role="tab">時刻表</button>
+    <button class="tab-btn" data-tab="fares" role="tab">運賃表</button>
+    <button class="tab-btn" data-tab="map" role="tab">地図・港</button>
+    <button class="tab-btn" data-tab="status" role="tab">運航状況・リンク</button>
+    <button class="tab-btn" data-tab="about" role="tab">このサイトについて</button>
+  </nav>
+</header>
+
+<main>
+  <!-- 時刻表 -->
+  <section id="tab-timetable" class="tab-panel active">
+    <div id="notices"></div>
+
+    <div id="quick-chips">
+      <div class="chip-block" id="fav-block" hidden>
+        <h2 class="chip-title">★ お気に入り</h2>
+        <div class="chips" id="fav-chips"></div>
+      </div>
+      <div class="chip-block" id="hist-block" hidden>
+        <h2 class="chip-title">最近の検索</h2>
+        <div class="chips" id="hist-chips"></div>
+      </div>
+    </div>
+
+    <form id="search-form" class="search-card">
+      <div class="port-row">
+        <label class="port-field">
+          <span>出発港</span>
+          <select id="from-port"></select>
+        </label>
+        <button type="button" id="swap-btn" class="swap-btn" title="出発港と到着港を入れ替える" aria-label="出発港と到着港を入れ替える">⇄</button>
+        <label class="port-field">
+          <span>到着港</span>
+          <select id="to-port"></select>
+        </label>
+      </div>
+      <div class="date-row">
+        <button type="button" id="prev-day" class="day-btn">◀ 前日</button>
+        <input type="date" id="date-input" aria-label="日付">
+        <button type="button" id="next-day" class="day-btn">翌日 ▶</button>
+        <button type="button" id="today-btn" class="day-btn">今日</button>
+      </div>
+      <div class="search-actions">
+        <button type="submit" class="primary-btn">検索する</button>
+        <button type="button" id="fav-toggle" class="fav-btn" aria-pressed="false">☆ お気に入りに登録</button>
+      </div>
+    </form>
+
+    <div id="results"></div>
+  </section>
+
+  <!-- 運賃表 -->
+  <section id="tab-fares" class="tab-panel">
+    <div class="search-card">
+      <label class="port-field full">
+        <span>事業者</span>
+        <select id="fare-operator"></select>
+      </label>
+    </div>
+    <div id="fare-results"></div>
+  </section>
+
+  <!-- 地図・港 -->
+  <section id="tab-map" class="tab-panel">
+    <div id="map"></div>
+    <div id="port-detail"></div>
+    <h2 class="section-title">港一覧</h2>
+    <div id="port-list"></div>
+  </section>
+
+  <!-- 運航状況・リンク -->
+  <section id="tab-status" class="tab-panel">
+    <p class="lead">運航可否の最終確認は、各事業者の公式情報でお願いします（出航の1時間前が最終判断の目安です）。</p>
+    <div id="operator-cards"></div>
+    <h2 class="section-title">運休中の航路</h2>
+    <div id="suspended-routes"></div>
+  </section>
+
+  <!-- このサイトについて -->
+  <section id="tab-about" class="tab-panel">
+    <div class="about-card">
+      <h2 class="section-title">このサイトについて</h2>
+      <p>「上五島航路案内」は、新上五島町に関わる船舶の時刻表・運賃を横断的に調べられるよう、個人が運営する<strong>非公式</strong>の案内サイトです。運航事業者の公式サイトではありません。</p>
+      <p>運航可否・最新の運賃・予約については、必ず各事業者の公式情報でご確認ください。本サイトの情報利用により生じた損害について、運営者は責任を負いません。</p>
+      <h3>出典</h3>
+      <p>時刻表・運賃は各事業者の公式情報（公式サイト・公式時刻表PDF・公式運賃表）をもとに作成しています。</p>
+      <ul id="about-sources"></ul>
+      <h3>データの有効期間</h3>
+      <div id="about-validity"></div>
+      <h3>運営・連絡先</h3>
+      <p>運営：個人運営（非公式）<br>
+      連絡先：<a href="https://github.com/510010/shinkamigoto-route-guide/issues" target="_blank" rel="noopener">GitHub Issues</a>（誤りのご指摘などはこちらへ）</p>
+      <h3>オフライン用データ</h3>
+      <p>このサイトは端末内に時刻表データを保存し、オフラインでも表示できます。データが古いと感じた場合は、下のボタンで保存データを消去して再読み込みしてください。</p>
+      <button type="button" id="clear-cache" class="day-btn">キャッシュをクリアして再読み込み</button>
+      <p class="small" id="data-meta"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>上五島航路案内（個人運営・非公式）<br>
+  <span class="small">地図：© OpenStreetMap contributors ／ 時刻表・運賃の最終確認は各事業者公式情報でお願いします</span></p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

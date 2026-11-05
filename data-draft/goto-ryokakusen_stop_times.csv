@@ -1,0 +1,36 @@
+operator,route,vessel,trip,direction,port,arrival,departure,pattern,valid_from,valid_to,note,source_url
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,1便,奈留→福江,奈留,,06:35,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,1便,奈留→福江,福江,07:20,,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,2便,福江→若松,福江,,08:05,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,2便,福江→若松,奈留,08:50,09:00,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,2便,福江→若松,若松,09:50,,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,3便,若松→福江,若松,,10:30,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,3便,若松→福江,奈留,11:20,11:30,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,3便,若松→福江,福江,12:15,,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,4便,福江→若松,福江,,13:00,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,4便,福江→若松,奈留,13:45,13:50,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,4便,福江→若松,若松,14:40,,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,5便,若松→福江,若松,,14:55,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,5便,若松→福江,奈留,15:45,15:55,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,5便,若松→福江,福江,16:40,,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,6便,福江→奈留,福江,,17:15,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,OCEAN,6便,福江→奈留,奈留,18:00,,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,1便,若松→福江,若松,,07:30,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,1便,若松→福江,郷ノ首,07:45,07:50,通常ダイヤ,,,"別名: 郷の首",https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,1便,若松→福江,土井浦,08:10,08:15,通常ダイヤ,,,"別名: 土井ノ浦",https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,1便,若松→福江,奈留,08:40,08:45,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,1便,若松→福江,福江,09:15,,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,2便,福江→奈留,福江,,09:45,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,2便,福江→奈留,奈留,10:15,,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,3便,奈留→福江,奈留,,10:50,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,3便,奈留→福江,福江,11:20,,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,4便,福江→土井浦,福江,,11:50,通常ダイヤ,,,奈留に寄港しない便,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,4便,福江→土井浦,土井浦,12:30,,通常ダイヤ,,,"別名: 土井ノ浦; 奈留に寄港しない便",https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,5便,土井浦→福江,土井浦,,13:50,通常ダイヤ,,,"別名: 土井ノ浦",https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,5便,土井浦→福江,奈留,14:15,14:20,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,5便,土井浦→福江,福江,14:50,,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,6便,福江→若松,福江,,15:55,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,6便,福江→若松,奈留,16:25,16:30,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,6便,福江→若松,土井浦,16:55,17:00,通常ダイヤ,,,"別名: 土井ノ浦",https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,6便,福江→若松,郷ノ首,17:20,17:25,通常ダイヤ,,,"別名: 郷の首",https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首〜福江,TAIYO,6便,福江→若松,若松,17:35,,通常ダイヤ,,,https://goto-ryokyakusen.com/guide/

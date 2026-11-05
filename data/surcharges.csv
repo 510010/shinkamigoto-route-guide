@@ -1,0 +1,11 @@
+operator_id,route_name,vessel_type,segment,year_month,zone,adult,child,note,source_url
+kyushu,長崎〜五島,ジェットフォイル,長崎〜福江・奈良尾（長崎〜離島）,2026-11,17,2210,1110,2026年10月〜11月乗船分,https://kyusho.co.jp/wp-content/uploads/2019/01/f0453fd3bae97d9ffb831e8eb29096f5.pdf
+kyushu,長崎〜五島,ジェットフォイル,福江〜奈良尾（島内間）,2026-11,17,850,430,2026年10月〜11月乗船分,https://kyusho.co.jp/wp-content/uploads/2019/01/f0453fd3bae97d9ffb831e8eb29096f5.pdf
+kyushu,長崎〜五島,フェリー,長崎〜福江・奈留・奈良尾（長崎〜離島）,2026-11,17,1360,680,2026年10月〜11月乗船分,https://kyusho.co.jp/wp-content/uploads/2019/01/f0453fd3bae97d9ffb831e8eb29096f5.pdf
+kyushu,長崎〜五島,フェリー,島内間（福江〜奈良尾・福江〜奈留・奈留〜奈良尾）,2026-11,17,170,90,島内間3区間とも同額（PDFの列名1件に表示重複あり・金額は確実）,https://kyusho.co.jp/wp-content/uploads/2019/01/f0453fd3bae97d9ffb831e8eb29096f5.pdf
+kyushu,佐世保〜上五島,高速船,佐世保〜有川・小値賀・宇久平（佐世保〜離島）,2026-11,17,1870,940,2026年10月〜11月乗船分,https://kyusho.co.jp/wp-content/uploads/2019/01/f0453fd3bae97d9ffb831e8eb29096f5.pdf
+kyushu,佐世保〜上五島,高速船,有川〜小値賀,2026-11,17,1190,600,,https://kyusho.co.jp/wp-content/uploads/2019/01/f0453fd3bae97d9ffb831e8eb29096f5.pdf
+kyushu,佐世保〜上五島,高速船,有川〜宇久平,2026-11,17,1700,850,公式HTMLゾーン表は1530円と不一致。運賃表PDFと運賃検索（合計4450円）が一致する本値を採用,https://kyusho.co.jp/wp-content/uploads/2019/01/f0453fd3bae97d9ffb831e8eb29096f5.pdf
+kyushu,佐世保〜上五島,高速船,小値賀〜宇久平,2026-11,17,510,260,,https://kyusho.co.jp/wp-content/uploads/2019/01/f0453fd3bae97d9ffb831e8eb29096f5.pdf
+kyushu,佐世保〜上五島,フェリー,佐世保〜有川・小値賀・宇久平（佐世保〜離島）,2026-11,17,1870,940,2026年10月〜11月乗船分,https://kyusho.co.jp/wp-content/uploads/2019/01/f0453fd3bae97d9ffb831e8eb29096f5.pdf
+kyushu,佐世保〜上五島,フェリー,小値賀〜宇久平（島内間）,2026-11,17,340,170,,https://kyusho.co.jp/wp-content/uploads/2019/01/f0453fd3bae97d9ffb831e8eb29096f5.pdf

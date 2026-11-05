@@ -1,0 +1,41 @@
+operator,from_port,to_port,category,adult_oneway,child_oneway,adult_roundtrip,child_roundtrip,valid_from,note,source_url
+五島旅客船株式会社,郷ノ首,若松,general,350,180,,,2025-10-01,公式運賃表に往復運賃の記載なし; 別名: 郷の首（郷ノ首）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首,土井浦,general,1040,520,,,2025-10-01,公式運賃表に往復運賃の記載なし; 別名: 郷の首（郷ノ首）; 別名: 土井ノ浦（土井浦）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首,奈留,general,1700,850,,,2025-10-01,公式運賃表に往復運賃の記載なし; 別名: 郷の首（郷ノ首）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首,福江,general,2380,1190,,,2025-10-01,公式運賃表に往復運賃の記載なし; 別名: 郷の首（郷ノ首）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,若松,郷ノ首,general,350,180,,,2025-10-01,公式運賃表に往復運賃の記載なし; 別名: 郷の首（郷ノ首）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,若松,土井浦,general,840,420,,,2025-10-01,公式運賃表に往復運賃の記載なし; 別名: 土井ノ浦（土井浦）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,若松,奈留,general,1310,660,,,2025-10-01,公式運賃表に往復運賃の記載なし,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,若松,福江,general,2060,1030,,,2025-10-01,公式運賃表に往復運賃の記載なし,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,土井浦,郷ノ首,general,1040,520,,,2025-10-01,公式運賃表に往復運賃の記載なし; 別名: 土井ノ浦（土井浦）; 別名: 郷の首（郷ノ首）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,土井浦,若松,general,840,420,,,2025-10-01,公式運賃表に往復運賃の記載なし; 別名: 土井ノ浦（土井浦）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,土井浦,奈留,general,840,420,,,2025-10-01,公式運賃表に往復運賃の記載なし; 別名: 土井ノ浦（土井浦）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,土井浦,福江,general,1670,840,,,2025-10-01,公式運賃表に往復運賃の記載なし; 別名: 土井ノ浦（土井浦）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,奈留,郷ノ首,general,1700,850,,,2025-10-01,公式運賃表に往復運賃の記載なし; 別名: 郷の首（郷ノ首）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,奈留,若松,general,1310,660,,,2025-10-01,公式運賃表に往復運賃の記載なし,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,奈留,土井浦,general,840,420,,,2025-10-01,公式運賃表に往復運賃の記載なし; 別名: 土井ノ浦（土井浦）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,奈留,福江,general,960,480,,,2025-10-01,公式運賃表に往復運賃の記載なし,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,福江,郷ノ首,general,2380,1190,,,2025-10-01,公式運賃表に往復運賃の記載なし; 別名: 郷の首（郷ノ首）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,福江,若松,general,2060,1030,,,2025-10-01,公式運賃表に往復運賃の記載なし,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,福江,土井浦,general,1670,840,,,2025-10-01,公式運賃表に往復運賃の記載なし; 別名: 土井ノ浦（土井浦）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,福江,奈留,general,960,480,,,2025-10-01,公式運賃表に往復運賃の記載なし,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首,若松,resident,210,110,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし; 別名: 郷の首（郷ノ首）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首,土井浦,resident,380,190,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし; 別名: 郷の首（郷ノ首）; 別名: 土井ノ浦（土井浦）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首,奈留,resident,660,330,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし; 別名: 郷の首（郷ノ首）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,郷ノ首,福江,resident,950,480,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし; 別名: 郷の首（郷ノ首）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,若松,郷ノ首,resident,210,110,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし; 別名: 郷の首（郷ノ首）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,若松,土井浦,resident,280,140,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし; 別名: 土井ノ浦（土井浦）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,若松,奈留,resident,570,290,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,若松,福江,resident,950,480,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,土井浦,郷ノ首,resident,380,190,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし; 別名: 土井ノ浦（土井浦）; 別名: 郷の首（郷ノ首）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,土井浦,若松,resident,280,140,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし; 別名: 土井ノ浦（土井浦）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,土井浦,奈留,resident,280,140,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし; 別名: 土井ノ浦（土井浦）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,土井浦,福江,resident,660,330,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし; 別名: 土井ノ浦（土井浦）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,奈留,郷ノ首,resident,660,330,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし; 別名: 郷の首（郷ノ首）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,奈留,若松,resident,570,290,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,奈留,土井浦,resident,280,140,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし; 別名: 土井ノ浦（土井浦）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,奈留,福江,resident,380,190,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,福江,郷ノ首,resident,950,480,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし; 別名: 郷の首（郷ノ首）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,福江,若松,resident,950,480,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,福江,土井浦,resident,660,330,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし; 別名: 土井ノ浦（土井浦）,https://goto-ryokyakusen.com/guide/
+五島旅客船株式会社,福江,奈留,resident,380,190,,,2025-10-01,国割（島民割引）; 公式運賃表に往復運賃の記載なし,https://goto-ryokyakusen.com/guide/

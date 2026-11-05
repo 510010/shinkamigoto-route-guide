@@ -1,0 +1,11 @@
+route_id,operator_id,name,vessel_type,reservation_required,checkin_deadline_min,suspended,note
+kyushu-nagasaki-goto-jf,kyushu,長崎〜五島,ジェットフォイル,,,,
+kyushu-nagasaki-goto-ferry,kyushu,長崎〜五島,フェリー,,,,
+kyushu-sasebo-kamigoto-hs,kyushu,佐世保〜上五島,高速船,,,,
+kyushu-sasebo-kamigoto-ferry,kyushu,佐世保〜上五島,フェリー,,,,
+goto-sangyo-tainoura-nagasaki,goto-sangyo,鯛ノ浦〜長崎,高速船,1,,,
+nomo-hakata-fukue,nomo,博多〜福江,フェリー,,,,
+ryokakusen-ocean,goto-ryokakusen,郷ノ首〜福江,フェリー（OCEAN）,,,,
+ryokakusen-taiyo,goto-ryokakusen,郷ノ首〜福江,高速船（TAIYO）,,,,
+sakito-tomosumi-sasebo,sakito,友住〜佐世保,フェリー,,,,
+kyushu-nagasaki-arikawa,kyushu,長崎〜有川,高速船,,,1,2025-08-25から全便運休中（再開未定）
