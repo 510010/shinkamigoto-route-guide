@@ -10,9 +10,12 @@
   max_wave_m, period_at_max_s, hours_covered（その日の3時間刻み行数、最大8）
   抽出は `scripts/collect_waves.py`（重複追記なし）。
 - `wave_raw/` — 取得した生CSVの控え（`YYYY-MM-DD_wave_guid_<海域番号>.csv`、Shift_JISのまま）。
-- `operation_results.csv` — 野母商船・五島旅客船・崎戸商船の運航実績（日次）。
-  列： date, operator_id（nomo/ryokakusen/sakito）, unit（全便/航路/便）, detail,
+- `operation_results.csv` — 野母商船・五島旅客船・崎戸商船の運航実績（日次）。  列： date, operator_id（nomo/ryokakusen/sakito）, unit（全便/航路/便）, detail,
   status（運航/欠航（一部）/欠航（全便）/条件付き/運休（定期）/不明）, source, captured_at, note
+- `goto_sangyo_results.csv` — 五島産業汽船の便別実績（2025-12-26〜2026-11-05、1,146便）。
+  GASシート 五島産業_raw の生文を `scripts/parse_goto_sangyo.py` で機械解析した派生データ。
+  列： date, port（鯛ノ浦/長崎）, time, status（◯/✕）, note（根拠の種別）。
+  原文と突き合わせた6日分では全便一致。36便分は判定材料がなく未収録。
 - `snapshots/YYYY-MM-DD/` — 各事業者ページの夕方時点のテキスト控え
   （kyushu_status.txt / goto_top.txt / nomo_top.txt / ryokakusen_top.txt / sakito.txt）。
   解釈に迷う日の原文を後から確認するために残す。
