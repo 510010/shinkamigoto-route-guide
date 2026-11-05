@@ -267,6 +267,39 @@ function fareMonthNote(fare) {
   const [y, m] = fare.valid_from.split('-');
   return '（' + y + '年' + Number(m) + '月分）';
 }
+// 九州商船の燃料油価格変動調整金を、区間・船種・乗船月から引く
+function surchargeSegmentFor(vt, a, b) {
+  const key = [a, b].sort().join('|');
+  if (vt === 'ジェットフォイル') return key === 'fukue|narao' ? '福江〜奈良尾（島内間）' : '長崎〜福江・奈良尾（長崎〜離島）';
+  if (vt === '高速船') {
+    if (key === 'ojika|ukuhira') return '小値賀〜宇久平';
+    if (key === 'arikawa|ojika') return '有川〜小値賀';
+    if (key === 'arikawa|ukuhira') return '有川〜宇久平';
+    return '佐世保〜有川・小値賀・宇久平（佐世保〜離島）';
+  }
+  if (vt === 'フェリー') {
+    if (['sasebo', 'arikawa', 'ojika', 'ukuhira'].includes(a)) {
+      return key === 'ojika|ukuhira' ? '小値賀〜宇久平（島内間）' : '佐世保〜有川・小値賀・宇久平（佐世保〜離島）';
+    }
+    if (['fukue|narao', 'fukue|naru', 'narao|naru'].includes(key)) return '島内間（福江〜奈良尾・福江〜奈留・奈留〜奈良尾）';
+    return '長崎〜福江・奈留・奈良尾（長崎〜離島）';
+  }
+  return null;
+}
+function findSurcharge(operatorId, vesselType, fromId, toId, dateStr) {
+  if (operatorId !== 'kyushu' || !DB.surcharges) return null;
+  const seg = surchargeSegmentFor(normVessel(vesselType), fromId, toId);
+  if (!seg) return null;
+  const cands = DB.surcharges.filter((s) => s.segment === seg && normVessel(s.vessel_type) === normVessel(vesselType));
+  if (!cands.length) return null;
+  const ym = (dateStr || '').slice(0, 7);
+  let s = cands.find((x) => x.year_month === ym);
+  if (!s) {
+    const past = cands.filter((x) => x.year_month <= ym).sort((x, y) => y.year_month.localeCompare(x.year_month));
+    s = past[0] || cands.slice().sort((x, y) => x.year_month.localeCompare(y.year_month))[0];
+  }
+  return s;
+}
 
 /* ============ お気に入り・履歴（localStorage） ============ */
 const LS_FAV = 'kamigoto.favorites';
@@ -428,6 +461,11 @@ function tripDetailHtml(c, dateStr) {
       ${rows.join('')}
     </table>` : '<p class="detail-note">この区間の運賃データはありません。公式情報でご確認ください。</p>';
   const notes = [];
+  const sur = findSurcharge(trip.operator_id, trip.vessel_type || route.vessel_type, fromStop.port_id, c.toStop.port_id, dateStr);
+  if (sur) {
+    const ym = sur.year_month.split('-');
+    notes.push('上記運賃には燃料油価格変動調整金 ' + yen(sur.adult) + '（片道・' + ym[0] + '年' + Number(ym[1]) + '月分）が含まれます。');
+  }
   if (route.reservation_required === '1' || route.reservation_required === 1 || route.reservation_required === true) notes.push('乗船には予約が必要です。');
   if (route.checkin_deadline_min) notes.push('受付締切：出発の' + route.checkin_deadline_min + '分前');
   if (trip.note) notes.push(trip.note);
