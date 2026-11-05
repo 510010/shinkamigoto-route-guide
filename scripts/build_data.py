@@ -80,7 +80,7 @@ for t in trips_raw:
 out = {
     "meta": {"title": "上五島航路案内", "generated_at": date.today().isoformat()},
     "ports": [{**p, "lat": float(p["lat"]), "lon": float(p["lon"]),
-               "aliases": [a for a in p["aliases"].split("、") if a]} for p in ports],
+               "aliases": [a for a in __import__("re").split(r"[、;；]", p["aliases"]) if a]} for p in ports],
     "operators": operators,
     "routes": [{**r, "suspended": r["suspended"] == "1"} for r in routes],
     "trips": trips,
