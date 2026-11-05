@@ -693,6 +693,15 @@ async function init() {
   });
 
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+    // 新しい SW に切り替わったら一度だけ自動リロードして最新の画面にする。
+    // 初回登録時（controller がまだ無い）はリロードしない。多重リロード防止のガード付き
+    const hadController = !!navigator.serviceWorker.controller;
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!hadController || refreshing) return;
+      refreshing = true;
+      location.reload();
+    });
     navigator.serviceWorker.register('sw.js').catch(() => { /* 登録失敗時も通常動作 */ });
   }
 }

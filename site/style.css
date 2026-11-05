@@ -169,26 +169,10 @@ main { max-width: 960px; margin: 0 auto; padding: 14px 14px 28px; }
   cursor: pointer;
   white-space: nowrap;
 }
-.search-actions { display: flex; gap: 10px; margin-top: 14px; }
-.primary-btn {
-  flex: 1;
-  background: var(--blue);
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 13px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-.primary-btn:active { background: var(--navy); }
+/* お気に入りボタンは .day-btn と併用し、高さ・余白・角丸を「今日」ボタンと揃える */
 .fav-btn {
-  border: 1px solid var(--warn-line);
-  background: #fff;
-  border-radius: 10px;
-  padding: 13px 14px;
-  cursor: pointer;
-  white-space: nowrap;
+  border-color: var(--warn-line);
+  font-size: .95rem;
 }
 .fav-btn.on { background: var(--warn-bg); font-weight: 700; }
 
@@ -341,4 +325,6 @@ table.fare-mini td:first-child, table.fare-table td:first-child { text-align: le
   .search-card { padding: 12px; }
   .date-row { gap: 6px; }
   .date-row .day-btn { padding: 9px 7px; }
+  .date-sub-row { gap: 6px; }
+  .date-sub-row .day-btn { padding: 9px 7px; }
 }
