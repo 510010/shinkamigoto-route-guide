@@ -3,7 +3,7 @@
 手作業マスター（operators / notices / exceptions / 運休航路）はこのスクリプト内の定義を使う。
 使い方: python3 scripts/convert.py
 """
-import csv, os, re, sys
+import csv, os, re, sys, calendar
 from collections import OrderedDict
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -181,7 +181,13 @@ for fn in FARE_FILES:
             head = re.split(r"[、;；]", r["note"], maxsplit=1)[0].strip()
             if head in KYUSHU_VESSELS:
                 vessel = head
-        valid_to = "2026-11-30" if op_id == "kyushu" else ""
+        if op_id == "kyushu":
+            # 九州商船は月次運賃：valid_from の属する月の月末日を valid_to とする。
+            # 月ごとにドラフト行を蓄積すれば複数月分がそのまま併記される。
+            y, m = int(r["valid_from"][:4]), int(r["valid_from"][5:7])
+            valid_to = f"{y:04d}-{m:02d}-{calendar.monthrange(y, m)[1]:02d}"
+        else:
+            valid_to = ""
         fare_rows.append({
             "operator_id": op_id,
             "from_port_id": port_id(r["from_port"], op_id),

@@ -70,10 +70,12 @@ for f in fares:
     if not f["adult_oneway"]:
         errors.append(f"fares: 大人片道が空 ({f['operator_id']} {f['from_port_id']}->{f['to_port_id']})")
 
-pairs = {(f["operator_id"], f["vessel_type"], f["category"], f["from_port_id"], f["to_port_id"]): f["adult_oneway"]
+# 対称性チェックは適用期間（valid_from）ごとに行う：九州商船の月次運賃など、
+# 同一区間・区分に複数期間のレコードが併記されても期間単位で突き合わせる
+pairs = {(f["operator_id"], f["vessel_type"], f["category"], f["from_port_id"], f["to_port_id"], f["valid_from"]): f["adult_oneway"]
          for f in fares}
 for k, v in list(pairs.items()):
-    rev = (k[0], k[1], k[2], k[4], k[3])
+    rev = (k[0], k[1], k[2], k[4], k[3], k[5])
     if rev in pairs and pairs[rev] != v:
         warnings.append(f"運賃が非対称: {k} ={v} / 逆={pairs[rev]}")
 

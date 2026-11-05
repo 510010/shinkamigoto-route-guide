@@ -222,11 +222,32 @@ function searchTrips(fromId, toId, dateStr) {
 }
 
 /* ============ 運賃の対応付け ============ */
-function findFare(operatorId, fromId, toId, category, vesselType) {
-  const cands = DB.fares.filter((f) =>
+// dateStr は乗船日（ユーザーが選んだ日付）。便の運行開始日 S ではなく選択日で照合する。
+// 適用期間の優先順位：
+//   1) 乗船日が valid_from〜valid_to に含まれるレコード（valid_to 空欄は無期限）
+//   2) 無ければ、乗船日より前の期間のうち最も新しい月（蓄積済みの最新月）
+//   3) それも無ければ（乗船日が全期間より前）最も古い期間
+// 期間で候補を絞った後、従来どおり船種の一致度で選ぶ。
+function farePeriodPool(cands, dateStr) {
+  if (!dateStr) return cands;
+  const inside = cands.filter((f) =>
+    (!f.valid_from || f.valid_from <= dateStr) && (!f.valid_to || dateStr <= f.valid_to));
+  if (inside.length) return inside;
+  const past = cands.filter((f) => f.valid_to && f.valid_to < dateStr);
+  if (past.length) {
+    const latestTo = past.reduce((a, b) => (a.valid_to >= b.valid_to ? a : b)).valid_to;
+    return past.filter((f) => f.valid_to === latestTo);
+  }
+  const earliestFrom = cands.reduce((a, b) =>
+    ((a.valid_from || '') <= (b.valid_from || '') ? a : b)).valid_from;
+  return cands.filter((f) => f.valid_from === earliestFrom);
+}
+function findFare(operatorId, fromId, toId, category, vesselType, dateStr) {
+  const all = DB.fares.filter((f) =>
     f.operator_id === operatorId && f.from_port_id === fromId &&
     f.to_port_id === toId && f.category === category);
-  if (!cands.length) return null;
+  if (!all.length) return null;
+  const cands = farePeriodPool(all, dateStr);
   const nv = normVessel(vesselType);
   let best = null, bestScore = -1;
   for (const f of cands) {
@@ -333,7 +354,7 @@ function updateFavButton() {
   btn.textContent = on ? '★ お気に入り登録済み' : '☆ お気に入りに登録';
 }
 
-function tripCard(c, idx) {
+function tripCard(c, idx, dateStr) {
   const { trip, fromStop, toStop } = c;
   const op = operatorById[trip.operator_id] || {};
   const route = routeById[trip.route_id] || {};
@@ -341,8 +362,8 @@ function tripCard(c, idx) {
   const arrMin = timeToMin(toStop.arr) + (toStop.arr_off || 0) * 1440;
   const relArr = (toStop.arr_off || 0) - (fromStop.dep_off || 0);
   const vesselType = trip.vessel_type || route.vessel_type;
-  const fare = findFare(trip.operator_id, fromStop.port_id, toStop.port_id, 'general', vesselType);
-  const resFare = findFare(trip.operator_id, fromStop.port_id, toStop.port_id, 'resident', vesselType);
+  const fare = findFare(trip.operator_id, fromStop.port_id, toStop.port_id, 'general', vesselType, dateStr);
+  const resFare = findFare(trip.operator_id, fromStop.port_id, toStop.port_id, 'resident', vesselType, dateStr);
   const hasResFare = !!(resFare && resFare.adult_oneway !== '' && resFare.adult_oneway != null);
   // カード面の運賃行：一般大人片道に島民割引大人片道を併記（島民運賃がある区間のみ）。
   // 月表記は九州商船の場合のみ、両区分共通で末尾に1回だけ付ける。
@@ -374,7 +395,7 @@ function tripCard(c, idx) {
   </article>`;
 }
 
-function tripDetailHtml(c) {
+function tripDetailHtml(c, dateStr) {
   const { trip, fromStop } = c;
   const op = operatorById[trip.operator_id] || {};
   const route = routeById[trip.route_id] || {};
@@ -390,7 +411,7 @@ function tripDetailHtml(c) {
   // 区間運賃表（一般／島民）
   const rows = [];
   for (const [cat, label] of [['general', '一般'], ['resident', '島民割引']]) {
-    const f = findFare(trip.operator_id, fromStop.port_id, c.toStop.port_id, cat, trip.vessel_type || route.vessel_type);
+    const f = findFare(trip.operator_id, fromStop.port_id, c.toStop.port_id, cat, trip.vessel_type || route.vessel_type, dateStr);
     if (f) rows.push(`<tr><td>${label}${fareMonthNote(f) ? '<br><span class="fare-note">' + esc(fareMonthNote(f)) + '</span>' : ''}</td><td>${yen(f.adult_oneway)}</td><td>${yen(f.child_oneway)}</td><td>${yen(f.adult_roundtrip)}</td><td>${yen(f.child_roundtrip)}</td></tr>`);
   }
   const fareHtml = rows.length ? `
@@ -432,12 +453,12 @@ function doSearch() {
   const { results, suspendedNotes, anyCandidate } = searchTrips(from, to, dateStr);
   const head = `<p class="result-head">${esc(portName(from))} → ${esc(portName(to))} ／ ${esc(dateLabel(dateStr))} の便</p>`;
   if (results.length) {
-    box.innerHTML = head + results.map((c, i) => tripCard(c, i)).join('');
+    box.innerHTML = head + results.map((c, i) => tripCard(c, i, dateStr)).join('');
     box.querySelectorAll('.trip-card').forEach((card) => {
       const toggle = () => {
         const detail = card.querySelector('.trip-detail');
         if (detail.hidden) {
-          detail.innerHTML = tripDetailHtml(results[Number(card.dataset.idx)]);
+          detail.innerHTML = tripDetailHtml(results[Number(card.dataset.idx)], dateStr);
           detail.hidden = false;
         } else detail.hidden = true;
       };
@@ -459,12 +480,14 @@ function renderFares() {
   const portOrder = (pid) => DB.ports.findIndex((p) => p.port_id === pid);
   const groups = new Map();
   for (const f of list) {
-    const key = f.from_port_id + '|' + f.to_port_id + '|' + (f.vessel_type || '');
-    if (!groups.has(key)) groups.set(key, { from: f.from_port_id, to: f.to_port_id, vessel: f.vessel_type || '', rows: {} });
+    // 適用期間（valid_from）もキーに含め、九州商船の月次運賃が月ごとに別グループになるようにする
+    const key = f.from_port_id + '|' + f.to_port_id + '|' + (f.vessel_type || '') + '|' + (f.valid_from || '');
+    if (!groups.has(key)) groups.set(key, { from: f.from_port_id, to: f.to_port_id, vessel: f.vessel_type || '', validFrom: f.valid_from || '', rows: {} });
     groups.get(key).rows[f.category] = f;
   }
   const sorted = [...groups.values()].sort((a, b) =>
-    portOrder(a.from) - portOrder(b.from) || portOrder(a.to) - portOrder(b.to) || a.vessel.localeCompare(b.vessel, 'ja'));
+    portOrder(a.from) - portOrder(b.from) || portOrder(a.to) - portOrder(b.to) || a.vessel.localeCompare(b.vessel, 'ja') ||
+    (a.validFrom < b.validFrom ? -1 : a.validFrom > b.validFrom ? 1 : 0));
   let html = sorted.map((g) => {
     const rowFor = (cat, label) => {
       const f = g.rows[cat];
