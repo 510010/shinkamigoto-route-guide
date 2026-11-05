@@ -1,6 +1,6 @@
 /* 上五島航路案内 Service Worker
    静的ファイルと data.json をキャッシュし、オフラインでも時刻表を確認できるようにする */
-const CACHE_NAME = 'kamigoto-route-guide-v2';
+const CACHE_NAME = 'kamigoto-route-guide-v3';
 const APP_SHELL = [
   './',
   './index.html',
