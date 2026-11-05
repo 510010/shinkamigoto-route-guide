@@ -54,8 +54,6 @@ PORT_NAME2ID = {p["name"]: p["port_id"] for p in ports}
 PORT_NAME2ID["奈留島"] = "naru"
 
 def port_id(name, operator_id):
-    if name == "佐世保":
-        return "sasebo-shinminato" if operator_id == "sakito" else "sasebo-kujirase"
     pid = PORT_NAME2ID.get(name)
     if not pid:
         raise SystemExit(f"unknown port: {name}")

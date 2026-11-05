@@ -67,11 +67,79 @@ let portById = {}, operatorById = {}, routeById = {};
 
 function portName(pid) {
   const p = portById[pid];
-  if (!p) return pid;
-  // 佐世保は2ターミナルあるため区別する
-  if (pid === 'sasebo-kujirase') return '佐世保（鯨瀬）';
-  if (pid === 'sasebo-shinminato') return '佐世保（新みなと）';
-  return p.name;
+  return p ? p.name : pid;
+}
+
+/* ============ 港のグループ分け・到達可能性 ============ */
+// municipality でグループ化（新上五島町を先頭に、他は ports 配列の初出順）
+function portGroups() {
+  const groups = [];
+  const byMuni = new Map();
+  for (const p of DB.ports) {
+    const muni = p.municipality || 'その他';
+    if (!byMuni.has(muni)) { byMuni.set(muni, []); groups.push({ muni, ports: byMuni.get(muni) }); }
+    byMuni.get(muni).push(p);
+  }
+  groups.sort((a, b) => (a.muni === '新上五島町' ? 0 : 1) - (b.muni === '新上五島町' ? 0 : 1));
+  return groups;
+}
+function groupLabel(muni) {
+  return muni + (muni === '新上五島町' ? '（島内）' : '（島外）');
+}
+// select の選択肢HTML。allowed が Set の場合はその港だけに絞る
+function portOptionsHtml(allowed) {
+  let html = '<option value="">選択してください</option>';
+  for (const g of portGroups()) {
+    const ps = g.ports.filter((p) => !allowed || allowed.has(p.port_id));
+    if (!ps.length) continue;
+    html += '<optgroup label="' + esc(groupLabel(g.muni)) + '">' +
+      ps.map((p) => `<option value="${esc(p.port_id)}">${esc(portName(p.port_id))}</option>`).join('') +
+      '</optgroup>';
+  }
+  return html;
+}
+// trips から「同一便の stops に順序どおり両港が含まれる」ペアを到達可能として計算
+let reachMap = new Map();
+function buildReachability() {
+  reachMap = new Map();
+  for (const trip of DB.trips) {
+    const stops = trip.stops;
+    for (let i = 0; i < stops.length; i++) {
+      if (!stops[i].dep) continue;
+      for (let j = i + 1; j < stops.length; j++) {
+        if (!stops[j].arr) continue;
+        if (stops[j].port_id === stops[i].port_id) continue;
+        if (!reachMap.has(stops[i].port_id)) reachMap.set(stops[i].port_id, new Set());
+        reachMap.get(stops[i].port_id).add(stops[j].port_id);
+      }
+    }
+  }
+}
+// 出発港に応じて到着港の選択肢を絞り込む。preferred があれば優先して残す
+function refreshToOptions(preferred) {
+  const from = $('#from-port').value;
+  const cur = preferred !== undefined ? preferred : $('#to-port').value;
+  const allowed = from ? (reachMap.get(from) || new Set()) : null;
+  $('#to-port').innerHTML = portOptionsHtml(allowed);
+  if (cur && cur !== from && (!allowed || allowed.has(cur))) {
+    $('#to-port').value = cur;
+  } else if (allowed && allowed.size === 1) {
+    $('#to-port').value = [...allowed][0]; // 行ける港が1つだけなら自動選択
+  } else {
+    $('#to-port').value = '';
+  }
+}
+// 出発・到着がそろっていれば即座に検索する
+function autoSearch() {
+  const from = $('#from-port').value, to = $('#to-port').value;
+  if (from && to) doSearch();
+}
+// お気に入り・履歴チップから区間をセットして検索する
+function setRoute(from, to) {
+  $('#from-port').value = from;
+  refreshToOptions(to);
+  updateFavButton();
+  autoSearch();
 }
 
 /* ============ 時刻表検索ロジック ============ */
@@ -210,29 +278,47 @@ function renderNotices() {
     (n.date_from <= todayS && todayS <= n.date_to) ||
     (todayS < n.date_from && n.date_from <= limitS)
   ).sort((a, b) => (a.date_from < b.date_from ? -1 : 1));
-  $('#notices').innerHTML = items.map((n) => `
-    <div class="notice">
-      <p class="notice-title">📢 ${esc(n.title)}</p>
-      <p class="notice-body">${esc(n.body)}</p>
-      <p class="notice-period">${esc(dateLabel(n.date_from))}〜${esc(dateLabel(n.date_to))}${n.url ? ' ／ <a href="' + esc(n.url) + '" target="_blank" rel="noopener">公式情報</a>' : ''}</p>
-    </div>`).join('');
+  const box = $('#notices');
+  if (!items.length) { box.innerHTML = ''; return; }
+  // 折りたたみ式：初期表示は見出し＋タイトル1行のみ。本文はタップで展開
+  box.innerHTML = `
+    <div class="notices-box">
+      <p class="notices-head">📢 お知らせ（${items.length}件）</p>
+      ${items.map((n, i) => `
+      <div class="notice-item">
+        <button type="button" class="notice-toggle" data-i="${i}" aria-expanded="false">
+          <span class="notice-item-title">${esc(n.title)}</span>
+          <span class="notice-chevron" aria-hidden="true">▽</span>
+        </button>
+        <div class="notice-detail" hidden>
+          <p class="notice-body">${esc(n.body)}</p>
+          <p class="notice-period">${esc(dateLabel(n.date_from))}〜${esc(dateLabel(n.date_to))}${n.url ? ' ／ <a href="' + esc(n.url) + '" target="_blank" rel="noopener">公式情報</a>' : ''}</p>
+        </div>
+      </div>`).join('')}
+    </div>`;
+  box.querySelectorAll('.notice-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const detail = btn.nextElementSibling;
+      const open = detail.hidden;
+      detail.hidden = !open;
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.querySelector('.notice-chevron').textContent = open ? '△' : '▽';
+    });
+  });
 }
 
 function renderChips() {
-  const favs = getFavorites();
-  const hist = lsGet(LS_HIST, []);
+  // 統合・改称で存在しなくなった港を含むチップは表示しない
+  const valid = (h) => portById[h.from] && portById[h.to];
+  const favs = getFavorites().filter(valid);
+  const hist = lsGet(LS_HIST, []).filter(valid);
   $('#fav-block').hidden = favs.length === 0;
   $('#hist-block').hidden = hist.length === 0;
   const chip = (h) => `<button type="button" class="chip" data-from="${esc(h.from)}" data-to="${esc(h.to)}">${esc(portName(h.from))} → ${esc(portName(h.to))}</button>`;
   $('#fav-chips').innerHTML = favs.map(chip).join('');
   $('#hist-chips').innerHTML = hist.map(chip).join('');
   document.querySelectorAll('#quick-chips .chip').forEach((el) => {
-    el.addEventListener('click', () => {
-      $('#from-port').value = el.dataset.from;
-      $('#to-port').value = el.dataset.to;
-      updateFavButton();
-      doSearch();
-    });
+    el.addEventListener('click', () => setRoute(el.dataset.from, el.dataset.to));
   });
 }
 
@@ -423,10 +509,14 @@ function showPortDetail(pid) {
   $('#port-detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 function initMap() {
-  const listHtml = DB.ports.map((p) => {
-    const routes = portRoutes(p.port_id);
-    return `<button type="button" class="port-list-item" data-port="${esc(p.port_id)}">${esc(portName(p.port_id))}<br><span class="sub">${esc(routes.join('、') || '航路情報なし')}</span></button>`;
-  }).join('');
+  let listHtml = '';
+  for (const g of portGroups()) {
+    listHtml += `<h3 class="port-group-title">${esc(groupLabel(g.muni))}</h3>`;
+    listHtml += g.ports.map((p) => {
+      const routes = portRoutes(p.port_id);
+      return `<button type="button" class="port-list-item" data-port="${esc(p.port_id)}">${esc(portName(p.port_id))}<br><span class="sub">${esc(routes.join('、') || '航路情報なし')}</span></button>`;
+    }).join('');
+  }
   $('#port-list').innerHTML = listHtml;
   $('#port-list').querySelectorAll('.port-list-item').forEach((el) => {
     el.addEventListener('click', () => {
@@ -522,12 +612,12 @@ async function init() {
   for (const p of DB.ports) portById[p.port_id] = p;
   for (const o of DB.operators) operatorById[o.operator_id] = o;
   for (const r of DB.routes) routeById[r.route_id] = r;
+  buildReachability();
 
-  const portOptions = DB.ports.map((p) => `<option value="${esc(p.port_id)}">${esc(portName(p.port_id))}</option>`).join('');
-  $('#from-port').innerHTML = portOptions;
-  $('#to-port').innerHTML = portOptions;
+  $('#from-port').innerHTML = portOptionsHtml(null);
   $('#from-port').value = 'arikawa';
-  $('#to-port').value = 'sasebo-kujirase';
+  refreshToOptions();
+  if (!$('#to-port').value) $('#to-port').value = 'sasebo';
   $('#date-input').value = todayStr();
 
   $('#fare-operator').innerHTML = DB.operators.map((o) => `<option value="${esc(o.operator_id)}">${esc(o.name)}</option>`).join('');
@@ -538,33 +628,44 @@ async function init() {
   renderFares();
   renderStatus();
   renderAbout();
-  doSearch();
+  autoSearch();
 
-  // イベント
+  // イベント（港・日付が変われば自動で検索する）
   document.querySelectorAll('.tab-btn').forEach((b) => b.addEventListener('click', () => switchTab(b.dataset.tab)));
-  $('#search-form').addEventListener('submit', (e) => { e.preventDefault(); doSearch(); });
+  $('#search-form').addEventListener('submit', (e) => { e.preventDefault(); autoSearch(); });
   $('#swap-btn').addEventListener('click', () => {
     const f = $('#from-port').value;
-    $('#from-port').value = $('#to-port').value;
-    $('#to-port').value = f;
+    const t = $('#to-port').value;
+    $('#from-port').value = t;
+    refreshToOptions(f); // 入れ替え後の到着港を優先しつつ絞り込みを再適用
     updateFavButton();
+    autoSearch();
   });
-  $('#from-port').addEventListener('change', updateFavButton);
-  $('#to-port').addEventListener('change', updateFavButton);
+  $('#from-port').addEventListener('change', () => {
+    refreshToOptions();
+    updateFavButton();
+    autoSearch();
+  });
+  $('#to-port').addEventListener('change', () => {
+    updateFavButton();
+    autoSearch();
+  });
   $('#fav-toggle').addEventListener('click', () => {
-    toggleFavorite($('#from-port').value, $('#to-port').value);
+    const from = $('#from-port').value, to = $('#to-port').value;
+    if (!from || !to) return;
+    toggleFavorite(from, to);
     updateFavButton();
     renderChips();
   });
   const shiftDate = (n) => {
     const cur = $('#date-input').value || todayStr();
     $('#date-input').value = fmtDate(addDays(parseDate(cur), n));
-    doSearch();
+    autoSearch();
   };
   $('#prev-day').addEventListener('click', () => shiftDate(-1));
   $('#next-day').addEventListener('click', () => shiftDate(1));
-  $('#today-btn').addEventListener('click', () => { $('#date-input').value = todayStr(); doSearch(); });
-  $('#date-input').addEventListener('change', doSearch);
+  $('#today-btn').addEventListener('click', () => { $('#date-input').value = todayStr(); autoSearch(); });
+  $('#date-input').addEventListener('change', autoSearch);
   $('#fare-operator').addEventListener('change', renderFares);
   $('#clear-cache').addEventListener('click', async () => {
     if ('caches' in window) {

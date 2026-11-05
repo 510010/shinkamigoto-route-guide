@@ -34,19 +34,6 @@
 <main>
   <!-- 時刻表 -->
   <section id="tab-timetable" class="tab-panel active">
-    <div id="notices"></div>
-
-    <div id="quick-chips">
-      <div class="chip-block" id="fav-block" hidden>
-        <h2 class="chip-title">★ お気に入り</h2>
-        <div class="chips" id="fav-chips"></div>
-      </div>
-      <div class="chip-block" id="hist-block" hidden>
-        <h2 class="chip-title">最近の検索</h2>
-        <div class="chips" id="hist-chips"></div>
-      </div>
-    </div>
-
     <form id="search-form" class="search-card">
       <div class="port-row">
         <label class="port-field">
@@ -66,12 +53,24 @@
         <button type="button" id="today-btn" class="day-btn">今日</button>
       </div>
       <div class="search-actions">
-        <button type="submit" class="primary-btn">検索する</button>
         <button type="button" id="fav-toggle" class="fav-btn" aria-pressed="false">☆ お気に入りに登録</button>
       </div>
     </form>
 
+    <div id="quick-chips">
+      <div class="chip-block" id="fav-block" hidden>
+        <h2 class="chip-title">★ お気に入り</h2>
+        <div class="chips" id="fav-chips"></div>
+      </div>
+      <div class="chip-block" id="hist-block" hidden>
+        <h2 class="chip-title">最近の検索</h2>
+        <div class="chips" id="hist-chips"></div>
+      </div>
+    </div>
+
     <div id="results"></div>
+
+    <div id="notices"></div>
   </section>
 
   <!-- 運賃表 -->

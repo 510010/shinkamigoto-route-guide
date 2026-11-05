@@ -67,17 +67,40 @@ main { max-width: 960px; margin: 0 auto; padding: 14px 14px 28px; }
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
-/* お知らせ */
-.notice {
+/* お知らせ（折りたたみ式：タイトル1行のみ初期表示） */
+#notices { margin-top: 14px; }
+.notices-box {
   background: var(--warn-bg);
   border: 1px solid var(--warn-line);
   border-radius: var(--radius);
-  padding: 10px 14px;
-  margin-bottom: 10px;
+  padding: 8px 14px 4px;
 }
-.notice-title { font-weight: 700; margin: 0 0 2px; }
+.notices-head { font-weight: 700; margin: 2px 0 4px; font-size: .98rem; }
+.notice-item { border-top: 1px dashed var(--warn-line); }
+.notice-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 8px 2px;
+  cursor: pointer;
+  text-align: left;
+  color: var(--ink);
+}
+.notice-item-title {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: .95rem;
+}
+.notice-chevron { flex: 0 0 auto; color: var(--muted); font-size: .8rem; }
+.notice-detail { padding: 0 2px 8px; }
 .notice-body { margin: 0; font-size: .95rem; }
-.notice-period { font-size: .82rem; color: var(--muted); }
+.notice-period { font-size: .82rem; color: var(--muted); margin: 4px 0 0; }
 
 /* チップ */
 .chip-block { margin-bottom: 10px; }
@@ -268,6 +291,7 @@ table.fare-mini td:first-child, table.fare-table td:first-child { text-align: le
 }
 .port-card h3, .op-card h3 { margin: 0 0 6px; color: var(--navy); }
 .port-card p, .op-card p { margin: 4px 0; }
+.port-group-title { font-size: 1rem; color: var(--navy); margin: 14px 0 6px; }
 .port-list-item {
   display: block; width: 100%; text-align: left;
   background: var(--card);
