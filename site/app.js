@@ -377,7 +377,15 @@ function tripCard(c, idx, dateStr) {
   } else {
     fareLine = '<span class="fare-note">運賃は詳細・公式でご確認ください</span>';
   }
-  const vesselLabel = (trip.vessel_type || route.vessel_type || '') + (trip.vessel_name && trip.vessel_name !== trip.vessel_type ? '（' + trip.vessel_name + '）' : '');
+  // 船種と船名の表示組み立て（「高速船（高速船（シークイーン））」のような重複を避ける）
+function vesselLabelOf(vesselType, vesselName) {
+  const vt = vesselType || '', vn = vesselName || '';
+  if (!vn || vn === vt) return vt;
+  if (vn.startsWith(vt)) return vn;                    // 高速船 + 高速船（シークイーン）→ 後者だけ
+  if (vt.indexOf('（' + vn + '）') >= 0) return vt;    // フェリー（OCEAN） + OCEAN → 前者だけ
+  return vt + '（' + vn + '）';                        // フェリー + 太古 → フェリー（太古）
+}
+const vesselLabel = vesselLabelOf(trip.vessel_type || route.vessel_type || '', trip.vessel_name);
   return `
   <article class="trip-card" data-idx="${idx}" tabindex="0" aria-label="便の詳細を開く">
     <div class="trip-top">
@@ -586,6 +594,15 @@ function initMap() {
 }
 
 /* ============ 運航状況・リンクタブ ============ */
+// 崎戸商船は公式サイトがないため、公開情報の出典リンクをここで定義する
+const SAKITO_SOURCES = [
+  { label: '西海市（航路・時刻表）', url: 'https://www.city.saikai.nagasaki.jp/soshiki/koutsu/1/1_1/2/1675.html', note: '' },
+  { label: '佐世保旅客船協会（崎戸商船）', url: 'https://www.saryokyo.com/member/member-02.html', note: '' },
+  { label: '九州のりものinfo（崎戸商船）', url: 'http://www.norimono-info.com/sakitosyousen/', note: '現在メンテナンス中' },
+];
+function sakitoSourceLinks() {
+  return SAKITO_SOURCES.map((s) => '<a href="' + s.url + '" target="_blank" rel="noopener">' + esc(s.label) + '</a>' + (s.note ? '（' + esc(s.note) + '）' : '')).join(' ');
+}
 function renderStatus() {
   $('#operator-cards').innerHTML = DB.operators.map((op) => `
     <div class="op-card">
@@ -596,6 +613,7 @@ function renderStatus() {
         ${op.official_url ? '<a href="' + esc(op.official_url) + '" target="_blank" rel="noopener">公式サイト</a>' : ''}
         ${op.status_url ? '<a href="' + esc(op.status_url) + '" target="_blank" rel="noopener">運航状況</a>' : ''}
         ${op.reservation_url ? '<a href="' + esc(op.reservation_url) + '" target="_blank" rel="noopener">予約</a>' : ''}
+        ${op.operator_id === 'sakito' ? sakitoSourceLinks() : ''}
       </div>
     </div>`).join('');
   const suspended = DB.routes.filter((r) => r.suspended);
@@ -610,9 +628,12 @@ function renderStatus() {
 
 /* ============ このサイトについて ============ */
 function renderAbout() {
-  $('#about-sources').innerHTML = DB.operators.map((op) =>
-    '<li>' + esc(op.name) + (op.official_url ? '：<a href="' + esc(op.official_url) + '" target="_blank" rel="noopener">' + esc(op.official_url) + '</a>' : '（公式サイトなし。自治体・協会の公開情報を参照）') + '</li>'
-  ).join('');
+  $('#about-sources').innerHTML = DB.operators.map((op) => {
+    if (op.operator_id === 'sakito') {
+      return '<li>' + esc(op.name) + '（公式サイトなし）：' + SAKITO_SOURCES.map((s) => '<a href="' + s.url + '" target="_blank" rel="noopener">' + esc(s.label) + '</a>' + (s.note ? '（' + esc(s.note) + '）' : '')).join('、') + '</li>';
+    }
+    return '<li>' + esc(op.name) + (op.official_url ? '：<a href="' + esc(op.official_url) + '" target="_blank" rel="noopener">' + esc(op.official_url) + '</a>' : '（公式サイトなし。自治体・協会の公開情報を参照）') + '</li>';
+  }).join('');
   const seen = new Map();
   for (const t of DB.trips) {
     const p = t.pattern || {};

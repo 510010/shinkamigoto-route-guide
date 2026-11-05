@@ -36,7 +36,7 @@ OPERATORS = [
     ("goto-ryokakusen", "五島旅客船株式会社", "https://goto-ryokyakusen.com/", "https://goto-ryokyakusen.com/",
      "", "0959-72-8151", "運航状況は公式サイトトップに掲載。予約は電話のみ（福江営業所）"),
     ("sakito", "崎戸商船", "", "",
-     "", "0956-25-6118", "公式サイトなし。航路情報は佐世保旅客船協会・西海市のページを参照"),
+     "", "0956-25-6118", "公式サイトなし。航路情報は佐世保旅客船協会・西海市のページと九州のりものinfoを参照（のりものinfoは現在メンテナンス中）"),
 ]
 OP_NAME2ID = {name: oid for oid, name, *_ in OPERATORS}
 # draft operator names -> id
@@ -68,11 +68,11 @@ def route_for(operator_id, route_name, vessel):
     if operator_id == "kyushu":
         if vessel == "ジェットフォイル":
             return ("kyushu-nagasaki-goto-jf", "長崎〜五島", "ジェットフォイル")
-        if vessel == "フェリー" and route_name == "長崎〜五島":
+        if vessel.startswith("フェリー") and route_name == "長崎〜五島":
             return ("kyushu-nagasaki-goto-ferry", "長崎〜五島", "フェリー")
         if vessel.startswith("高速船"):
             return ("kyushu-sasebo-kamigoto-hs", "佐世保〜上五島", "高速船")
-        if vessel == "フェリー":
+        if vessel.startswith("フェリー"):
             return ("kyushu-sasebo-kamigoto-ferry", "佐世保〜上五島", "フェリー")
     if operator_id == "goto-sangyo":
         return ("goto-sangyo-tainoura-nagasaki", "鯛ノ浦〜長崎", "高速船")
