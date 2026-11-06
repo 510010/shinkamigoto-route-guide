@@ -134,7 +134,7 @@ function autoSearch() {
   const from = $('#from-port').value, to = $('#to-port').value;
   if (from && to) doSearch();
 }
-// お気に入り・履歴チップから区間をセットして検索する
+// お気に入りチップから区間をセットして検索する
 function setRoute(from, to) {
   $('#from-port').value = from;
   refreshToOptions(to);
@@ -301,9 +301,8 @@ function findSurcharge(operatorId, vesselType, fromId, toId, dateStr) {
   return s;
 }
 
-/* ============ お気に入り・履歴（localStorage） ============ */
+/* ============ お気に入り（localStorage） ============ */
 const LS_FAV = 'kamigoto.favorites';
-const LS_HIST = 'kamigoto.history';
 function lsGet(key, fallback) {
   try { const v = JSON.parse(localStorage.getItem(key)); return v == null ? fallback : v; }
   catch (e) { return fallback; }
@@ -318,11 +317,6 @@ function toggleFavorite(from, to) {
   if (isFavorite(from, to)) favs = favs.filter((f) => !(f.from === from && f.to === to));
   else favs.push({ from, to });
   lsSet(LS_FAV, favs);
-}
-function pushHistory(from, to) {
-  let hist = lsGet(LS_HIST, []).filter((h) => !(h.from === from && h.to === to));
-  hist.unshift({ from, to });
-  lsSet(LS_HIST, hist.slice(0, 8));
 }
 
 /* ============ 時刻表タブ ============ */
@@ -367,12 +361,9 @@ function renderChips() {
   // 統合・改称で存在しなくなった港を含むチップは表示しない
   const valid = (h) => portById[h.from] && portById[h.to];
   const favs = getFavorites().filter(valid);
-  const hist = lsGet(LS_HIST, []).filter(valid);
   $('#fav-block').hidden = favs.length === 0;
-  $('#hist-block').hidden = hist.length === 0;
   const chip = (h) => `<button type="button" class="chip" data-from="${esc(h.from)}" data-to="${esc(h.to)}">${esc(portName(h.from))} → ${esc(portName(h.to))}</button>`;
   $('#fav-chips').innerHTML = favs.map(chip).join('');
-  $('#hist-chips').innerHTML = hist.map(chip).join('');
   document.querySelectorAll('#quick-chips .chip').forEach((el) => {
     el.addEventListener('click', () => setRoute(el.dataset.from, el.dataset.to));
   });
@@ -494,8 +485,6 @@ function doSearch() {
     box.innerHTML = '<div class="empty-box"><span class="big">出発港と到着港が同じです</span>異なる港を選んでください。</div>';
     return;
   }
-  pushHistory(from, to);
-  renderChips();
   const { results, suspendedNotes, anyCandidate } = searchTrips(from, to, dateStr);
   const head = `<p class="result-head">${esc(portName(from))} → ${esc(portName(to))} ／ ${esc(dateLabel(dateStr))} の便</p>`;
   if (results.length) {
