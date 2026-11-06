@@ -708,11 +708,13 @@ function renderAbout() {
     if (p.valid_from || p.valid_to) period = (p.valid_from || '') + '〜' + (p.valid_to || '');
     else if (p.recurs) period = '毎年 ' + p.recurs.from_md + '〜' + p.recurs.to_md;
     else period = '期間指定なし';
-    const key = (p.name || '') + '|' + period;
-    if (!seen.has(key)) seen.set(key, { name: p.name || '通常', kind: p.kind || '', period });
+    const opName = (operatorById[t.operator_id] || {}).name || '';
+    const routeName = (routeById[t.route_id] || {}).name || '';
+    const key = opName + '|' + routeName + '|' + (p.name || '') + '|' + period;
+    if (!seen.has(key)) seen.set(key, { op: opName, route: routeName, name: p.name || '通常', kind: p.kind || '', period });
   }
-  $('#about-validity').innerHTML = '<div class="table-wrap"><table class="fare-table"><tr><th>ダイヤ名</th><th>種別</th><th>期間</th></tr>' +
-    [...seen.values()].map((v) => `<tr><td>${esc(v.name)}</td><td>${esc(v.kind)}</td><td>${esc(v.period)}</td></tr>`).join('') +
+  $('#about-validity').innerHTML = '<div class="table-wrap"><table class="fare-table"><tr><th>事業者</th><th>航路</th><th>ダイヤ名</th><th>種別</th><th>期間</th></tr>' +
+    [...seen.values()].map((v) => `<tr><td>${esc(v.op)}</td><td>${esc(v.route)}</td><td>${esc(v.name)}</td><td>${esc(v.kind)}</td><td>${esc(v.period)}</td></tr>`).join('') +
     '</table></div>';
   if (DB.meta) $('#data-meta').textContent = 'データ生成日：' + (DB.meta.generated_at || '-') + '（' + (DB.meta.title || '') + '）';
 }

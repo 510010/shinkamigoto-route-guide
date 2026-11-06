@@ -1,7 +1,7 @@
 /* 上五島航路案内 Service Worker
    同一オリジンはネットワーク優先（オンライン時は常に最新を取得し、キャッシュを更新）、
    オフライン時のみキャッシュにフォールバックして時刻表を確認できるようにする */
-const CACHE_NAME = 'kamigoto-route-guide-v11';
+const CACHE_NAME = 'kamigoto-route-guide-v12';
 const APP_SHELL = [
   './',
   './index.html',
