@@ -1,0 +1,1080 @@
+
+<!doctype html>
+<html class="no-js" lang="ja">
+
+<head>
+  <!-- gb：デモ用ヘルパー -->
+  <script src="https://cdn.jsdelivr.net/gh/gb-jp/gb_cdn/gb_demo_helper.js"></script>
+
+  <meta charset="utf-8">
+  <title>運航状況（長崎〜五島/長崎〜有川/佐世保～上五島） | 九州商船</title>
+  <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+	<!-- This site is optimized with the Yoast SEO plugin v23.1 - https://yoast.com/wordpress/plugins/seo/ -->
+	<meta name="description" content="長崎〜五島、長崎〜有川、佐世保～上五島のフェリー・高速船（ジェットフォイル）の現在の運行状況です。" />
+	<link rel="canonical" href="https://kyusho.co.jp/status" />
+	<meta property="og:locale" content="ja_JP" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="運航状況（長崎〜五島/長崎〜有川/佐世保～上五島） | 九州商船" />
+	<meta property="og:description" content="長崎〜五島、長崎〜有川、佐世保～上五島のフェリー・高速船（ジェットフォイル）の現在の運行状況です。" />
+	<meta property="og:url" content="https://kyusho.co.jp/status" />
+	<meta property="og:site_name" content="九州商船" />
+	<meta property="article:modified_time" content="2026-11-06T12:00:01+00:00" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://kyusho.co.jp/status","url":"https://kyusho.co.jp/status","name":"運航状況（長崎〜五島/長崎〜有川/佐世保～上五島） | 九州商船","isPartOf":{"@id":"https://kyusho.co.jp/#website"},"datePublished":"2024-07-11T05:26:53+00:00","dateModified":"2026-11-06T12:00:01+00:00","description":"長崎〜五島、長崎〜有川、佐世保～上五島のフェリー・高速船（ジェットフォイル）の現在の運行状況です。","breadcrumb":{"@id":"https://kyusho.co.jp/status#breadcrumb"},"inLanguage":"ja","potentialAction":[{"@type":"ReadAction","target":["https://kyusho.co.jp/status"]}]},{"@type":"BreadcrumbList","@id":"https://kyusho.co.jp/status#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://kyusho.co.jp/"},{"@type":"ListItem","position":2,"name":"運航状況（長崎〜五島/長崎〜有川/佐世保～上五島）"}]},{"@type":"WebSite","@id":"https://kyusho.co.jp/#website","url":"https://kyusho.co.jp/","name":"九州商船","description":"","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://kyusho.co.jp/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"ja"}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel='stylesheet' id='wp-block-library-css' href='https://kyusho.co.jp/wp-includes/css/dist/block-library/style.min.css?ver=6.6.11' type='text/css' media='all' />
+<style id='classic-theme-styles-inline-css' type='text/css'>
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+</style>
+<style id='global-styles-inline-css' type='text/css'>
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--color--gray-dark: #707070;--wp--preset--color--lightgray: #eee;--wp--preset--color--orange: #F17B00;--wp--preset--color--brown: #66350E;--wp--preset--color--red: #cf2e2e;--wp--preset--color--blue: #2584B5;--wp--preset--color--lightblue: #E7F3F9;--wp--preset--color--green: #409028;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+:root :where(.wp-block-pullquote){font-size: 1.5em;line-height: 1.6;}
+</style>
+  <meta name="format-detection" content="telephone=no,address=no,email=no">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=5.0">
+  <link rel="stylesheet" type="text/css" href="/css/style.css?260604033726">
+  <script src="/js/jquery3.7.0.min.js"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LE5XK4DF77"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-LE5XK4DF77');
+  </script>
+
+</head>
+
+<body>
+  <!-- header -->
+  <header class="header-main d-f ai-c cg20 w-max pl30 md-pl0 pr30 md-pr5 z10 layoutType-underframe">
+    <div class="mobileMenu-toggle d-n md-d-b w60 h60 pos-r z10 cur-p hov js-mobileMenu-toggle"></div>
+    <div class="d-f">
+              <h1 class="d-f ai-c jc-c md-fxg1 bgc-white bdrs5-0-0-5 h60 plr30 ta-c"><a class="hov" href="/"><img src="/img/base/logo-header.webp" width="154" height="26" alt="運航状況（長崎〜五島/長崎〜有川/佐世保～上五島）"></a></h1>
+      
+      <nav class="desktopMenu bgc-skyblue bdrs0-5-5-0 md-d-n ml-5">
+        <ul class="d-f plr10">
+          <li class="pos-r js-desktopMenu-ddMenuTrigger">
+            <a class="d-f ai-c jc-c cg5 h60 plr20 fz115 fw-b c-white lh120 hov-bgc-white15" href="/board">船に乗る<i class="icon-arrowDropdown c-skyblue-light"></i></a>
+            <div class="desktopMenu-ddMenu pos-a t60 l0 js-desktopMenu-ddMenuTarget" style="display: none;">
+              <div class="desktopMenu-ddMenu-inner w-fc pt10">
+                <div class="d-f bgc-white bdrs5">
+                  <div class="p50">
+                    <p class="ff-roboto fz200 fw-b c-blue lh120 lts5">HOW TO <br>BOARD</p>
+                    <p class="pt10 fz115 fw-b c-blue lh120">船に乗る</p>
+                    <div class="pt30">
+                      <a class="d-f ai-c jc-c cg10 bgc-blue bdrs-max w-fc ptb8 plr20 fz95 fw-b c-white lh120 hov" href="/board">船に乗る TOP<i class="icon-arrowRight cssIcon-circle bgc-white c-black"></i></a>
+                    </div>
+                  </div>
+                  <div class="bl bdc-gray p50">
+                    <div class="d-f cg80">
+                      <ul class="d-f fxd-c rg15">
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/reserve"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>チケット予約</a></li>
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/status"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>運航状況</a></li>
+                        <li><a
+                            class="js-google-translation-change-href d-f ai-c cg10 w-fc fz105 fw-b lh120 hov"
+                            href="https://www2.kyusho.co.jp/"
+                            target="_blank"
+                            data-translation-en_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203713:kyushu_shosen_en/"
+                            data-translation-ko_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203716:kyushu_shosen_kr/"
+                            data-translation-zh_tw_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203717:kyushu_shosen_tw/"
+                            data-translation-zh_cn_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203713:kyushu_shosen_en/"
+                            rel="noopener">
+                            <i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>
+                            <span class="js-google-translation-change-text"
+                              data-translation-en_text="Book via VELTRA"
+                              data-translation-ko_text="VELTRA를 통해 예약하기"
+                              data-translation-zh_tw_text="透過 VELTRA 預訂"
+                              data-translation-zh_cn_text="Book via VELTRA">ネット予約</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/schedule"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>運航ダイヤ・運賃</a>
+                          <ul>
+                            <li class="pt15"><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="/discount"><i class="icon-hyphen fz65 c-skyblue"></i>割引料金について</a></li>
+                            <li class="pt15"><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="/vehicle"><i class="icon-hyphen fz65 c-skyblue"></i>自動車航送運賃・二輪車運賃</a></li>
+                          </ul>
+                        </li>
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/routes"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>航路・所要時間</a></li>
+                      </ul>
+                      <ul class="d-f fxd-c rg15">
+                        <li>
+                          <a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/guide"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>乗船ガイド</a>
+                          <ul class="d-grid grid-col-2 gap15 ptb15">
+                                                                                                                    <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/103"><i class="icon-hyphen fz65 c-skyblue"></i>長崎港</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/680"><i class="icon-hyphen fz65 c-skyblue"></i>福江港</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/636"><i class="icon-hyphen fz65 c-skyblue"></i>佐世保港</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/637"><i class="icon-hyphen fz65 c-skyblue"></i>奈留島港</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/678"><i class="icon-hyphen fz65 c-skyblue"></i>奈良尾港</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/681"><i class="icon-hyphen fz65 c-skyblue"></i>有川港</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/682"><i class="icon-hyphen fz65 c-skyblue"></i>小値賀港</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/684"><i class="icon-hyphen fz65 c-skyblue"></i>宇久平港</a></li>
+                                                                                                                </ul>
+                        </li>
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/web-prepayment"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>WEB事前決済割引について</a></li>
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/qrcode"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>QRコード発券について</a></li>
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/baggage"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>手荷物・ペット</a></li>
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/posts/959"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>おからだの不自由なお客様へ</a></li>
+                      </ul>
+                      <ul class="d-f fxd-c rg15">
+                        <li>
+                          <a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/facility"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>船内設備</a>
+                          <ul class="d-grid grid-col-2 gap15 ptb15">
+                                                                                                                    <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/614"><i class="icon-hyphen fz65 c-skyblue"></i>ぺがさす</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/685"><i class="icon-hyphen fz65 c-skyblue"></i>ぺがさす2</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/687"><i class="icon-hyphen fz65 c-skyblue"></i>万葉</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/689"><i class="icon-hyphen fz65 c-skyblue"></i>椿</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/692"><i class="icon-hyphen fz65 c-skyblue"></i>シープリンセス</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/694"><i class="icon-hyphen fz65 c-skyblue"></i>シーエンジェル</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/696"><i class="icon-hyphen fz65 c-skyblue"></i>シークイーン</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/700"><i class="icon-hyphen fz65 c-skyblue"></i>いのり</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/4623"><i class="icon-hyphen fz65 c-skyblue"></i>フェリーニューこしき</a></li>
+                                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/6670"><i class="icon-hyphen fz65 c-skyblue"></i>シーレイディ</a></li>
+                                                                                                                </ul>
+                        </li>
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/shuttle"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>無料シャトルのご案内</a></li>
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/download"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>各種割引申込書ダウンロード</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="pos-r js-desktopMenu-ddMenuTrigger">
+            <a class="d-f ai-c jc-c cg5 h60 plr20 fz115 fw-b c-white lh120 hov-bgc-white15" href="/goto">五島を満喫<i class="icon-arrowDropdown c-skyblue-light"></i></a>
+            <div class="desktopMenu-ddMenu pos-a t60 l0 js-desktopMenu-ddMenuTarget" style="display: none;">
+              <div class="desktopMenu-ddMenu-inner w-fc pt10">
+                <div class="d-f bgc-white bdrs5">
+                  <div class="p50">
+                    <p class="ff-roboto fz200 fw-b c-blue lh120 lts5">ENJOY <br>GOTO ISLAND</p>
+                    <p class="pt10 fz115 fw-b c-blue lh120">五島を満喫</p>
+                    <div class="pt30">
+                      <a class="d-f ai-c jc-c cg10 bgc-blue bdrs-max w-fc ptb8 plr20 fz95 fw-b c-white lh120 hov" href="/goto">五島を満喫 TOP<i class="icon-arrowRight cssIcon-circle bgc-white c-black"></i></a>
+                    </div>
+                  </div>
+                  <div class="bl bdc-gray p50">
+                    <div>
+                      <ul class="d-f fxd-c rg15">
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/plan"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>旅行プラン</a></li>
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/stay"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>滞在型事業</a></li>
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/island"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>島情報</a></li>
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/inquiry"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>旅行・体験に関するお問い合わせ</a></li>
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/booking-process"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>予約から出発までの流れ</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="pos-r js-desktopMenu-ddMenuTrigger">
+            <a class="d-f ai-c jc-c cg5 h60 plr20 fz115 fw-b c-white lh120 hov-bgc-white15" href="/send">貨物輸送<i class="icon-arrowDropdown c-skyblue-light"></i></a>
+            <div class="desktopMenu-ddMenu pos-a t60 l0 js-desktopMenu-ddMenuTarget" style="display: none;">
+              <div class="desktopMenu-ddMenu-inner w-fc pt10">
+                <div class="d-f bgc-white bdrs5">
+                  <div class="p50">
+                    <p class="ff-roboto fz200 fw-b c-blue lh120 lts5">SEND <br>PACKAGES</p>
+                    <p class="pt10 fz115 fw-b c-blue lh120">貨物輸送</p>
+                    <div class="pt30">
+                      <a class="d-f ai-c jc-c cg10 bgc-blue bdrs-max w-fc ptb8 plr20 fz95 fw-b c-white lh120 hov" href="/send">貨物輸送 TOP<i class="icon-arrowRight cssIcon-circle bgc-white c-black"></i></a>
+                    </div>
+                  </div>
+                  <div class="bl bdc-gray p50">
+                    <div>
+                      <ul class="d-f fxd-c rg15">
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/send-process"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>貨物輸送の流れ</a></li>
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/simulation"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>運賃シミュレーション</a></li>
+                        <li><a class="d-f ai-c cg10 w-fc fz105 fw-b lh120 hov" href="/send-faq"><i class="icon-arrowRight cssIcon-circle bgc-skyblue fz80 c-white"></i>貨物輸送についてよくある質問</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li><a class="d-f ai-c jc-c cg5 h60 plr20 fz115 fw-b c-white lh120 hov-bgc-white15" href="/information">お知らせ</a></li>
+          <li><a class="d-f ai-c jc-c cg5 h60 plr20 fz115 fw-b c-white lh120 hov-bgc-white15" href="/recruit">採用情報</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="languageSwitch pos-r js-languageSwitchTrigger">
+      <div class="d-f ai-c jc-c bgc-yellow bdrs-max w60 md-w45 h60 md-h45 cur-p"><img class="mt-2 md-scale80" src="/img/base/language-switch-icon.webp" width="40" height="32" alt="Language"></div>
+      <nav class="languageSwitch-inner w80 pos-a z1 js-languageSwitchTarget" style="display: none;">
+        <ul class="bgc-white bd bdc-gray-light bdrs5 ov-h">
+          <li><span class="js-google-translation d-b ptb8 plr10 fz95 fw-b lh120 hov-bgc-black5 hov-c-blue" data-lang="ja" data-url="https://kyusho.co.jp">日本語</span></li>
+          <li class="bt bdc-gray-light"><span class="js-google-translation d-b ptb8 plr10 fz95 fw-b lh120 hov-bgc-black5 hov-c-blue" data-lang="en" data-url="https://kyusho.co.jp">English</span></li>
+          <li class="bt bdc-gray-light"><span class="js-google-translation d-b ptb8 plr10 fz95 fw-b lh120 hov-bgc-black5 hov-c-blue" data-lang="zh-CN" data-url="https://kyusho.co.jp">简体</span></li>
+          <li class="bt bdc-gray-light"><span class="js-google-translation d-b ptb8 plr10 fz95 fw-b lh120 hov-bgc-black5 hov-c-blue" data-lang="zh-TW" data-url="https://kyusho.co.jp">繁体</span></li>
+          <li class="bt bdc-gray-light"><span class="js-google-translation d-b ptb8 plr10 fz95 fw-b lh120 hov-bgc-black5 hov-c-blue" data-lang="ko" data-url="https://kyusho.co.jp">한국어</span></li>
+        </ul>
+      </nav>
+    </div>
+    <nav class="mobileMenu pos-a inset0 z9" style="display: none;">
+      <div class="cols jc-c mtb70 pos-r z1">
+        <div class="col-10 sm-col-12">
+          <div class="bgc-white bdrs15 mlr-10 plr30 pb20">
+            <div class="ptb30">
+              <p class="ff-roboto fz200 fw-b c-blue lh120 lts5">HOW TO BOARD</p>
+              <p class="pt10 fz115 fw-b c-blue lh120">船に乗る</p>
+              <ul class="d-f fxd-c rg20 pt25">
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/board">船に乗る TOP</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/status">運航状況</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/reserve">チケット予約</a></li>
+                <li>
+                  <a class="js-google-translation-change-href js-google-translation-change-text d-b w-fc fz105 fw-b c-blue-darker lh120 hov"
+                    href="https://www2.kyusho.co.jp/" target="_blank" rel="noopener"
+                    data-translation-en_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203713:kyushu_shosen_en/"
+                    data-translation-ko_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203716:kyushu_shosen_kr/"
+                    data-translation-zh_tw_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203717:kyushu_shosen_tw/"
+                    data-translation-zh_cn_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203713:kyushu_shosen_en/"
+                    data-translation-en_text="Book via VELTRA"
+                    data-translation-ko_text="VELTRA를 통해 예약하기"
+                    data-translation-zh_tw_text="透過 VELTRA 預訂"
+                    data-translation-zh_cn_text="Book via VELTRA">ネット予約</span>
+                  </a>
+                </li>
+
+                <li>
+                  <a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/schedule">運航ダイヤ・運賃</a>
+                  <ul>
+                    <li class="pt15"><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="/discount"><i class="icon-hyphen fz65 c-skyblue"></i>割引料金について</a></li>
+                    <li class="pt15"><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="/vehicle"><i class="icon-hyphen fz65 c-skyblue"></i>自動車航送運賃・二輪車運賃</a></li>
+                  </ul>
+                </li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/routes">航路・所要時間</a></li>
+                <li>
+                  <a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/guide">乗船ガイド</a>
+                  <ul class="d-grid grid-col-3 gap15 pt20">
+                                                                                    <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/103"><i class="icon-hyphen fz65 c-skyblue"></i>長崎港</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/680"><i class="icon-hyphen fz65 c-skyblue"></i>福江港</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/636"><i class="icon-hyphen fz65 c-skyblue"></i>佐世保港</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/637"><i class="icon-hyphen fz65 c-skyblue"></i>奈留島港</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/678"><i class="icon-hyphen fz65 c-skyblue"></i>奈良尾港</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/681"><i class="icon-hyphen fz65 c-skyblue"></i>有川港</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/682"><i class="icon-hyphen fz65 c-skyblue"></i>小値賀港</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/guides/684"><i class="icon-hyphen fz65 c-skyblue"></i>宇久平港</a></li>
+                                                                                </ul>
+                </li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/web-prepayment">WEB事前決済割引について</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/qrcode">QRコード発券について</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/baggage">手荷物・ペット</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/posts/959">おからだの不自由なお客様へ</a></li>
+                <li>
+                  <a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/facility">船内設備</a>
+                  <ul class="d-grid grid-col-2 gap15 pt15">
+                                                                                    <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/614"><i class="icon-hyphen fz65 c-skyblue"></i>ぺがさす</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/685"><i class="icon-hyphen fz65 c-skyblue"></i>ぺがさす2</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/687"><i class="icon-hyphen fz65 c-skyblue"></i>万葉</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/689"><i class="icon-hyphen fz65 c-skyblue"></i>椿</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/692"><i class="icon-hyphen fz65 c-skyblue"></i>シープリンセス</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/694"><i class="icon-hyphen fz65 c-skyblue"></i>シーエンジェル</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/696"><i class="icon-hyphen fz65 c-skyblue"></i>シークイーン</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/700"><i class="icon-hyphen fz65 c-skyblue"></i>いのり</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/4623"><i class="icon-hyphen fz65 c-skyblue"></i>フェリーニューこしき</a></li>
+                                              <li><a class="d-f ai-c cg10 w-fc fw-b c-blue lh120 hov" href="https://kyusho.co.jp/facilities/6670"><i class="icon-hyphen fz65 c-skyblue"></i>シーレイディ</a></li>
+                                                                                </ul>
+                </li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/shuttle">無料シャトルのご案内</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/download">各種割引申込書ダウンロード</a></li>
+              </ul>
+            </div>
+            <div class="bt bdc-gray ptb30">
+              <p class="ff-roboto fz200 fw-b c-blue lh120 lts5">ENJOY <br class="d-n sm-d-i">GOTO ISLAND</p>
+              <p class="pt10 fz115 fw-b c-blue lh120">五島を満喫</p>
+              <ul class="d-f fxd-c rg20 pt25">
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/goto">五島を満喫 TOP</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/plan">旅行プラン</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/stay">滞在型事業</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/island">島情報</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/inquiry">旅行・体験に関するお問い合わせ</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/booking-process">予約から出発までの流れ</a></li>
+              </ul>
+            </div>
+            <div class="bt bdc-gray ptb30">
+              <p class="ff-roboto fz200 fw-b c-blue lh120 lts5">SEND PACKAGES</p>
+              <p class="pt10 fz115 fw-b c-blue lh120">貨物輸送</p>
+              <ul class="d-f fxd-c rg20 pt25">
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/send">貨物輸送 TOP</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/send-process">貨物輸送の流れ</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/simulation">運賃シミュレーション</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/send-faq">貨物輸送についてよくある質問</a></li>
+              </ul>
+            </div>
+            <div class="bt bdc-gray ptb30">
+              <ul class="d-f fxd-c rg15">
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/faq">よくある質問</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/recruit">採用情報</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/information">お知らせ</a></li>
+                <li><a class="d-b w-fc fz105 fw-b c-blue-darker lh120 hov" href="/company">会社案内</a></li>
+              </ul>
+            </div>
+            <div class="mlr-10">
+              <div class="bgc-gray-lighter bdrs10 ptb30 plr25">
+                <ul class="d-f fxd-c rg5">
+                  <li><a class="fz95 fw-b lh120 hov" href="/action">一般事業主行動計画</a></li>
+                  <li><a class="fz95 fw-b lh120 hov" href="/safety-policy">安全方針等（安全管理規定）</a></li>
+                  <li><a class="fz95 fw-b lh120 hov" href="/safety-policy#anchor-conditions">運送約款</a></li>
+                  <li><a class="fz95 fw-b lh120 hov" href="/site-policy">サイトポリシー</a></li>
+                  <li><a class="fz95 fw-b lh120 hov" href="/img/pdf/customer-harassment.pdf" target="_blank" rel="noopener">カスタマーハラスメントに関する当社の考え方</a></li>
+                  <li><a class="fz95 fw-b lh120 hov" href="/privacy-policy">個人情報の取扱いに関する当社の基本方針</a></li>
+                  <li><a class="fz95 fw-b lh120 hov" href="/contact">お問い合わせ</a></li>
+                  <li><a class="fz95 fw-b lh120 hov" href="/sitemap">サイトマップ</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bgc-black60 w-max h-max pos-f inset0 z0 js-mobileMenu-toggle-close"></div>
+    </nav>
+    <div class="bgc-black60 w-max h-max pos-f inset0 z-1 pointer-none js-desktopMenu-bgBlack" style="display: none;"></div>
+  </header>
+
+  <!-- スライドナビ -->
+  <nav class="slideaNav bgc-white bdrs5 md-bdrs0 w-fc h80 ptb15 md-ptb10 z9 layoutType-underframe js-navigationScroll js-scrollHide">
+    <div class="slideaNav-arrow slideaNav-arrow-left d-f ai-c jc-c bgc-blue bdrs3 w15 mtba pos-a t0 b0 l5 z1 cur-p hov js-navigationScroll-arrowLeft" style="display: none;"><i class="icon-arrowLeft c-white"></i></div>
+    <div class="slideaNav-arrow slideaNav-arrow-right d-f ai-c jc-c bgc-blue bdrs3 w15 mtba pos-a t0 b0 r5 z1 cur-p hov js-navigationScroll-arrowRight" style="display: none;"><i class="icon-arrowRight c-white"></i></div>
+    <ul class="slideaNav-inner d-f w-fc md-mlra plr5 js-navigationScroll-wrapper">
+
+      <!-- PCのみ表示 -->
+      <li class="md-d-n">
+        <a class="d-f fxd-c ai-c jc-c rg5 plr15 c-blue lh120 hov-c-skyblue" href="/status">
+          <i class="icon-nav-status fz200"></i>
+          <span class="fz75 fw-b ta-c nowrap md-scale90">運航状況</span>
+        </a>
+      </li>
+
+      <!-- PCのみ表示 -->
+      <li class="md-d-n bl bdc-gray-light">
+        <a class="js-google-translation-change-href d-f fxd-c ai-c jc-c rg5 plr15 c-blue lh120 hov-c-skyblue"
+          href="https://www2.kyusho.co.jp/"
+          target="_blank"
+          rel="noopener"
+          data-translation-en_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203713:kyushu_shosen_en/"
+          data-translation-ko_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203716:kyushu_shosen_kr/"
+          data-translation-zh_tw_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203717:kyushu_shosen_tw/"
+          data-translation-zh_cn_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203713:kyushu_shosen_en/">
+          <i class="icon-nav-online_resere fz200"></i>
+          <span class="js-google-translation-change-text fz75 fw-b ta-c nowrap md-scale90"
+            data-translation-en_text="Book via VELTRA"
+            data-translation-ko_text="VELTRA를 통해 예약하기"
+            data-translation-zh_tw_text="透過 VELTRA 預訂"
+            data-translation-zh_cn_text="Book via VELTRA">ネット予約</span>
+        </a>
+      </li>
+
+      <li class="bl bdc-gray-light">
+        <a class="d-f fxd-c ai-c jc-c rg5 plr15 c-blue lh120 hov-c-skyblue" href="/schedule">
+          <i class="icon-nav-schedule fz200"></i>
+          <span class="fz75 fw-b ta-c nowrap md-scale90">運航ダイヤ<br class="d-n md-d-i">・運賃</span>
+        </a>
+      </li>
+
+      <!-- PCのみ表示 -->
+      <li class="md-d-n bl bdc-gray-light">
+        <a class="d-f fxd-c ai-c jc-c rg5 plr15 c-blue lh120 hov-c-skyblue" href="/routes">
+          <i class="icon-nav-routes fz200"></i>
+          <span class="fz75 fw-b ta-c nowrap md-scale90">航路・<br class="d-n md-d-i">所要時間</span>
+        </a>
+      </li>
+
+      <li class="bl bdc-gray-light">
+        <a class="d-f fxd-c ai-c jc-c rg5 plr15 c-blue lh120 hov-c-skyblue" href="/plan">
+          <i class="icon-nav-plans fz200"></i>
+          <span class="fz75 fw-b ta-c nowrap md-scale90">旅行プラン</span>
+        </a>
+      </li>
+
+      <li class="bl bdc-gray-light">
+        <a class="d-f fxd-c ai-c jc-c rg5 plr15 c-blue lh120 hov-c-skyblue" href="/stay">
+          <i class="icon-nav-stay fz200"></i>
+          <span class="fz75 fw-b ta-c nowrap md-scale90">滞在型事業</span>
+        </a>
+      </li>
+
+      <!-- タブレット以下のみ表示 -->
+      <li class="d-n md-d-b bl bdc-gray-light">
+        <a class="d-f fxd-c ai-c jc-c rg5 plr15 c-blue lh120 hov-c-skyblue" href="/send">
+          <i class="icon-nav-send fz200"></i>
+          <span class="fz75 fw-b ta-c nowrap md-scale90">貨物輸送</span>
+        </a>
+      </li>
+
+      <li class="bl bdc-gray-light">
+        <a class="d-f fxd-c ai-c jc-c rg5 plr15 c-blue lh120 hov-c-skyblue" href="/faq">
+          <i class="icon-nav-faq fz200"></i>
+          <span class="fz75 fw-b ta-c nowrap md-scale90">よくある<br class="d-n md-d-i">質問</span>
+        </a>
+      </li>
+
+      <!-- タブレット以下のみ表示 -->
+      <li class="bl bdc-gray-light d-n md-d-b">
+        <a class="d-f fxd-c ai-c jc-c rg5 plr15 c-blue lh120 hov-c-skyblue" href="/recruit">
+          <i class="icon-nav-recruit fz200"></i>
+          <span class="fz75 fw-b ta-c nowrap md-scale90">採用情報</span>
+        </a>
+      </li>
+
+      <!-- タブレット以下のみ表示 -->
+      <li class="bl bdc-gray-light d-n md-d-b">
+        <a class="d-f fxd-c ai-c jc-c rg5 plr15 c-blue lh120 hov-c-skyblue" href="/information">
+          <i class="icon-nav-information fz200"></i>
+          <span class="fz75 fw-b ta-c nowrap md-scale90">お知らせ</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  
+<!-- main -->
+<main class="uf-main ov-h">
+  <!-- パンくずリスト -->
+<div class="bgc-blue-light ptb10">
+  <div class="cols">
+    <div class="col-12">
+      <ul class="fz70 lh120 lts5 line-clamp1" itemscope itemtype="http://schema.org/BreadcrumbList">
+                              <li class="d-i" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                              <a class="fw-b c-blue hov" itemprop="item" href="https://kyusho.co.jp/"><i class="icon-home c-blue"></i> <span itemprop="name">HOME</span>
+                  <meta itemprop="position" content="1">
+                </a> <i class="icon-arrowRight c-skyblue"></i>
+                          </li>
+                      <li class="d-i" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                              <a class="fw-b c-blue hov" itemprop="item" href="https://kyusho.co.jp/board"><span itemprop="name">船に乗る</span>
+                  <meta itemprop="position" content="2">
+                </a> <i class="icon-arrowRight c-skyblue"></i>
+                          </li>
+                      <li class="d-i" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                              <a class="not-link" itemprop="item" href="javascript:void(0)"><span itemprop="name"><strong class="fw-n">運航状況</strong></span>
+                  <meta itemprop="position" content="3">
+                </a>
+                          </li>
+                        </ul>
+    </div>
+  </div>
+</div>
+  <!-- 運航状況 -->
+  <section class="pt45 sm-pt35 pb60">
+    <div class="cols">
+      <div class="col-12">
+        <h2 id="status_anchor" class="fz160 lh140 lts5 ta-c" style="scroll-margin-top: 100px;">運航状況</h2>
+        <p class="pt5 ff-roboto fz85 fw-b c-blue lh140 lts10 ta-c">Service status</p>
+      </div>
+    </div>
+    <div class="cols jc-c pt35">
+      <div class="col-8 md-col-10 sm-col-12">
+        <!-- 運航状況 -->
+        <div class="js-swich-wrapper">
+          <div class="d-f cg1 plr3 pos-r">
+            <div class="fxg1"><span class="d-f sm-fxd-c ai-fe sm-ai-c jc-c cg5 bd bdc-skyblue bdrs7-7-0-0 ptb15 fw-b c-skyblue lh120 plr5 ta-c cur-p hov-bgc-black5 is-active-bgc-blue is-active-bdc-blue is-active-c-white js-swich-toggle is-active" data-swich="nagasaki_goto">長崎〜五島<span class="fz75">航路</span></span></div>
+            <div class="fxg1"><span class="d-f sm-fxd-c ai-fe sm-ai-c jc-c cg5 bd bdc-skyblue bdrs7-7-0-0 ptb15 fw-b c-skyblue lh120 plr5 ta-c cur-p hov-bgc-black5 is-active-bgc-blue is-active-bdc-blue is-active-c-white js-swich-toggle" data-swich="nagasaki_arikawa">長崎〜有川<span class="fz75">航路</span></span></div>
+            <div class="fxg1"><span class="d-f sm-fxd-c ai-fe sm-ai-c jc-c cg5 bd bdc-skyblue bdrs7-7-0-0 ptb15 fw-b c-skyblue lh120 plr5 ta-c cur-p hov-bgc-black5 is-active-bgc-blue is-active-bdc-blue is-active-c-white js-swich-toggle" data-swich="sasebo_kamigoto">佐世保～上五島<span class="fz75">航路</span></span></div>
+            <i class="bb bdc-blue w-max h1 pos-a l0 r0 b0 z1"></i>
+          </div>
+
+                    <p class="pt20 fz85 lh140 ta-c">更新：2026年11月06日(金) 21:00</p>
+
+          <p class="c-red bgc-red-light ptb5 plr10 bdrs10 bd bdc-red mt20 d-f ai-c"><span class="bgc-red c-white bdrs7 d-ib lh100 ptb5 plr10 fw-b mr10 nowrap">ご注意</span><span class="lh140">欠航等の場合の最終決定は出港の１時間前となります。</span></p>
+
+          <div class="pt30 sm-pt40 js-swich-target" data-swich="nagasaki_goto">
+            <div class="cols nega gutter55 md-gutter40 sm-gutter30 rg60 jc-c">
+                                              <section class="col-6 sm-col-12">
+                    <h3 class="bgc-skyblue bdrs7 ptb10 plr15 fz115 fw-b c-white lh140">ジェットフォイル</h3>
+                    <div class="d-f fxd-c rg40 pt20">
+                                              <section>
+                          <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>長崎</h4>
+                          <table class="status-table mt15">
+                            <tbody>
+                                                              <tr>
+                                  <th>7:40 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>11:30 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>13:55 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>15:25 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                          </tbody>
+                          </table>
+                        </section>
+                                              <section>
+                          <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>福江</h4>
+                          <table class="status-table mt15">
+                            <tbody>
+                                                              <tr>
+                                  <th>7:30 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>9:20 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>13:10 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>15:35 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                          </tbody>
+                          </table>
+                        </section>
+                                              <section>
+                          <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>奈良尾</h4>
+                          <table class="status-table mt15">
+                            <tbody>
+                                                              <tr>
+                                  <th>8:05 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>9:55 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>16:10 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>16:40 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                          </tbody>
+                          </table>
+                        </section>
+                                          </div>
+                  </section>
+                                <section class="col-6 sm-col-12">
+                    <h3 class="bgc-skyblue bdrs7 ptb10 plr15 fz115 fw-b c-white lh140">フェリー</h3>
+                    <div class="d-f fxd-c rg40 pt20">
+                                              <section>
+                          <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>長崎</h4>
+                          <table class="status-table mt15">
+                            <tbody>
+                                                              <tr>
+                                  <th>8:05 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>12:25 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>16:50 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                          </tbody>
+                          </table>
+                        </section>
+                                              <section>
+                          <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>福江</h4>
+                          <table class="status-table mt15">
+                            <tbody>
+                                                              <tr>
+                                  <th>8:00 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>11:45 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>16:50 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                          </tbody>
+                          </table>
+                        </section>
+                                              <section>
+                          <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>奈留島</h4>
+                          <table class="status-table mt15">
+                            <tbody>
+                                                              <tr>
+                                  <th>12:35 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                          </tbody>
+                          </table>
+                        </section>
+                                              <section>
+                          <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>奈良尾</h4>
+                          <table class="status-table mt15">
+                            <tbody>
+                                                              <tr>
+                                  <th>9:15 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>13:35 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>15:15 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                          </tbody>
+                          </table>
+                        </section>
+                                          </div>
+                  </section>
+                          </div>
+          </div>
+          <div class="pt30 sm-pt40 js-swich-target" data-swich="nagasaki_arikawa" style="display: none;">
+            <div class="cols nega gutter55 md-gutter40 sm-gutter30 rg60 jc-c">
+
+              <div class="col-8 sm-col-12 pt20 sm-pt10">
+                <p class="fz115 fw-b lh120 bd bdc-blue bgc-skyblue-lighter bdrs7 ptb50 sm-ptb20 plr15 c-blue ta-c">2025年8月25日から<br class="d-n sm-d-b">全便運休しております。</p>
+              </div>
+
+              <!-- 2025年8月25日から全便運休のため非表示 -->
+              <!-- 
+                                                    <section class="col-6 sm-col-12">
+                      <h3 class="bgc-skyblue bdrs7 ptb10 plr15 fz115 fw-b c-white lh140">高速船</h3>
+                      <div class="d-f fxd-c rg40 pt20">
+                                                  <section>
+                            <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>長崎</h4>
+                            <table class="status-table mt15">
+                              <tbody>
+                                                                  <tr>
+                                    <th>7:55 発</th>
+                                                                          <td class="unkou">
+                                        <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                      </td>
+                                                                      </tr>
+                                                                  <tr>
+                                    <th>10:30 発</th>
+                                                                          <td class="unkou">
+                                        <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                      </td>
+                                                                      </tr>
+                                                                  <tr>
+                                    <th>16:40 発</th>
+                                                                          <td class="unkou">
+                                        <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                      </td>
+                                                                      </tr>
+                                                              </tbody>
+                            </table>
+                          </section>
+                                                  <section>
+                            <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>有川</h4>
+                            <table class="status-table mt15">
+                              <tbody>
+                                                                  <tr>
+                                    <th>7:50 発</th>
+                                                                          <td class="unkou">
+                                        <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                      </td>
+                                                                      </tr>
+                                                                  <tr>
+                                    <th>14:20 発</th>
+                                                                          <td class="unkou">
+                                        <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                      </td>
+                                                                      </tr>
+                                                                  <tr>
+                                    <th>16:40 発</th>
+                                                                          <td class="unkou">
+                                        <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                      </td>
+                                                                      </tr>
+                                                              </tbody>
+                            </table>
+                          </section>
+                                              </div>
+                    </section>
+                               -->
+
+
+            </div>
+          </div>
+          <div class="pt30 sm-pt40 js-swich-target" data-swich="sasebo_kamigoto" style="display: none;">
+            <div class="cols nega gutter55 md-gutter40 sm-gutter30 rg60 jc-c">
+                                              <section class="col-6 sm-col-12">
+                    <h3 class="bgc-skyblue bdrs7 ptb10 plr15 fz115 fw-b c-white lh140">高速船</h3>
+                    <div class="d-f fxd-c rg40 pt20">
+                                              <section>
+                          <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>佐世保</h4>
+                          <table class="status-table mt15">
+                            <tbody>
+                                                              <tr>
+                                  <th>8:35 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>12:05 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>15:50 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>16:55 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                          </tbody>
+                          </table>
+                        </section>
+                                              <section>
+                          <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>有川</h4>
+                          <table class="status-table mt15">
+                            <tbody>
+                                                              <tr>
+                                  <th>6:55 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>10:05 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>15:00 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                          </tbody>
+                          </table>
+                        </section>
+                                              <section>
+                          <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>小値賀</h4>
+                          <table class="status-table mt15">
+                            <tbody>
+                                                              <tr>
+                                  <th>7:00 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>10:45 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>13:45 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                          </tbody>
+                          </table>
+                        </section>
+                                              <section>
+                          <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>宇久平</h4>
+                          <table class="status-table mt15">
+                            <tbody>
+                                                              <tr>
+                                  <th>7:25 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>11:10 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>14:10 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>17:20 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                          </tbody>
+                          </table>
+                        </section>
+                                          </div>
+                  </section>
+                                <section class="col-6 sm-col-12">
+                    <h3 class="bgc-skyblue bdrs7 ptb10 plr15 fz115 fw-b c-white lh140">フェリー</h3>
+                    <div class="d-f fxd-c rg40 pt20">
+                                              <section>
+                          <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>佐世保</h4>
+                          <table class="status-table mt15">
+                            <tbody>
+                                                              <tr>
+                                  <th>8:00 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>10:40 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>13:45 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>17:05 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                          </tbody>
+                          </table>
+                        </section>
+                                              <section>
+                          <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>有川</h4>
+                          <table class="status-table mt15">
+                            <tbody>
+                                                              <tr>
+                                  <th>10:50 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>16:35 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                          </tbody>
+                          </table>
+                        </section>
+                                              <section>
+                          <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>小値賀</h4>
+                          <table class="status-table mt15">
+                            <tbody>
+                                                              <tr>
+                                  <th>7:45 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>14:05 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>19:45 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                          </tbody>
+                          </table>
+                        </section>
+                                              <section>
+                          <h4 class="pl15 fz115 fw-b lh140 pos-r"><i class="d-b bgc-blue bdrs2 w7 h-max pos-a t0 b0 l0"></i>宇久平</h4>
+                          <table class="status-table mt15">
+                            <tbody>
+                                                              <tr>
+                                  <th>7:00 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                              <tr>
+                                  <th>13:15 発</th>
+                                                                      <td class="unkou">
+                                      <img loading="lazy" src="/img/base/status-available.webp" width="22" height="22" alt="運航または運航予定">
+                                    </td>
+                                                                  </tr>
+                                                          </tbody>
+                          </table>
+                        </section>
+                                          </div>
+                  </section>
+                          </div>
+          </div>
+        </div>
+        <!-- 運航状況の見方 -->
+        <section class="bd bdw bdc-skyblue bdrs7 mt50 sm-mt40 ov-h">
+          <h3 class="bgc-skyblue ptb10 fz130 fw-b c-white lh140 ta-c">運航状況の見方</h3>
+          <div class="d-grid grid-col-2 sm-grid-col-1 gap15 sm-gap5 p20">
+            <dl class="d-f ai-c cg10">
+              <dt class="d-f ai-c jc-c fxs0 bgc-blue-lighter w60 h40"><img loading="lazy" src="/img/base/status-available.webp" width="18" height="18" alt="運航または運航予定"></dt>
+              <dd class="fz95 fw-b lh140">運航または運航予定</dd>
+            </dl>
+            <dl class="d-f ai-c cg10">
+              <dt class="d-f ai-c jc-c fxs0 bgc-red-light w60 h40"><img loading="lazy" src="/img/base/status-fully.webp" width="18" height="18" alt="欠航"></dt>
+              <dd class="fz95 fw-b lh140">欠航</dd>
+            </dl>
+            <dl class="d-f ai-c cg10">
+              <dt class="d-f ai-c jc-c fxs0 bgc-blue-lighter w60 h40"><span class="fw-b c-red lh100">抜港</span></dt>
+              <dd class="fz95 fw-b lh140">途中港への寄港なし</dd>
+            </dl>
+            <dl class="d-f ai-c cg10">
+              <dt class="d-f ai-c jc-c fxs0 bgc-blue-lighter w60 h40"><img loading="lazy" src="/img/base/status-limited.webp" width="18" height="18" alt="未定（欠航、抜港の可能性あり）"></dt>
+              <dd class="fz95 fw-b lh140">未定（欠航、抜港の可能性あり）</dd>
+            </dl>
+          </div>
+        </section>
+        <!-- 注釈 -->
+        <div class="bgc-gray-lighter bdrs7 mt30 p20">
+          <p class="text-indent-adjust fz85 lh150">※本ページの情報は、更新時刻現在のもので、天候の急変等により急な変更が生じる可能性ががございます。</p>
+          <p class="pt3 text-indent-adjust fz85 lh150">※本ページの情報に基づく、お客様の判断により発生した損害に対しては、当社は一切の責任を負いかねますのでご了承ください。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- footer -->
+<footer class="bt bdc-gray-light pos-r">
+  <div class="ptb40 sm-ptb30 plr50 md-plr30 sm-plr15">
+    <div class="d-f sm-fxd-c ai-c jc-sb rg30">
+      <div class="d-f ai-c">
+        <a class="hov sm-scale70" href="/"><img loading="lazy" src="/img/base/logo-footer.webp" width="312" height="32" alt="九州商船株式会社"></a>
+        <figure class="bl bdc-gray pl20 ml20">
+          <img loading="lazy" class="img-rspsv" src="/img/base/membership.webp" width="54" height="54" alt="優良会員証">
+        </figure>
+      </div>
+      <ul class="d-f cg30 md-cg15">
+        <li><a class="d-f fxd-c ai-c rg10 hov" href="https://www.instagram.com/kyusho_nagasaki.jp/" target="_blank" rel="noopener"><img loading="lazy" src="/img/base/footer-instagram.webp" width="29" height="29" alt="instagramアイコン"><span class="ff-montserrat fz70 lh120 ta-c">instagram</span></a></li>
+        <li><a class="d-f fxd-c ai-c rg10 hov" href="https://www.facebook.com/kyushushosen/" target="_blank" rel="noopener"><img loading="lazy" src="/img/base/footer-facebook.webp" width="29" height="29" alt="facebookアイコン"><span class="ff-montserrat fz70 lh120 ta-c">facebook</span></a></li>
+        <li><a class="d-f fxd-c ai-c rg10 hov" href="/contact"><img loading="lazy" src="/img/base/footer-contact.webp" width="29" height="29" alt="お問い合わせアイコン"><span class="fz70 lh120 ta-c">お問い合わせ</span></a></li>
+        <li><a class="d-f fxd-c ai-c rg10 hov" href="/company"><img loading="lazy" src="/img/base/footer-company.webp" width="29" height="29" alt="会社案内アイコン"><span class="fz70 lh120 ta-c">会社案内</span></a></li>
+      </ul>
+    </div>
+    <p class="sm-d-n pt30 fz85 sm-fz70 lh140 lts5 ta-c"><a class="hov-c-blue" href="/action">一般事業主行動計画</a> ｜ <a class="hov-c-blue" href="/safety-policy">安全方針等（安全管理規定）</a> ｜ <a class="hov-c-blue" href="/safety-policy#anchor-conditions">運送約款</a> ｜ <a class="hov-c-blue" href="/img/pdf/customer-harassment.pdf" target="_blank" rel="noopener">カスタマーハラスメントに関する当社の考え方</a> ｜ <a class="hov-c-blue" href="/site-policy">サイトポリシー</a> ｜ <a class="hov-c-blue" href="/privacy-policy">個人情報の取扱いに関する当社の基本方針</a> ｜ <a class="hov-c-blue" href="/sitemap">サイトマップ</a></p>
+  </div>
+  <div class="pos-a t-30 sm-t-20 r50 md-r30 sm-r10 z2"><a class="d-f ai-c jc-c bgc-skyblue bdrs7 w50 sm-w40 h50 sm-h40 hov" href="#"><img loading="lazy" src="/img/base/footer-totop-icon.webp" width="18" height="20" alt="ページ先頭へ"></a></div>
+  <div class="bt bdc-gray ptb15 ff-montserrat fz75 lh120 ta-c"><small>Copyright©<a class="hov" href="/">九州商船株式会社</a> All Rights Reserved.</small></div>
+</footer>
+
+<!-- 固定コンバージョン -->
+<div class="fixed-cv mtba pos-f md-pos-sticky z8">
+  <div class="fixed-cv-inner d-f ai-c jc-c fxd-c md-fxd-r bgc-yellow">
+    <a class="js-google-translation-change-href d-f fxd-c md-fxd-r ai-c md-jc-c gap10 ptb20 md-ptb15 pl15 pr15 sm-pr30 pos-r hov-bgc-white35 hov-c-skyblue"
+      target="_blank"
+      rel="noopener"
+      href="https://www2.kyusho.co.jp/"
+      data-translation-en_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203713:kyushu_shosen_en/"
+      data-translation-ko_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203716:kyushu_shosen_kr/"
+      data-translation-zh_tw_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203717:kyushu_shosen_tw/"
+      data-translation-zh_cn_href="https://www.veltra.com/en/asia/japan/nagasaki/ctg/203713:kyushu_shosen_en/">
+      <i class="icon-nav-online_resere fz240 md-fz200"></i>
+      <div class="fixed-cv-texts lh120">
+        <span class="d-b fz115 md-fz95 fw-b lts10 js-google-translation-change-text"
+          data-translation-en_text="Book via VELTRA"
+          data-translation-ko_text="VELTRA를 통해 예약하기"
+          data-translation-zh_tw_text="透過 VELTRA 預訂"
+          data-translation-zh_cn_text="Book via VELTRA">ネット予約</span>
+        <span class="d-b ff-montserrat fz75 lts10 scale90">RESERVATION</span>
+      </div>
+      <i class="icon-arrowRight cssIcon-circle bgc-white mtba fz85 c-black sm-pos-a t0 b0 r15"></i>
+    </a>
+    <a class="d-f fxd-c md-fxd-r ai-c md-jc-c gap10 ptb20 md-ptb15 pl15 pr15 sm-pr30 pos-r hov-bgc-white35 hov-c-skyblue" href="/status">
+      <i class="icon-nav-status fz240 md-fz200"></i>
+      <div class="fixed-cv-texts lh120">
+        <span class="d-b fz115 md-fz95 fw-b lts10">運航状況</span>
+        <span class="d-b ff-montserrat fz75 lts10 scale90">STATUS</span>
+      </div>
+      <i class="icon-arrowRight cssIcon-circle bgc-white mtba fz85 c-black sm-pos-a t0 b0 r15"></i>
+    </a>
+  </div>
+</div>
+
+<script src="/js/swiper-bundle.min.js"></script>
+<link rel="stylesheet" href="/js/swiper-bundle.min.css">
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/datepicker-ja.js"></script>
+<link rel="stylesheet" href="/js/jquery-ui.min.css">
+<script src="/js/fancybox.min.js"></script>
+<link rel="stylesheet" href="/js/fancybox.min.css">
+<script src="/js/common.js?260602025604"></script>
+<script src="/js/common_translation.js?260418230339"></script>
+
+
+</body>
+
+</html>
