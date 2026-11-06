@@ -522,45 +522,74 @@ function doSearch() {
 function renderFares() {
   const opId = $('#fare-operator').value;
   const op = operatorById[opId] || {};
-  const list = DB.fares.filter((f) => f.operator_id === opId);
+  const isKyushu = opId === 'kyushu';
   const portOrder = (pid) => DB.ports.findIndex((p) => p.port_id === pid);
+  // 九州商船は乗船月で絞る（月セレクタは九州商船のときだけ表示）
+  let selMonth = '';
+  $('#fare-month-field').hidden = !isKyushu;
+  if (isKyushu) {
+    const months = [...new Set(DB.fares.filter((f) => f.operator_id === 'kyushu').map((f) => (f.valid_from || '').slice(0, 7)).filter(Boolean))].sort();
+    const mSel = $('#fare-month');
+    const prev = mSel.value;
+    mSel.innerHTML = months.map((m) => {
+      const [y, mo] = m.split('-');
+      return `<option value="${m}">${y}年${Number(mo)}月分</option>`;
+    }).join('');
+    const nowYm = todayStr().slice(0, 7);
+    selMonth = months.includes(prev) ? prev : (months.includes(nowYm) ? nowYm : months[months.length - 1]);
+    mSel.value = selMonth;
+  }
+  let list = DB.fares.filter((f) => f.operator_id === opId);
+  if (isKyushu) list = list.filter((f) => (f.valid_from || '').slice(0, 7) === selMonth);
+  // 方向違いは金額が同じため、区間（無方向）でまとめて表示を半分にする
   const groups = new Map();
   for (const f of list) {
-    // 適用期間（valid_from）もキーに含め、九州商船の月次運賃が月ごとに別グループになるようにする
-    const key = f.from_port_id + '|' + f.to_port_id + '|' + (f.vessel_type || '') + '|' + (f.valid_from || '');
-    if (!groups.has(key)) groups.set(key, { from: f.from_port_id, to: f.to_port_id, vessel: f.vessel_type || '', validFrom: f.valid_from || '', rows: {} });
-    groups.get(key).rows[f.category] = f;
+    const lo = portOrder(f.from_port_id) <= portOrder(f.to_port_id) ? f.from_port_id : f.to_port_id;
+    const hi = lo === f.from_port_id ? f.to_port_id : f.from_port_id;
+    const key = lo + '|' + hi + '|' + (f.vessel_type || '') + '|' + (isKyushu ? '' : (f.valid_from || ''));
+    if (!groups.has(key)) groups.set(key, { from: lo, to: hi, vessel: f.vessel_type || '', validFrom: f.valid_from || '', rows: {} });
+    const g = groups.get(key);
+    if (!g.rows[f.category]) g.rows[f.category] = f;
   }
   const sorted = [...groups.values()].sort((a, b) =>
     portOrder(a.from) - portOrder(b.from) || portOrder(a.to) - portOrder(b.to) || a.vessel.localeCompare(b.vessel, 'ja') ||
     (a.validFrom < b.validFrom ? -1 : a.validFrom > b.validFrom ? 1 : 0));
-  let html = sorted.map((g) => {
+  let html = '';
+  if (isKyushu && selMonth) {
+    const [y, mo] = selMonth.split('-');
+    html += `<p class="fare-month-head">${y}年${Number(mo)}月分の運賃を表示しています（燃料油価格変動調整金込み）。他の月は上の「乗船月」で切り替えてください。</p>`;
+  }
+  html += sorted.map((g) => {
     const rowFor = (cat, label) => {
       const f = g.rows[cat];
       if (!f) return '';
       const period = (f.valid_from || '') + (f.valid_to ? '〜' + f.valid_to : '');
+      const periodCell = isKyushu ? '' : `<td>${esc(period)}</td>`;
       return `<tr class="${cat === 'resident' ? 'cat-resident' : ''}">
         <td>${label}</td><td>${yen(f.adult_oneway)}</td><td>${yen(f.child_oneway)}</td>
         <td>${yen(f.adult_roundtrip)}</td><td>${yen(f.child_roundtrip)}</td>
-        <td>${esc(period)}</td><td class="fare-note-cell">${esc(f.note || '')}</td></tr>`;
+        ${periodCell}<td class="fare-note-cell">${esc(f.note || '')}</td></tr>`;
     };
     return `<div class="fare-group">
-      <h3>${esc(portName(g.from))} → ${esc(portName(g.to))}${g.vessel ? '（' + esc(g.vessel) + '）' : ''}</h3>
+      <h3>${esc(portName(g.from))} ⇄ ${esc(portName(g.to))}${g.vessel ? '（' + esc(g.vessel) + '）' : ''}</h3>
       <div class="table-wrap"><table class="fare-table">
-        <tr><th>区分</th><th>大人片道</th><th>小人片道</th><th>大人往復</th><th>小人往復</th><th>適用期間</th><th>備考</th></tr>
+        <tr><th>区分</th><th>大人片道</th><th>小人片道</th><th>大人往復</th><th>小人往復</th>${isKyushu ? '' : '<th>適用期間</th>'}<th>備考</th></tr>
         ${rowFor('general', '一般')}${rowFor('resident', '島民割引')}
       </table></div>
     </div>`;
   }).join('');
-  if (!html) html = '<div class="empty-box">この事業者の運賃データはありません。</div>';
-  // 九州商船は燃料油価格変動調整金を別表表示
-  if (opId === 'kyushu' && DB.surcharges.length) {
-    html += `<div class="fare-group"><h3>燃料油価格変動調整金（九州商船）</h3>
+  if (!sorted.length) html = '<div class="empty-box">この事業者の運賃データはありません。</div>';
+  // 九州商船は燃料油価格変動調整金を別表表示（選択中の月のみ）
+  if (isKyushu && DB.surcharges.length) {
+    const sur = DB.surcharges.filter((s) => s.year_month === selMonth);
+    if (sur.length) {
+      html += `<div class="fare-group"><h3>燃料油価格変動調整金（九州商船・${esc(selMonth.replace('-', '年'))}月分）</h3>
       <div class="table-wrap"><table class="fare-table">
-      <tr><th>航路</th><th>船種</th><th>区間</th><th>対象月</th><th>ゾーン</th><th>大人</th><th>小人</th><th>備考</th></tr>
-      ${DB.surcharges.map((s) => `<tr><td>${esc(s.route_name)}</td><td>${esc(s.vessel_type)}</td><td>${esc(s.segment)}</td><td>${esc(s.year_month)}</td><td>${esc(s.zone)}</td><td>${yen(s.adult)}</td><td>${yen(s.child)}</td><td class="fare-note-cell">${esc(s.note || '')}</td></tr>`).join('')}
+      <tr><th>航路</th><th>船種</th><th>区間</th><th>ゾーン</th><th>大人</th><th>小人</th><th>備考</th></tr>
+      ${sur.map((s) => `<tr><td>${esc(s.route_name)}</td><td>${esc(s.vessel_type)}</td><td>${esc(s.segment)}</td><td>${esc(s.zone)}</td><td>${yen(s.adult)}</td><td>${yen(s.child)}</td><td class="fare-note-cell">${esc(s.note || '')}</td></tr>`).join('')}
       </table></div>
-      <p class="small">※ 運賃表の金額は、収集時点の調整金込み表示です。月により調整金が変わります。</p></div>`;
+      <p class="small">※ 上の運賃表の金額は、この調整金を含んだ合計です。</p></div>`;
+    }
   }
   $('#fare-results').innerHTML = html;
 }
@@ -766,6 +795,7 @@ async function init() {
   $('#today-btn').addEventListener('click', () => { $('#date-input').value = todayStr(); autoSearch(); });
   $('#date-input').addEventListener('change', autoSearch);
   $('#fare-operator').addEventListener('change', renderFares);
+  $('#fare-month').addEventListener('change', renderFares);
   $('#clear-cache').addEventListener('click', async () => {
     if ('caches' in window) {
       const keys = await caches.keys();
