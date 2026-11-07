@@ -233,6 +233,8 @@ EXCEPTIONS = [
     ("2026-12-05", "2026-12-18", "trip_prefix", "kyushu-sl", "suspended", "", "シーレイディ ドック休航（予定）"),
     ("2027-02-01", "2027-02-26", "trip_prefix", "kyushu-sq", "suspended", "", "シークイーン ドック休航（予定）"),
     ("2027-01-01", "2027-01-01", "route", "sakito-tomosumi-sasebo", "suspended", "", "元日運休（毎年）"),
+    ("2027-01-01", "2027-01-01", "route", "ryokakusen-ocean", "suspended", "", "元日運休（毎年）"),
+    ("2027-01-01", "2027-01-01", "route", "ryokakusen-taiyo", "suspended", "", "元日運休（毎年）"),
     ("2026-01-01", "2026-11-23", "route", "ryokakusen-taiyo", "weekday_suspended", "0,1", "船員不足のため日曜・月曜運休（〜2026-11-23）"),
 ]
 write_csv("exceptions.csv", ["date_from", "date_to", "scope_type", "scope", "kind", "weekdays", "note"],
