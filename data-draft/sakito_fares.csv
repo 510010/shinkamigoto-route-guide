@@ -1,6 +1,6 @@
 operator,from_port,to_port,category,adult_oneway,child_oneway,adult_roundtrip,child_roundtrip,valid_from,note,source_url
-崎戸商船,友住,平島,general,370,190,,,2025-10-01,往復割引なし（各港で支払い・現金のみ、佐世保旅客船協会）。2025-10-01運賃改定。小人190円は大人370円の半額（10円単位切上げ）の推定値：西海市運賃表PDFのテキスト抽出でこの区間のみ数値が直接読み取れず、他の9区間すべてで確認できる「大人の半額・10円未満切上げ」規則からの算出（要再確認）,https://www.city.saikai.nagasaki.jp/material/files/group/5/ryokakuunntinn.pdf
-崎戸商船,平島,友住,general,370,190,,,2025-10-01,往復割引なし（各港で支払い・現金のみ、佐世保旅客船協会）。2025-10-01運賃改定。小人190円は大人370円の半額（10円単位切上げ）の推定値：西海市運賃表PDFのテキスト抽出でこの区間のみ数値が直接読み取れず、他の9区間すべてで確認できる「大人の半額・10円未満切上げ」規則からの算出（要再確認）,https://www.city.saikai.nagasaki.jp/material/files/group/5/ryokakuunntinn.pdf
+崎戸商船,友住,平島,general,370,190,,,2025-10-01,往復割引なし（各港で支払い・現金のみ、佐世保旅客船協会）。2025-10-01運賃改定。小人190円は西海市運賃表PDF（令和7年10月1日施行）の運賃マトリクスで直接確認（2026-11-09再確認）,https://www.city.saikai.nagasaki.jp/material/files/group/5/ryokakuunntinn.pdf
+崎戸商船,平島,友住,general,370,190,,,2025-10-01,往復割引なし（各港で支払い・現金のみ、佐世保旅客船協会）。2025-10-01運賃改定。小人190円は西海市運賃表PDF（令和7年10月1日施行）の運賃マトリクスで直接確認（2026-11-09再確認）,https://www.city.saikai.nagasaki.jp/material/files/group/5/ryokakuunntinn.pdf
 崎戸商船,友住,江島,general,1010,510,,,2025-10-01,往復割引なし（各港で支払い・現金のみ、佐世保旅客船協会）。2025-10-01運賃改定,https://www.city.saikai.nagasaki.jp/material/files/group/5/ryokakuunntinn.pdf
 崎戸商船,江島,友住,general,1010,510,,,2025-10-01,往復割引なし（各港で支払い・現金のみ、佐世保旅客船協会）。2025-10-01運賃改定,https://www.city.saikai.nagasaki.jp/material/files/group/5/ryokakuunntinn.pdf
 崎戸商船,友住,崎戸,general,1980,990,,,2025-10-01,往復割引なし（各港で支払い・現金のみ、佐世保旅客船協会）。2025-10-01運賃改定,https://www.city.saikai.nagasaki.jp/material/files/group/5/ryokakuunntinn.pdf
