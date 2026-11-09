@@ -378,7 +378,18 @@ function updateFavButton() {
   btn.textContent = on ? '★ お気に入り登録済み' : '☆ お気に入りに登録';
 }
 
-function tripCard(c, idx, dateStr) {
+// 今日の検索でのみ、現在時刻より後で最も早い便の index を返す（なければ -1）。
+// 結果は出発時刻順に並んでいる前提。運休便は結果に含まれないため対象にならない。
+function findNextTripIndex(results, dateStr, now) {
+  if (dateStr !== fmtDate(now)) return -1;
+  const nowMin = now.getHours() * 60 + now.getMinutes();
+  for (let i = 0; i < results.length; i++) {
+    if (timeToMin(results[i].fromStop.dep) > nowMin) return i;
+  }
+  return -1;
+}
+
+function tripCard(c, idx, dateStr, isNext) {
   const { trip, fromStop, toStop } = c;
   const op = operatorById[trip.operator_id] || {};
   const route = routeById[trip.route_id] || {};
@@ -411,9 +422,10 @@ function vesselLabelOf(vesselType, vesselName) {
 }
 const vesselLabel = vesselLabelOf(trip.vessel_type || route.vessel_type || '', trip.vessel_name);
   return `
-  <article class="trip-card" data-idx="${idx}" tabindex="0" aria-label="便の詳細を開く">
+  <article class="trip-card${isNext ? ' next-trip' : ''}" data-idx="${idx}" tabindex="0" aria-label="便の詳細を開く">
     <div class="trip-top">
       <span class="trip-op">${esc(op.name || '')}</span>
+      ${isNext ? '<span class="next-badge">次の便</span>' : ''}
       <span class="trip-vessel">${esc(vesselLabel)}${trip.direction ? ' ／ ' + esc(trip.direction) : ''}</span>
     </div>
     <div class="trip-times">
@@ -488,7 +500,8 @@ function doSearch() {
   const { results, suspendedNotes, anyCandidate } = searchTrips(from, to, dateStr);
   const head = `<p class="result-head">${esc(portName(from))} → ${esc(portName(to))} ／ ${esc(dateLabel(dateStr))} の便</p>`;
   if (results.length) {
-    box.innerHTML = head + results.map((c, i) => tripCard(c, i, dateStr)).join('');
+    const nextIdx = findNextTripIndex(results, dateStr, new Date());
+    box.innerHTML = head + results.map((c, i) => tripCard(c, i, dateStr, i === nextIdx)).join('');
     box.querySelectorAll('.trip-card').forEach((card) => {
       const toggle = () => {
         const detail = card.querySelector('.trip-detail');
@@ -694,8 +707,12 @@ function renderAbout() {
   for (const t of DB.trips) {
     const p = t.pattern || {};
     let period = '';
-    if (p.valid_from || p.valid_to) period = (p.valid_from || '') + '〜' + (p.valid_to || '');
-    else if (p.recurs) period = '毎年 ' + p.recurs.from_md + '〜' + p.recurs.to_md;
+    if (p.recurs && p.recurs.from_md && p.recurs.to_md) {
+      // 繰り返しダイヤは、収録時の単年の適用期間ではなく毎年の適用期間を表示する
+      const md = (s) => { const [mm, dd] = s.split('-'); return Number(mm) + '月' + Number(dd) + '日'; };
+      period = '毎年 ' + md(p.recurs.from_md) + '〜' + md(p.recurs.to_md);
+    }
+    else if (p.valid_from || p.valid_to) period = (p.valid_from || '') + '〜' + (p.valid_to || '');
     else period = '期間指定なし';
     const opName = (operatorById[t.operator_id] || {}).name || '';
     const routeName = (routeById[t.route_id] || {}).name || '';
@@ -706,6 +723,48 @@ function renderAbout() {
     [...seen.values()].map((v) => `<tr><td>${esc(v.op)}</td><td>${esc(v.route)}</td><td>${esc(v.name)}</td><td>${esc(v.kind)}</td><td>${esc(v.period)}</td></tr>`).join('') +
     '</table></div>';
   if (DB.meta) $('#data-meta').textContent = 'データ生成日：' + (DB.meta.generated_at || '-') + '（' + (DB.meta.title || '') + '）';
+}
+
+/* ============ オフライン表示バナー ============ */
+// オフラインのときだけ、保存済みデータであることとデータ生成日を知らせる。
+function updateOfflineBanner() {
+  const b = $('#offline-banner');
+  if (!b) return;
+  const off = !navigator.onLine;
+  b.hidden = !off;
+  if (off && DB && DB.meta) $('#offline-data-date').textContent = DB.meta.generated_at || '-';
+}
+// 'online' イベントだけでは復帰を確定できないため、実在しないパスへの取得で
+// 通信の回復を実際に確認する（オンラインなら応答が返り、オフラインなら失敗する。
+// Service Worker がキャッシュを返す対象ではないため判別できる）。
+// 復帰が確認できたら、データが新しいものに差し替わった場合だけ再描画してからバナーを消す。
+async function verifyOnlineAndRefresh() {
+  try {
+    await fetch('__online_check__', { cache: 'no-store' });
+  } catch (e) {
+    return; // まだ通信できていないのでバナーを残す
+  }
+  try {
+    const res = await fetch('data.json', { cache: 'no-store' });
+    if (res.ok) {
+      const fresh = await res.json();
+      if (fresh && fresh.meta && DB && fresh.meta.generated_at !== DB.meta.generated_at) {
+        DB = fresh;
+        for (const p of DB.ports) portById[p.port_id] = p;
+        for (const o of DB.operators) operatorById[o.operator_id] = o;
+        for (const r of DB.routes) routeById[r.route_id] = r;
+        buildReachability();
+        renderNotices();
+        renderChips();
+        updateFavButton();
+        renderFares();
+        renderStatus();
+        renderAbout();
+        autoSearch();
+      }
+    }
+  } catch (e) { /* データ再取得に失敗した場合は現在の表示を維持する */ }
+  updateOfflineBanner();
 }
 
 /* ============ タブ切替・初期化 ============ */
@@ -748,6 +807,9 @@ async function init() {
   renderStatus();
   renderAbout();
   autoSearch();
+  updateOfflineBanner();
+  window.addEventListener('offline', updateOfflineBanner);
+  window.addEventListener('online', verifyOnlineAndRefresh);
 
   // イベント（港・日付が変われば自動で検索する）
   document.querySelectorAll('.tab-btn').forEach((b) => b.addEventListener('click', () => switchTab(b.dataset.tab)));

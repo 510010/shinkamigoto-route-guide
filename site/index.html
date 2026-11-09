@@ -32,6 +32,7 @@
 </header>
 
 <main>
+  <div id="offline-banner" class="offline-banner" hidden>📴 現在オフラインのため、保存済みのデータを表示しています（データ生成日：<span id="offline-data-date">-</span>）。最新の運航情報は、通信が回復してから公式情報でご確認ください。</div>
   <!-- 時刻表 -->
   <section id="tab-timetable" class="tab-panel active">
     <form id="search-form" class="search-card">
@@ -94,7 +95,7 @@
 
   <!-- 運航状況・リンク -->
   <section id="tab-status" class="tab-panel">
-    <p class="lead">運航可否の最終確認は、各事業者の公式情報でお願いします（出航の1時間前が最終判断の目安です）。</p>
+    <p class="lead">運航可否の最終確認は、各事業者の公式情報でお願いします。運航可否の判断時刻は事業者や当日の状況によって異なり、直前に変更されることもあります。</p>
     <div id="operator-cards"></div>
     <h2 class="section-title">運休中の航路</h2>
     <div id="suspended-routes"></div>
