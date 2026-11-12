@@ -218,6 +218,8 @@ NOTICES = [
      "11月4日〜10日は代船による特別ダイヤです。本サイトの時刻表（通常ダイヤ）と時刻が異なります。公式サイトでご確認ください。", "https://goto-ryokyakusen.com/"),
     ("2026-11-05", "2026-11-23", "五島旅客船TAIYOは日曜・月曜が全便運休です",
      "船員不足のため、11月23日までTAIYOの日曜・月曜は全便運休です（認可済み）。", "https://goto-ryokyakusen.com/"),
+    ("2026-11-29", "2026-12-28", "五島旅客船TAIYOは11月29日〜12月28日も日曜・月曜が全便運休予定です",
+     "船員不足のため、11月29日〜12月28日の日曜・月曜も全便運休予定です（九州運輸局申請中）。運休日は11/29・30、12/6・7・13・14・20・21・27・28。", "https://goto-ryokyakusen.com/"),
     ("2026-11-15", "2026-11-16", "野母商船フェリー太古は計画運休です",
      "11月15日博多発の下り便と、11月16日福江発の上り便は計画運休です。", "https://www.nomo.co.jp/taiko/"),
     ("2026-12-05", "2026-12-18", "九州商船・高速船シーレイディはドック休航予定です",
@@ -236,6 +238,7 @@ EXCEPTIONS = [
     ("2027-01-01", "2027-01-01", "route", "ryokakusen-ocean", "suspended", "", "元日運休（毎年）"),
     ("2027-01-01", "2027-01-01", "route", "ryokakusen-taiyo", "suspended", "", "元日運休（毎年）"),
     ("2026-01-01", "2026-11-23", "route", "ryokakusen-taiyo", "weekday_suspended", "0,1", "船員不足のため日曜・月曜運休（〜2026-11-23）"),
+    ("2026-11-29", "2026-12-28", "route", "ryokakusen-taiyo", "weekday_suspended", "0,1", "船員不足のため日曜・月曜運休（2026-11-29〜12-28、九州運輸局申請中）"),
 ]
 write_csv("exceptions.csv", ["date_from", "date_to", "scope_type", "scope", "kind", "weekdays", "note"],
           [dict(zip(["date_from", "date_to", "scope_type", "scope", "kind", "weekdays", "note"], e)) for e in EXCEPTIONS])
