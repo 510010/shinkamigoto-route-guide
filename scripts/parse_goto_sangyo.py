@@ -12,6 +12,8 @@ goto_parsed.csv を書く。
 方針： 文中の日付アンカー（本日/明日/明後日・M/D・N日）ごとに便を割り当て、
 明記された欠航・運航を優先し、通常運航の包括指定は明記がない便だけに適用。
 特別ダイヤの日は直近のダイヤ表記を採用する。
+「本日(M/D)」のように相対語と明示日付が併記されている場合は明示日付を優先する
+（2026-11-21 修正： 前日の告知文が残ったままの朝の取得で日付を取り違えた件）。
 検証： 2025-12-26 / 2026-01-10 / 01-21 / 01-22 / 03-06 / 11-05 の6日分を
 原文と突き合わせて一致を確認済み（2026-11-06）。
 """
@@ -76,7 +78,13 @@ def parse_captures(captures):
             for mm in _ANCH.finditer(s):
                 if mm.group(1):
                     rel = {"本日": 0, "明日": 1, "明後日": 2}[mm.group(1)]
-                    events.append((mm.start(), "anchor", cd + timedelta(days=rel)))
+                    d = None
+                    if mm.group(2):
+                        # 「本日(11/20)」のように明示日付があればそちらを優先する。
+                        # 朝の初回取得で前日の告知文が残っている場合に、取得日では
+                        # なく告知の日付へ割り当てるため（2026-11-21 評価の修正）。
+                        d = _resolve_md(cd, int(mm.group(2)), int(mm.group(3)))
+                    events.append((mm.start(), "anchor", d or cd + timedelta(days=rel)))
                 elif mm.group(4):
                     t = _resolve_md(cd, int(mm.group(4)), int(mm.group(5)))
                     if t:

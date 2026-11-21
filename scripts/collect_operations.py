@@ -5,7 +5,8 @@
   history/kyushu_results.csv に upsert する（キー： date, route, vessel, port, time）。
   長崎〜有川パネルは2025-08-25から全便運休中のため対象外（ページにも明記）。
   ステータス： status-available→◯ / status-fully→✕ / status-limited→△。
-  行の日付は GAS と同じ規則： 時刻の (M/D) 付きはその日付、無ければページの更新日。
+  行の日付は GAS と同じ規則を基本としつつ、港グループ内の (M/D) 継承と
+  夕方の翌日切替（リセット）検知を行う（parse_kyushu の docstring 参照）。
 - 五島産業汽船： トップページのテキストを parse_goto_sangyo.parse_captures で解析し、
   history/goto_sangyo_results.csv に 2026-11-06 以降分を upsert する
   （それ以前は GAS 由来の既存行が正本）。
@@ -17,7 +18,7 @@ import os
 import re
 import sys
 import urllib.request
-from datetime import datetime, timedelta, timezone
+from datetime import date as _date, datetime, time as _time, timedelta, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from parse_goto_sangyo import parse_captures
@@ -70,71 +71,132 @@ def strip_tags(html):
     return re.sub(r"\s+", " ", txt)
 
 
-def svc_date(page_date, th_text):
-    m = re.match(r"\((\d{1,2})/(\d{1,2})\)", th_text)
+def marker_date(page_date, th_text):
+    """th の (M/D) 付き日付を date に変換する。付きでなければ None。"""
+    m = re.search(r"\((\d{1,2})/(\d{1,2})\)", th_text)
     if not m:
-        return page_date
+        return None
     mo, dd = int(m.group(1)), int(m.group(2))
     y = page_date.year
     if mo < page_date.month - 6:
         y += 1
     elif mo > page_date.month + 6:
         y -= 1
-    from datetime import date as _date
     return _date(y, mo, dd)
 
 
-def parse_kyushu(html, now):
-    m = re.search(r"更新：(\d{4})年(\d{1,2})月(\d{1,2})日", html)
+def parse_kyushu(html, now, stored_status=None):
+    """九州商船の運航状況ページを便別に解析する。
+
+    日付の割り当て（2026-11-21 のシャドー検証評価を受けた修正）:
+    - 行は tr 単位で th（時刻）と td（状態）を対応付ける。アイコンの代わりに
+      「〇(小値賀港･宇久平港への寄港なし)」「奈良尾港への寄港なし」等の
+      テキスト注記がある行は部分運航で、◯として記録する（旧方式は th と
+      アイコンを別々に zip していたため注記行以降がずれていた）。
+    - (M/D) 付きの行はその日付。同じ港グループ内では、(M/D) が現れた行以降の
+      無印行はその日付を継承する（翌日の早朝便の先行表示に対応）。
+    - グループ先頭から (M/D) が現れるまでの行は「主日付」。通常はページの
+      更新日だが、夕方の更新でページ全体が翌日分に切り替わる（リセット）と
+      当日分が翌日分に化けるため、リセットを検知したら主日付を翌日にする。
+    リセット検知（どちらか一方で成立）:
+    - いずれかのグループの先頭行に (更新日+1日) の (M/D) がある。
+    - 主日付=更新日で割り当てた行の中に、蓄積済み ✕ が ◯/△ に戻る
+      「欠航の巻き戻し」がある（✕は当日中には戻らない。2件以上、
+      または夕方17時以降の更新で1件以上）。
+    stored_status: {(date, route, vessel, port, time): status}（検知用、任意）。
+    戻り値: (rows, warnings)。rows は reason を含まない7列
+    [date, route, vessel, port, time, status, captured_at]。
+    """
+    m = re.search(r"更新：(\d{4})年(\d{1,2})月(\d{1,2})日(?:\([^)]*\))?\s*(\d{1,2}):(\d{2})", html)
     if not m:
-        raise ValueError("更新日が見つからない")
-    from datetime import date as _date
+        raise ValueError("更新日時が見つからない")
     page_date = _date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+    update_time = _time(int(m.group(4)), int(m.group(5)))
+    cap = now.strftime("%Y-%m-%d %H:%M")
     panels = [(mm.start(), mm.group(1))
               for mm in re.finditer(r'js-swich-target" data-swich="(\w+)"', html)]
-    rows, warnings = [], []
+    groups, warnings = [], []
     for i, (pos, key) in enumerate(panels):
         if key not in ROUTES:
             continue  # nagasaki_arikawa は全便運休中のため対象外
         end = panels[i + 1][0] if i + 1 < len(panels) else len(html)
         seg = html[pos:end]
-        # h3（船種）→ h4（港）→ status-table の順に走査
-        tokens = [(mm.start(), mm.group(1), mm.group(2)) for mm in re.finditer(
-            r"<h3[^>]*>(.*?)</h3>|<h4[^>]*>(.*?)</h4>", seg)]
-        # 上の finditer は group(1)=h3, group(2)=h4。走査し直す:
-        events = []
-        for mm in re.finditer(r"<h3[^>]*>(.*?)</h3>|<h4[^>]*>(.*?)</h4>|<table class=\"status-table[^\"]*\"", seg):
-            if mm.group(1) is not None:
-                events.append((mm.start(), "vessel", re.sub(r"<[^>]+>", "", mm.group(1)).strip()))
-            elif mm.group(2) is not None:
-                events.append((mm.start(), "port", re.sub(r"<[^>]+>", "", mm.group(2)).strip()))
-            else:
-                events.append((mm.start(), "table", mm.end()))
         vessel = port = None
-        for j, (p, kind, val) in enumerate(events):
-            if kind == "vessel":
-                vessel = VESSELS.get(val)
-            elif kind == "port":
-                port = "奈留" if val == "奈留島" else val
-            elif kind == "table" and vessel and port:
-                tend = events[j + 1][0] if j + 1 < len(events) else len(seg)
-                block = seg[val:tend]
-                ths = re.findall(r"<th>(.*?)</th>", block, flags=re.S)
-                icons = re.findall(r"status-(\w+)\.webp", block)
-                if len(ths) != len(icons):
-                    warnings.append(f"{ROUTES[key]}/{vessel}/{port}: 行{len(ths)}件≠アイコン{len(icons)}件")
-                for th, icon in zip(ths, icons):
-                    th = re.sub(r"<[^>]+>", "", th).strip()
-                    tm = re.search(r"(\d{1,2}):(\d{2})\s*発", th)
-                    if not tm:
+        cur_group = None
+        for mm in re.finditer(
+                r"<h3[^>]*>(.*?)</h3>|<h4[^>]*>(.*?)</h4>|<tr[^>]*>(.*?)</tr>",
+                seg, flags=re.S):
+            if mm.group(1) is not None:
+                vessel = VESSELS.get(re.sub(r"<[^>]+>", "", mm.group(1)).strip())
+                cur_group = None
+            elif mm.group(2) is not None:
+                p = re.sub(r"<[^>]+>", "", mm.group(2)).strip()
+                port = "奈留" if p == "奈留島" else p
+                cur_group = None
+            else:
+                if not vessel or not port:
+                    continue
+                tr = mm.group(3)
+                th = re.search(r"<th[^>]*>(.*?)</th>", tr, flags=re.S)
+                if not th:
+                    continue
+                th_text = re.sub(r"<[^>]+>", "", th.group(1)).strip()
+                tm = re.search(r"(\d{1,2}):(\d{2})\s*発", th_text)
+                if not tm:
+                    continue
+                icon = re.search(r"status-(\w+)\.webp", tr)
+                if icon:
+                    if icon.group(1) not in ICONS:
+                        warnings.append(f"未知のアイコン: {icon.group(1)}")
                         continue
-                    if icon not in ICONS:
-                        warnings.append(f"未知のアイコン: {icon}")
+                    status = ICONS[icon.group(1)]
+                else:
+                    td = re.search(r"<td[^>]*>(.*?)</td>", tr, flags=re.S)
+                    td_text = re.sub(r"<[^>]+>", "", td.group(1)).strip() if td else ""
+                    if "寄港なし" in td_text:
+                        status = "◯"  # 部分運航（運航するが一部港に寄港しない）
+                    else:
+                        warnings.append(
+                            f"{ROUTES[key]}/{vessel}/{port} {th_text}: "
+                            f"状態セルを解釈できない: {td_text!r}")
                         continue
-                    d = svc_date(page_date, th)
-                    rows.append([d.isoformat(), ROUTES[key], vessel, port,
-                                 f"{int(tm.group(1))}:{tm.group(2)}",
-                                 ICONS[icon], now.strftime("%Y-%m-%d %H:%M")])
+                if cur_group is None:
+                    cur_group = {"route": ROUTES[key], "vessel": vessel,
+                                 "port": port, "rows": []}
+                    groups.append(cur_group)
+                cur_group["rows"].append({
+                    "marker": marker_date(page_date, th_text),
+                    "time": f"{int(tm.group(1))}:{tm.group(2)}",
+                    "status": status,
+                })
+
+    def assign(main_date):
+        rows = []
+        for g in groups:
+            cur = main_date
+            for r in g["rows"]:
+                if r["marker"] is not None:
+                    cur = r["marker"]
+                rows.append([cur.isoformat(), g["route"], g["vessel"],
+                             g["port"], r["time"], r["status"], cap])
+        return rows
+
+    rows = assign(page_date)
+    tomorrow = page_date + timedelta(days=1)
+    rolled = any(g["rows"] and g["rows"][0]["marker"] == tomorrow
+                 for g in groups)
+    if not rolled and stored_status:
+        flips = sum(
+            1 for r in rows
+            if r[0] == page_date.isoformat()
+            and stored_status.get(tuple(r[i] for i in (0, 1, 2, 3, 4))) == "✕"
+            and r[5] in ("◯", "△"))
+        if flips >= 2 or (flips >= 1 and update_time >= _time(17, 0)):
+            rolled = True
+    if rolled:
+        warnings.append(
+            f"夕方の翌日切替（リセット）を検知: 主日付を {tomorrow.isoformat()} に切替")
+        rows = assign(tomorrow)
     return rows, warnings
 
 
@@ -170,17 +232,19 @@ def read_store(path, header):
 def main():
     now = datetime.now(JST)
     wins = dock_windows()
-    html = fetch("https://kyusho.co.jp/status")
-    rows, warnings = parse_kyushu(html, now)
-    for r in rows:
-        r.insert(6, kyushu_reason(r, wins))
-    # upsert + ステータス変化ログ
+    # 蓄積済みを先に読み、リセット検知（欠航の巻き戻し）に使う
     store = {}
     if os.path.exists(KYUSHU_CSV):
         with open(KYUSHU_CSV, newline="", encoding="utf-8") as f:
             for row in csv.DictReader(f):
                 store[(row["date"], row["route"], row["vessel"], row["port"],
                        row["time"])] = [row.get(h, "") for h in KYUSHU_HEADER]
+    stored_status = {k: v[5] for k, v in store.items()}
+    html = fetch("https://kyusho.co.jp/status")
+    rows, warnings = parse_kyushu(html, now, stored_status)
+    for r in rows:
+        r.insert(6, kyushu_reason(r, wins))
+    # upsert + ステータス変化ログ
     changes = []
     for r in rows:
         k = tuple(r[i] for i in (0, 1, 2, 3, 4))
