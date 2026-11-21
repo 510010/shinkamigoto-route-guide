@@ -1,0 +1,342 @@
+{
+ "generated_at": "2026-11-21 11:34",
+ "date": "2026-11-21",
+ "operators": [
+  {
+   "operator_id": "kyushu",
+   "captured_at": "2026-11-21 11:18",
+   "ok": true,
+   "services": [
+    {
+     "route": "長崎〜五島",
+     "vessel": "JF",
+     "port": "福江",
+     "time": "7:30",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "JF",
+     "port": "福江",
+     "time": "9:20",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "JF",
+     "port": "福江",
+     "time": "13:10",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "JF",
+     "port": "福江",
+     "time": "15:35",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "JF",
+     "port": "長崎",
+     "time": "7:40",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "JF",
+     "port": "長崎",
+     "time": "11:30",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "JF",
+     "port": "長崎",
+     "time": "13:55",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "JF",
+     "port": "長崎",
+     "time": "15:25",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "JF",
+     "port": "奈良尾",
+     "time": "8:05",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "JF",
+     "port": "奈良尾",
+     "time": "9:55",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "JF",
+     "port": "奈良尾",
+     "time": "16:10",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "JF",
+     "port": "奈良尾",
+     "time": "16:40",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "Fe",
+     "port": "福江",
+     "time": "8:00",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "Fe",
+     "port": "福江",
+     "time": "11:45",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "Fe",
+     "port": "福江",
+     "time": "16:50",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "Fe",
+     "port": "長崎",
+     "time": "8:05",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "Fe",
+     "port": "長崎",
+     "time": "12:25",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "Fe",
+     "port": "長崎",
+     "time": "16:50",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "Fe",
+     "port": "奈良尾",
+     "time": "9:15",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "Fe",
+     "port": "奈良尾",
+     "time": "13:35",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "Fe",
+     "port": "奈良尾",
+     "time": "15:15",
+     "status": "◯"
+    },
+    {
+     "route": "長崎〜五島",
+     "vessel": "Fe",
+     "port": "奈留",
+     "time": "12:35",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "高速",
+     "port": "有川",
+     "time": "6:55",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "高速",
+     "port": "有川",
+     "time": "10:05",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "高速",
+     "port": "有川",
+     "time": "15:00",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "高速",
+     "port": "小値賀",
+     "time": "7:00",
+     "status": "✕"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "高速",
+     "port": "小値賀",
+     "time": "10:45",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "高速",
+     "port": "小値賀",
+     "time": "13:45",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "高速",
+     "port": "宇久平",
+     "time": "7:25",
+     "status": "✕"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "高速",
+     "port": "宇久平",
+     "time": "11:10",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "高速",
+     "port": "宇久平",
+     "time": "14:10",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "高速",
+     "port": "宇久平",
+     "time": "17:20",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "高速",
+     "port": "佐世保",
+     "time": "8:35",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "高速",
+     "port": "佐世保",
+     "time": "12:05",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "高速",
+     "port": "佐世保",
+     "time": "15:50",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "高速",
+     "port": "佐世保",
+     "time": "16:55",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "Fe",
+     "port": "宇久平",
+     "time": "7:00",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "Fe",
+     "port": "小値賀",
+     "time": "7:45",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "Fe",
+     "port": "小値賀",
+     "time": "19:20",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "Fe",
+     "port": "佐世保",
+     "time": "10:40",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "Fe",
+     "port": "佐世保",
+     "time": "16:40",
+     "status": "◯"
+    },
+    {
+     "route": "佐世保〜上五島",
+     "vessel": "Fe",
+     "port": "有川",
+     "time": "13:35",
+     "status": "◯"
+    }
+   ]
+  },
+  {
+   "operator_id": "goto-sangyo",
+   "captured_at": "2026-11-21 11:32",
+   "ok": true,
+   "services": [
+    {
+     "route": "鯛ノ浦〜長崎",
+     "vessel": "",
+     "port": "鯛ノ浦",
+     "time": "7:45",
+     "status": "◯"
+    },
+    {
+     "route": "鯛ノ浦〜長崎",
+     "vessel": "",
+     "port": "鯛ノ浦",
+     "time": "13:30",
+     "status": "◯"
+    },
+    {
+     "route": "鯛ノ浦〜長崎",
+     "vessel": "",
+     "port": "長崎",
+     "time": "10:00",
+     "status": "◯"
+    },
+    {
+     "route": "鯛ノ浦〜長崎",
+     "vessel": "",
+     "port": "長崎",
+     "time": "16:00",
+     "status": "◯"
+    }
+   ]
+  }
+ ]
+}

@@ -341,6 +341,29 @@ table.fare-mini td:first-child, table.fare-table td:first-child { text-align: le
   font-size: .95rem;
 }
 
+/* 本日の運航状況（便別表示） */
+.status-cap {
+  font-size: .85rem;
+  color: var(--muted);
+  font-weight: 400;
+  margin-left: 10px;
+  white-space: nowrap;
+}
+.status-route { font-weight: 700; color: var(--navy); margin: 10px 0 2px; }
+.status-port { margin: 2px 0 6px; }
+.status-port .sp-name { display: inline-block; min-width: 4.4em; font-weight: 600; }
+.svc-chip {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 1px 10px;
+  margin: 2px 2px;
+  font-size: .9rem;
+  border: 1px solid var(--line);
+  background: var(--sky-light);
+}
+.svc-chip.st-ng { background: #ffe9e9; border-color: var(--danger); color: var(--danger); font-weight: 700; }
+.svc-chip.st-un { background: var(--warn-bg); border-color: var(--warn-line); }
+
 /* 次の便マーカー */
 .trip-card.next-trip {
   border-left-color: var(--blue);

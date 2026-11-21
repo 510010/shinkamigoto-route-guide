@@ -672,6 +672,94 @@ const SAKITO_SOURCES = [
 function sakitoSourceLinks() {
   return SAKITO_SOURCES.map((s) => '<a href="' + s.url + '" target="_blank" rel="noopener">' + esc(s.label) + '</a>' + (s.note ? '（' + esc(s.note) + '）' : '')).join(' ');
 }
+
+/* ============ 本日の運航状況（第1弾：九州商船・五島産業汽船の便別表示） ============ */
+// 掲載方針（2026-11-07 承認）：表示は今日だけ／取得時刻を必ず併記／取得が
+// 約90分以上止まっていたら公式リンク表示に落とす／△は「未定」と出し運航とは
+// 書かない／確認できない場合は前回値を残さず「確認できません」と出す。
+// データは scripts/build_status.py が生成する status.json（毎時取得の蓄積から）。
+let STATUS_JSON = null;
+const STATUS_MAX_AGE_MIN = 90;
+const STATUS_VESSEL_LABEL = { JF: 'ジェットフォイル', Fe: 'フェリー', '高速': '高速船' };
+
+// "YYYY-MM-DD HH:MM" を端末ローカルの Date として読む（日付・時刻の扱いは他の表示にそろえる）
+function parseStampLocal(str) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/.exec(str || '');
+  if (!m) return null;
+  return new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]);
+}
+
+async function loadStatus() {
+  try {
+    const res = await fetch('status.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('status.json ' + res.status);
+    STATUS_JSON = await res.json();
+  } catch (e) {
+    STATUS_JSON = null; // 取得できなければ前回値を残さず「確認できません」表示にする
+  }
+  renderTodayStatus();
+}
+
+// 今日のデータで、生成から約90分以内か（古ければ公式リンク表示に落とす）
+function statusUsable() {
+  if (!STATUS_JSON || STATUS_JSON.date !== todayStr()) return false;
+  const gen = parseStampLocal(STATUS_JSON.generated_at);
+  if (!gen) return false;
+  return (Date.now() - gen.getTime()) <= STATUS_MAX_AGE_MIN * 60 * 1000;
+}
+
+function statusChip(s) {
+  const label = s.status === '◯' ? '運航' : (s.status === '✕' ? '欠航' : '未定');
+  const cls = s.status === '◯' ? 'st-ok' : (s.status === '✕' ? 'st-ng' : 'st-un');
+  return '<span class="svc-chip ' + cls + '">' + esc(s.time) + ' ' + label + '</span>';
+}
+
+function renderTodayStatus() {
+  const box = $('#today-status');
+  if (!box) return;
+  let html = '<h2 class="section-title">本日の運航状況</h2>';
+  if (!statusUsable()) {
+    html += '<div class="op-card"><p>現在、本日の運航状況を確認できません。最新の状況は、各事業者の公式情報でご確認ください。</p></div>';
+    box.innerHTML = html;
+    return;
+  }
+  for (const entry of STATUS_JSON.operators || []) {
+    const op = operatorById[entry.operator_id] || {};
+    const name = op.name || entry.operator_id;
+    if (!entry.ok) {
+      html += '<div class="op-card status-op"><h3>' + esc(name) + '</h3>' +
+        '<p>運航状況を確認できません。</p>' +
+        (op.status_url ? '<div class="detail-links"><a href="' + esc(op.status_url) + '" target="_blank" rel="noopener">公式の運航状況</a></div>' : '') +
+        '</div>';
+      continue;
+    }
+    // 航路→船種→港 の順にグループ化する（services は生成側で整列済み）
+    let body = '', curRV = null, curPort = null;
+    for (const s of entry.services) {
+      const rv = s.route + '|' + (s.vessel || '');
+      if (rv !== curRV) {
+        if (curPort !== null) { body += '</div>'; curPort = null; }
+        curRV = rv;
+        body += '<div class="status-route">' + esc(s.route) +
+          (s.vessel ? '（' + esc(STATUS_VESSEL_LABEL[s.vessel] || s.vessel) + '）' : '') + '</div>';
+      }
+      if (s.port !== curPort) {
+        if (curPort !== null) body += '</div>';
+        curPort = s.port;
+        body += '<div class="status-port"><span class="sp-name">' + esc(s.port) + '発</span>';
+      }
+      body += statusChip(s);
+    }
+    if (curPort !== null) body += '</div>';
+    const cap = parseStampLocal(entry.captured_at);
+    const capText = cap ? (cap.getMonth() + 1) + '月' + cap.getDate() + '日 ' + pad2(cap.getHours()) + ':' + pad2(cap.getMinutes()) + ' 取得' : '';
+    html += '<div class="op-card status-op"><h3>' + esc(name) +
+      (capText ? '<span class="status-cap">' + esc(capText) + '</span>' : '') +
+      '</h3>' + body + '</div>';
+  }
+  html += '<p class="small">公式ページから自動取得した情報です。運航可否の最終確認は、公式情報でお願いします。</p>';
+  box.innerHTML = html;
+}
 function renderStatus() {
   $('#operator-cards').innerHTML = DB.operators.map((op) => `
     <div class="op-card">
@@ -759,6 +847,7 @@ async function verifyOnlineAndRefresh() {
         updateFavButton();
         renderFares();
         renderStatus();
+        loadStatus();
         renderAbout();
         autoSearch();
       }
@@ -776,6 +865,7 @@ function switchTab(name) {
     if (!mapInited) { initMap(); mapInited = true; }
     else if (mapObj) setTimeout(() => mapObj.invalidateSize(), 50);
   }
+  if (name === 'status') loadStatus(); // 開くたびに最新の取得状態で判定し直す
   window.scrollTo({ top: 0 });
 }
 
@@ -805,6 +895,7 @@ async function init() {
   updateFavButton();
   renderFares();
   renderStatus();
+  loadStatus();
   renderAbout();
   autoSearch();
   updateOfflineBanner();
