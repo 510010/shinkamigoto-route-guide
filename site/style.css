@@ -341,7 +341,9 @@ table.fare-mini td:first-child, table.fare-table td:first-child { text-align: le
   font-size: .95rem;
 }
 
-/* 本日の運航状況（便別表示） */
+/* 本日の運航状況（事業者カード内の便別表示） */
+.status-body { border-bottom: 1px solid var(--line); padding-bottom: 6px; margin-bottom: 8px; }
+.status-fallback { color: var(--muted); }
 .status-cap {
   font-size: .85rem;
   color: var(--muted);

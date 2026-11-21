@@ -679,6 +679,7 @@ function sakitoSourceLinks() {
 // 書かない／確認できない場合は前回値を残さず「確認できません」と出す。
 // データは scripts/build_status.py が生成する status.json（毎時取得の蓄積から）。
 let STATUS_JSON = null;
+let STATUS_LOADED = false; // 初回取得が終わるまでは状況欄自体を出さない（誤った「確認できません」の一瞬表示を避ける）
 const STATUS_MAX_AGE_MIN = 90;
 const STATUS_VESSEL_LABEL = { JF: 'ジェットフォイル', Fe: 'フェリー', '高速': '高速船' };
 
@@ -697,7 +698,8 @@ async function loadStatus() {
   } catch (e) {
     STATUS_JSON = null; // 取得できなければ前回値を残さず「確認できません」表示にする
   }
-  renderTodayStatus();
+  STATUS_LOADED = true;
+  renderStatus();
 }
 
 // 今日のデータで、生成から約90分以内か（古ければ公式リンク表示に落とす）
@@ -714,56 +716,55 @@ function statusChip(s) {
   return '<span class="svc-chip ' + cls + '">' + esc(s.time) + ' ' + label + '</span>';
 }
 
-function renderTodayStatus() {
-  const box = $('#today-status');
-  if (!box) return;
-  let html = '<h2 class="section-title">本日の運航状況</h2>';
-  if (!statusUsable()) {
-    html += '<div class="op-card"><p>現在、本日の運航状況を確認できません。最新の状況は、各事業者の公式情報でご確認ください。</p></div>';
-    box.innerHTML = html;
-    return;
+// 事業者の status.json エントリ（表示対象外の事業者は null）
+function statusEntryFor(op) {
+  if (!STATUS_JSON || !Array.isArray(STATUS_JSON.operators)) return null;
+  return STATUS_JSON.operators.find((e) => e.operator_id === op.operator_id) || null;
+}
+// 見出し横の「○月○日 HH:MM 取得」（出せる場合だけ）
+function statusCapHtml(op) {
+  if (!STATUS_LOADED || !statusUsable()) return '';
+  const entry = statusEntryFor(op);
+  if (!entry || !entry.ok) return '';
+  const cap = parseStampLocal(entry.captured_at);
+  if (!cap) return '';
+  return '<span class="status-cap">' + (cap.getMonth() + 1) + '月' + cap.getDate() + '日 ' +
+    pad2(cap.getHours()) + ':' + pad2(cap.getMinutes()) + ' 取得</span>';
+}
+// 事業者カード内の運航状況欄（九州商船・五島産業汽船のみ。それ以外は空）
+function statusSectionHtml(op) {
+  if (!STATUS_LOADED) return '';
+  const entry = statusEntryFor(op);
+  if (!entry) return '';
+  if (!statusUsable() || !entry.ok) {
+    return '<p class="status-fallback">本日の運航状況は確認できません。公式情報でご確認ください。</p>';
   }
-  for (const entry of STATUS_JSON.operators || []) {
-    const op = operatorById[entry.operator_id] || {};
-    const name = op.name || entry.operator_id;
-    if (!entry.ok) {
-      html += '<div class="op-card status-op"><h3>' + esc(name) + '</h3>' +
-        '<p>運航状況を確認できません。</p>' +
-        (op.status_url ? '<div class="detail-links"><a href="' + esc(op.status_url) + '" target="_blank" rel="noopener">公式の運航状況</a></div>' : '') +
-        '</div>';
-      continue;
+  // 航路→船種→港 の順にグループ化する（services は生成側で整列済み）
+  let body = '', curRV = null, curPort = null;
+  for (const s of entry.services) {
+    const rv = s.route + '|' + (s.vessel || '');
+    if (rv !== curRV) {
+      if (curPort !== null) { body += '</div>'; curPort = null; }
+      curRV = rv;
+      body += '<div class="status-route">' + esc(s.route) +
+        (s.vessel ? '（' + esc(STATUS_VESSEL_LABEL[s.vessel] || s.vessel) + '）' : '') + '</div>';
     }
-    // 航路→船種→港 の順にグループ化する（services は生成側で整列済み）
-    let body = '', curRV = null, curPort = null;
-    for (const s of entry.services) {
-      const rv = s.route + '|' + (s.vessel || '');
-      if (rv !== curRV) {
-        if (curPort !== null) { body += '</div>'; curPort = null; }
-        curRV = rv;
-        body += '<div class="status-route">' + esc(s.route) +
-          (s.vessel ? '（' + esc(STATUS_VESSEL_LABEL[s.vessel] || s.vessel) + '）' : '') + '</div>';
-      }
-      if (s.port !== curPort) {
-        if (curPort !== null) body += '</div>';
-        curPort = s.port;
-        body += '<div class="status-port"><span class="sp-name">' + esc(s.port) + '発</span>';
-      }
-      body += statusChip(s);
+    if (s.port !== curPort) {
+      if (curPort !== null) body += '</div>';
+      curPort = s.port;
+      body += '<div class="status-port"><span class="sp-name">' + esc(s.port) + '発</span>';
     }
-    if (curPort !== null) body += '</div>';
-    const cap = parseStampLocal(entry.captured_at);
-    const capText = cap ? (cap.getMonth() + 1) + '月' + cap.getDate() + '日 ' + pad2(cap.getHours()) + ':' + pad2(cap.getMinutes()) + ' 取得' : '';
-    html += '<div class="op-card status-op"><h3>' + esc(name) +
-      (capText ? '<span class="status-cap">' + esc(capText) + '</span>' : '') +
-      '</h3>' + body + '</div>';
+    body += statusChip(s);
   }
-  html += '<p class="small">公式ページから自動取得した情報です。運航可否の最終確認は、公式情報でお願いします。</p>';
-  box.innerHTML = html;
+  if (curPort !== null) body += '</div>';
+  return '<div class="status-body">' + body +
+    '<p class="small">公式ページから自動取得した情報です。</p></div>';
 }
 function renderStatus() {
   $('#operator-cards').innerHTML = DB.operators.map((op) => `
     <div class="op-card">
-      <h3>${esc(op.name)}</h3>
+      <h3>${esc(op.name)}${statusCapHtml(op)}</h3>
+      ${statusSectionHtml(op)}
       ${op.note ? '<p>' + esc(op.note) + '</p>' : ''}
       ${op.phone ? '<p>📞 <a href="tel:' + esc(op.phone) + '">' + esc(op.phone) + '</a></p>' : ''}
       <div class="detail-links">
