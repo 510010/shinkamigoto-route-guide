@@ -711,9 +711,12 @@ function statusUsable() {
 }
 
 function statusChip(s) {
+  // チップは「時刻＋記号」で短くし、意味は状況欄の冒頭の凡例で示す（スマホで4便が1行に収まるように）
   const label = s.status === '◯' ? '運航' : (s.status === '✕' ? '欠航' : '未定');
   const cls = s.status === '◯' ? 'st-ok' : (s.status === '✕' ? 'st-ng' : 'st-un');
-  return '<span class="svc-chip ' + cls + '">' + esc(s.time) + ' ' + label + '</span>';
+  const sym = s.status === '◯' ? '○' : (s.status === '✕' ? '✕' : '△');
+  return '<span class="svc-chip ' + cls + '" aria-label="' + esc(s.time) + ' ' + label + '">' +
+    esc(s.time) + ' ' + sym + '</span>';
 }
 
 // 事業者の status.json エントリ（表示対象外の事業者は null）
@@ -757,7 +760,8 @@ function statusSectionHtml(op) {
     body += statusChip(s);
   }
   if (curPort !== null) body += '</div>';
-  return '<div class="status-body">' + body +
+  return '<div class="status-body">' +
+    '<p class="small status-legend">○ 運航　✕ 欠航　△ 未定</p>' + body +
     '<p class="small">公式ページから自動取得した情報です。</p></div>';
 }
 function renderStatus() {

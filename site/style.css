@@ -352,14 +352,16 @@ table.fare-mini td:first-child, table.fare-table td:first-child { text-align: le
   white-space: nowrap;
 }
 .status-route { font-weight: 700; color: var(--navy); margin: 10px 0 2px; }
-.status-port { margin: 2px 0 6px; }
-.status-port .sp-name { display: inline-block; min-width: 4.4em; font-weight: 600; }
+.status-legend { margin: 2px 0 4px; }
+.status-port { display: flex; flex-wrap: wrap; align-items: center; margin: 2px 0 6px; }
+.status-port .sp-name { flex: 0 0 auto; min-width: 4em; font-weight: 600; }
 .svc-chip {
   display: inline-block;
   border-radius: 999px;
-  padding: 1px 10px;
-  margin: 2px 2px;
-  font-size: .9rem;
+  padding: 1px 8px;
+  margin: 2px 1px;
+  font-size: .88rem;
+  white-space: nowrap;
   border: 1px solid var(--line);
   background: var(--sky-light);
 }
