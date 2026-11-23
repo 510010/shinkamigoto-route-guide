@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-11-23 11:18",
+ "generated_at": "2026-11-23 12:18",
  "date": "2026-11-23",
  "operators": [
   {
    "operator_id": "kyushu",
-   "captured_at": "2026-11-23 11:18",
+   "captured_at": "2026-11-23 12:18",
    "ok": true,
    "services": [
     {
@@ -305,7 +305,7 @@
   },
   {
    "operator_id": "goto-sangyo",
-   "captured_at": "2026-11-23 11:18",
+   "captured_at": "2026-11-23 12:18",
    "ok": true,
    "services": [
     {
