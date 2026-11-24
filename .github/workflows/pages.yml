@@ -30,4 +30,15 @@ jobs:
         with:
           path: site
       - id: deploy
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+      # GitHub Pages のデプロイ受付が即時エラーで弾かれることがあるため
+      # （2026-11-24 実測：成功時は約7秒、失敗時は0〜1秒で即死、直近15回中5回失敗）、
+      # 1回目が失敗したら60秒置いて1回だけ再試行する。再試行も失敗したらジョブを失敗にする。
+      - name: Wait before deploy retry
+        if: steps.deploy.outcome == 'failure'
+        run: sleep 60
+      - name: Deploy to GitHub Pages (retry)
+        id: deploy_retry
+        if: steps.deploy.outcome == 'failure'
         uses: actions/deploy-pages@v4
