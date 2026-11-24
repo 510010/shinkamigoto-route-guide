@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-11-24 10:18",
+ "generated_at": "2026-11-24 11:18",
  "date": "2026-11-24",
  "operators": [
   {
    "operator_id": "kyushu",
-   "captured_at": "2026-11-24 10:18",
+   "captured_at": "2026-11-24 11:18",
    "ok": true,
    "services": [
     {
@@ -26,14 +26,14 @@
      "vessel": "JF",
      "port": "福江",
      "time": "13:10",
-     "status": "△"
+     "status": "✕"
     },
     {
      "route": "長崎〜五島",
      "vessel": "JF",
      "port": "福江",
      "time": "15:35",
-     "status": "△"
+     "status": "✕"
     },
     {
      "route": "長崎〜五島",
@@ -54,14 +54,14 @@
      "vessel": "JF",
      "port": "長崎",
      "time": "13:55",
-     "status": "△"
+     "status": "✕"
     },
     {
      "route": "長崎〜五島",
      "vessel": "JF",
      "port": "長崎",
      "time": "15:25",
-     "status": "△"
+     "status": "✕"
     },
     {
      "route": "長崎〜五島",
@@ -82,14 +82,14 @@
      "vessel": "JF",
      "port": "奈良尾",
      "time": "16:10",
-     "status": "△"
+     "status": "✕"
     },
     {
      "route": "長崎〜五島",
      "vessel": "JF",
      "port": "奈良尾",
      "time": "16:40",
-     "status": "△"
+     "status": "✕"
     },
     {
      "route": "長崎〜五島",
@@ -201,7 +201,7 @@
      "vessel": "高速",
      "port": "小値賀",
      "time": "13:45",
-     "status": "◯"
+     "status": "✕"
     },
     {
      "route": "佐世保〜上五島",
@@ -222,14 +222,14 @@
      "vessel": "高速",
      "port": "宇久平",
      "time": "14:10",
-     "status": "◯"
+     "status": "✕"
     },
     {
      "route": "佐世保〜上五島",
      "vessel": "高速",
      "port": "宇久平",
      "time": "17:20",
-     "status": "◯"
+     "status": "✕"
     },
     {
      "route": "佐世保〜上五島",
@@ -243,21 +243,21 @@
      "vessel": "高速",
      "port": "佐世保",
      "time": "12:05",
-     "status": "◯"
+     "status": "✕"
     },
     {
      "route": "佐世保〜上五島",
      "vessel": "高速",
      "port": "佐世保",
      "time": "15:50",
-     "status": "◯"
+     "status": "✕"
     },
     {
      "route": "佐世保〜上五島",
      "vessel": "高速",
      "port": "佐世保",
      "time": "16:55",
-     "status": "△"
+     "status": "✕"
     },
     {
      "route": "佐世保〜上五島",
@@ -305,7 +305,7 @@
   },
   {
    "operator_id": "goto-sangyo",
-   "captured_at": "2026-11-24 10:18",
+   "captured_at": "2026-11-24 11:18",
    "ok": true,
    "services": [
     {
