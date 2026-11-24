@@ -681,7 +681,9 @@ function sakitoSourceLinks() {
 // GitHub Pages のデプロイ失敗で「取得できているのに出ない」が繰り返されたため、
 // 2026-11-24 にユーザーが改定：生成時刻の古さだけでは落とさず、取得時刻を
 // 明示したうえで表示を続ける。事業者単位の陳腐化（取得元が止まった場合）は
-// build_status.py 側で captured_at から判定し ok=false で落とす。
+// build_status.py 側で実際の取得時刻から判定し ok=false で落とす。
+// 見出し横の時刻は「その内容が確定した時刻」（同日追加改定）：内容が変わら
+// なければ build_status.py が前回の時刻を引き継ぐので、毎時は進まない。
 // データは scripts/build_status.py が生成する status.json（毎時取得の蓄積から）。
 let STATUS_JSON = null;
 let STATUS_LOADED = false; // 初回取得が終わるまでは状況欄自体を出さない（誤った「確認できません」の一瞬表示を避ける）
@@ -735,7 +737,7 @@ function statusCapHtml(op) {
   const cap = parseStampLocal(entry.captured_at);
   if (!cap) return '';
   return '<span class="status-cap">' + (cap.getMonth() + 1) + '月' + cap.getDate() + '日 ' +
-    pad2(cap.getHours()) + ':' + pad2(cap.getMinutes()) + ' 取得</span>';
+    pad2(cap.getHours()) + ':' + pad2(cap.getMinutes()) + ' 時点</span>';
 }
 // 事業者カード内の運航状況欄（九州商船・五島産業汽船のみ。それ以外は空）
 function statusSectionHtml(op) {

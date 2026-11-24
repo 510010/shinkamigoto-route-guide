@@ -6,15 +6,21 @@ collect_operations.py の直後に実行する想定で、「今日（JST）」�
 
 掲載方針との対応:
 - 表示は今日だけ： status.json には今日の便しか入れない。
-- 取得時刻の併記： 事業者ごとに captured_at を持たせる。九州商船は当日行の
-  captured_at の最大値（夕方の翌日切替後は当日分が更新されなくなるため、
-  「当日分を最後に確認した時刻」になる）。五島産業は蓄積CSVに captured_at が
-  ないため、CSVの更新時刻（＝直前の収集時刻）を使う。
+- 取得時刻の併記： 事業者ごとに captured_at を持たせる。ただし表示する時刻は
+  「その内容が確定した時刻」とする（2026-11-24 追加改定：内容が変わらないのに
+  取得時刻だけ毎時進むのは違和感がある、というユーザーの指摘）。内部的には
+  実際の最終取得時刻（fetched_at）も持ち、陳腐化判定にはそちらを使う。
+  fetched_at は九州商船＝当日行の captured_at の最大値（夕方の翌日切替後は
+  当日分が更新されなくなるため「当日分を最後に確認した時刻」になる）、
+  五島産業＝蓄積CSVに captured_at がないためCSVの更新時刻（＝直前の収集時刻）。
+  表示時刻は history/status_display.json に内容の署名とともに保持し、
+  内容が前回生成時から変わっていなければ前回の表示時刻を引き継ぐ。
 - 便数の異常時はその事業者を出さない： ok=False とし services は空にする
   （九州 30〜60便、五島産業 2〜8便の範囲外はレイアウト変更等の疑い）。
   フロント側は ok=False の事業者を「確認できません」＋公式リンクで表示する。
-- 事業者ごとの陳腐化： captured_at が約90分以上前なら、その事業者も
-  ok=False にする（片方の取得だけ止まった場合に、古い状況を出し続けないため。
+- 事業者ごとの陳腐化： 実際の最終取得時刻（fetched_at）が約90分以上前なら、
+  その事業者も ok=False にする（片方の取得だけ止まった場合に、古い状況を
+  出し続けないため。
   2026-11-24 五島産業の状況欄消失で、CSV更新時刻ベースの captured_at が
   実態より新しく見えた件を受けた追加）。
 - フロント側は generated_at の古さでは表示を落とさない（2026-11-24 改定：
@@ -24,6 +30,7 @@ collect_operations.py の直後に実行する想定で、「今日（JST）」�
 使い方: python3 scripts/build_status.py
 """
 import csv
+import hashlib
 import json
 import os
 from datetime import datetime, timedelta, timezone
@@ -32,6 +39,7 @@ JST = timezone(timedelta(hours=9))
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HIST = os.path.join(BASE, "history")
 OUT = os.path.join(BASE, "site", "status.json")
+STATE = os.path.join(HIST, "status_display.json")
 
 ROUTE_ORDER = {"長崎〜五島": 0, "佐世保〜上五島": 1}
 VESSEL_ORDER = {"JF": 0, "高速": 0, "Fe": 1}
@@ -72,7 +80,7 @@ def sort_services(services):
 
 def kyushu_block(today, now):
     path = os.path.join(HIST, "kyushu_results.csv")
-    services, captured = [], None
+    services, fetched = [], None
     if os.path.exists(path):
         with open(path, newline="", encoding="utf-8") as f:
             for r in csv.DictReader(f):
@@ -81,11 +89,12 @@ def kyushu_block(today, now):
                 services.append({"route": r["route"], "vessel": r["vessel"],
                                  "port": r["port"], "time": r["time"],
                                  "status": r["status"]})
-                if captured is None or r["captured_at"] > captured:
-                    captured = r["captured_at"]
+                if fetched is None or r["captured_at"] > fetched:
+                    fetched = r["captured_at"]
     ok = KYUSHU_BAND[0] <= len(services) <= KYUSHU_BAND[1] \
-        and not _stale(captured, now)
-    return {"operator_id": "kyushu", "captured_at": captured,
+        and not _stale(fetched, now)
+    return {"operator_id": "kyushu", "fetched_at": fetched,
+            "raw_services": sort_services(services),
             "ok": ok, "services": sort_services(services) if ok else []}
 
 
@@ -100,23 +109,61 @@ def goto_block(today, now):
                 services.append({"route": "鯛ノ浦〜長崎", "vessel": "",
                                  "port": r["port"], "time": r["time"],
                                  "status": r["status"]})
-        captured = datetime.fromtimestamp(
+        fetched = datetime.fromtimestamp(
             os.path.getmtime(path), JST).strftime("%Y-%m-%d %H:%M")
     else:
-        captured = None
+        fetched = None
     ok = GOTO_BAND[0] <= len(services) <= GOTO_BAND[1] \
-        and not _stale(captured, now)
-    return {"operator_id": "goto-sangyo", "captured_at": captured,
+        and not _stale(fetched, now)
+    return {"operator_id": "goto-sangyo", "fetched_at": fetched,
+            "raw_services": sort_services(services),
             "ok": ok, "services": sort_services(services) if ok else []}
+
+
+def _signature(block):
+    """表示内容の署名。内容が変わったかどうかだけを見る。"""
+    payload = json.dumps(block["raw_services"], ensure_ascii=False,
+                         sort_keys=True)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _display_times(blocks, today):
+    """表示用 captured_at を決める。内容が前回生成時と同じ事業者は前回の
+    表示時刻を引き継ぎ、変わった事業者は今回の fetched_at を表示時刻にする。
+    状態は history/status_display.json に日付つきで保持する。"""
+    state = {}
+    if os.path.exists(STATE):
+        try:
+            with open(STATE, encoding="utf-8") as f:
+                state = json.load(f)
+        except (ValueError, OSError):
+            state = {}
+    if state.get("date") != today:
+        state = {"date": today, "operators": {}}
+    ops = state.setdefault("operators", {})
+    for b in blocks:
+        sig = _signature(b)
+        prev = ops.get(b["operator_id"]) or {}
+        if prev.get("sig") == sig and prev.get("since"):
+            b["captured_at"] = prev["since"]
+        else:
+            b["captured_at"] = b["fetched_at"]
+            ops[b["operator_id"]] = {"sig": sig, "since": b["fetched_at"]}
+    with open(STATE, "w", encoding="utf-8") as f:
+        json.dump(state, f, ensure_ascii=False, indent=1)
 
 
 def main():
     now = datetime.now(JST)
     today = now.strftime("%Y-%m-%d")
+    blocks = [kyushu_block(today, now), goto_block(today, now)]
+    _display_times(blocks, today)
+    for b in blocks:
+        del b["fetched_at"], b["raw_services"]
     data = {
         "generated_at": now.strftime("%Y-%m-%d %H:%M"),
         "date": today,
-        "operators": [kyushu_block(today, now), goto_block(today, now)],
+        "operators": blocks,
     }
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
