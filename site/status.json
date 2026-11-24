@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-11-24 16:19",
+ "generated_at": "2026-11-24 17:18",
  "date": "2026-11-24",
  "operators": [
   {
    "operator_id": "kyushu",
-   "captured_at": "2026-11-24 16:18",
+   "captured_at": "2026-11-24 17:18",
    "ok": true,
    "services": [
     {
@@ -305,7 +305,7 @@
   },
   {
    "operator_id": "goto-sangyo",
-   "captured_at": "2026-11-24 16:19",
+   "captured_at": "2026-11-24 17:18",
    "ok": true,
    "services": [
     {
@@ -320,14 +320,14 @@
      "vessel": "",
      "port": "鯛ノ浦",
      "time": "13:30",
-     "status": "✕"
+     "status": "◯"
     },
     {
      "route": "鯛ノ浦〜長崎",
      "vessel": "",
      "port": "長崎",
      "time": "10:00",
-     "status": "✕"
+     "status": "◯"
     },
     {
      "route": "鯛ノ浦〜長崎",
