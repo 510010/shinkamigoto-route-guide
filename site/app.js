@@ -674,13 +674,17 @@ function sakitoSourceLinks() {
 }
 
 /* ============ 本日の運航状況（第1弾：九州商船・五島産業汽船の便別表示） ============ */
-// 掲載方針（2026-11-07 承認）：表示は今日だけ／取得時刻を必ず併記／取得が
-// 約90分以上止まっていたら公式リンク表示に落とす／△は「未定」と出し運航とは
-// 書かない／確認できない場合は前回値を残さず「確認できません」と出す。
+// 掲載方針（2026-11-07 承認、2026-11-24 改定）：表示は今日だけ／取得時刻を
+// 必ず併記／△は「未定」と出し運航とは書かない／確認できない場合は前回値を
+// 残さず「確認できません」と出す。
+// 当初は status.json の生成が約90分以上前なら表示全体を落としていたが、
+// GitHub Pages のデプロイ失敗で「取得できているのに出ない」が繰り返されたため、
+// 2026-11-24 にユーザーが改定：生成時刻の古さだけでは落とさず、取得時刻を
+// 明示したうえで表示を続ける。事業者単位の陳腐化（取得元が止まった場合）は
+// build_status.py 側で captured_at から判定し ok=false で落とす。
 // データは scripts/build_status.py が生成する status.json（毎時取得の蓄積から）。
 let STATUS_JSON = null;
 let STATUS_LOADED = false; // 初回取得が終わるまでは状況欄自体を出さない（誤った「確認できません」の一瞬表示を避ける）
-const STATUS_MAX_AGE_MIN = 90;
 const STATUS_VESSEL_LABEL = { JF: 'ジェットフォイル', Fe: 'フェリー', '高速': '高速船' };
 
 // "YYYY-MM-DD HH:MM" を端末ローカルの Date として読む（日付・時刻の扱いは他の表示にそろえる）
@@ -702,12 +706,11 @@ async function loadStatus() {
   renderStatus();
 }
 
-// 今日のデータで、生成から約90分以内か（古ければ公式リンク表示に落とす）
+// 今日のデータかどうかだけを見る（生成時刻の古さでは落とさない。2026-11-24 改定。
+// 事業者ごとの鮮度は build_status.py が ok フラグで判定済みで、取得時刻は見出し横に出る）
 function statusUsable() {
   if (!STATUS_JSON || STATUS_JSON.date !== todayStr()) return false;
-  const gen = parseStampLocal(STATUS_JSON.generated_at);
-  if (!gen) return false;
-  return (Date.now() - gen.getTime()) <= STATUS_MAX_AGE_MIN * 60 * 1000;
+  return !!parseStampLocal(STATUS_JSON.generated_at);
 }
 
 function statusChip(s) {
