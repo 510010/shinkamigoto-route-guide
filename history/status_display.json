@@ -1,0 +1,13 @@
+{
+ "date": "2026-11-24",
+ "operators": {
+  "kyushu": {
+   "sig": "fc35ad6dfcdd4f06a34878d468169e2f2be481bba473244abd1e354d5eb0b8ad",
+   "since": "2026-11-24 18:18"
+  },
+  "goto-sangyo": {
+   "sig": "ff7f1371dc26443eea55383ce303710669b3dee8f514157fd50e5ec7ec3ffeb5",
+   "since": "2026-11-24 18:18"
+  }
+ }
+}
