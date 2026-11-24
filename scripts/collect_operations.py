@@ -276,7 +276,14 @@ def main():
     for r in parse_captures(cap):
         if r[0] >= GOTO_MOKO_FROM:
             grows.append(r + ["天候" if r[3] == "✕" else ""])
-    n2 = upsert_csv(GOTO_CSV, GOTO_HEADER, [0, 1, 2], grows)
+    if grows:
+        n2 = upsert_csv(GOTO_CSV, GOTO_HEADER, [0, 1, 2], grows)
+    else:
+        # 0行＝ページから状況欄が読めなかった。CSVを書き換えると更新時刻だけが
+        # 進み、build_status が「取得できた」ように見せてしまうため触らない
+        # （更新時刻が止まれば、build_status 側の陳腐化判定で表示が落ちる）。
+        n2 = 0
+        print("WARN: goto parse returned 0 rows; CSV left untouched", file=sys.stderr)
     print(f"goto: parsed {len(grows)} rows (>= {GOTO_MOKO_FROM}), total {n2}")
 
 
