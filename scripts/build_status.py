@@ -13,7 +13,11 @@ collect_operations.py の直後に実行する想定で、「今日（JST）」�
 - 便数の異常時はその事業者を出さない： ok=False とし services は空にする
   （九州 30〜60便、五島産業 2〜8便の範囲外はレイアウト変更等の疑い）。
   フロント側は ok=False の事業者を「確認できません」＋公式リンクで表示する。
-- 取得が止まった場合は generated_at が古くなることでフロントが検知し、
+- 事業者ごとの陳腐化： captured_at が約90分以上前なら、その事業者も
+  ok=False にする（片方の取得だけ止まった場合に、古い状況を出し続けないため。
+  2026-11-24 五島産業の状況欄消失で、CSV更新時刻ベースの captured_at が
+  実態より新しく見えた件を受けた追加）。
+- 取得が全体に止まった場合は generated_at が古くなることでフロントが検知し、
   公式リンク表示に落とす（約90分ルール）。
 
 使い方: python3 scripts/build_status.py
@@ -32,6 +36,18 @@ ROUTE_ORDER = {"長崎〜五島": 0, "佐世保〜上五島": 1}
 VESSEL_ORDER = {"JF": 0, "高速": 0, "Fe": 1}
 KYUSHU_BAND = (30, 60)
 GOTO_BAND = (2, 8)
+STALE_MIN = 90
+
+
+def _stale(captured, now):
+    """captured_at（'YYYY-MM-DD HH:MM'）が now より STALE_MIN 分以上前なら True。"""
+    if not captured:
+        return True
+    try:
+        cap = datetime.strptime(captured, "%Y-%m-%d %H:%M").replace(tzinfo=JST)
+    except ValueError:
+        return True
+    return (now - cap) > timedelta(minutes=STALE_MIN)
 
 
 def _min_of(t):
@@ -53,7 +69,7 @@ def sort_services(services):
         _min_of(s["time"])))
 
 
-def kyushu_block(today):
+def kyushu_block(today, now):
     path = os.path.join(HIST, "kyushu_results.csv")
     services, captured = [], None
     if os.path.exists(path):
@@ -66,12 +82,13 @@ def kyushu_block(today):
                                  "status": r["status"]})
                 if captured is None or r["captured_at"] > captured:
                     captured = r["captured_at"]
-    ok = KYUSHU_BAND[0] <= len(services) <= KYUSHU_BAND[1]
+    ok = KYUSHU_BAND[0] <= len(services) <= KYUSHU_BAND[1] \
+        and not _stale(captured, now)
     return {"operator_id": "kyushu", "captured_at": captured,
             "ok": ok, "services": sort_services(services) if ok else []}
 
 
-def goto_block(today):
+def goto_block(today, now):
     path = os.path.join(HIST, "goto_sangyo_results.csv")
     services = []
     if os.path.exists(path):
@@ -86,7 +103,8 @@ def goto_block(today):
             os.path.getmtime(path), JST).strftime("%Y-%m-%d %H:%M")
     else:
         captured = None
-    ok = GOTO_BAND[0] <= len(services) <= GOTO_BAND[1]
+    ok = GOTO_BAND[0] <= len(services) <= GOTO_BAND[1] \
+        and not _stale(captured, now)
     return {"operator_id": "goto-sangyo", "captured_at": captured,
             "ok": ok, "services": sort_services(services) if ok else []}
 
@@ -97,7 +115,7 @@ def main():
     data = {
         "generated_at": now.strftime("%Y-%m-%d %H:%M"),
         "date": today,
-        "operators": [kyushu_block(today), goto_block(today)],
+        "operators": [kyushu_block(today, now), goto_block(today, now)],
     }
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
