@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-11-25 21:18",
- "date": "2026-11-25",
+ "generated_at": "2026-11-26 06:19",
+ "date": "2026-11-26",
  "operators": [
   {
    "operator_id": "kyushu",
@@ -165,7 +165,7 @@
      "vessel": "高速",
      "port": "有川",
      "time": "6:55",
-     "status": "✕"
+     "status": "◯"
     },
     {
      "route": "佐世保〜上五島",
@@ -186,7 +186,7 @@
      "vessel": "高速",
      "port": "小値賀",
      "time": "7:00",
-     "status": "✕"
+     "status": "◯"
     },
     {
      "route": "佐世保〜上五島",
@@ -207,7 +207,7 @@
      "vessel": "高速",
      "port": "宇久平",
      "time": "7:25",
-     "status": "✕"
+     "status": "◯"
     },
     {
      "route": "佐世保〜上五島",
@@ -301,7 +301,7 @@
      "status": "◯"
     }
    ],
-   "captured_at": "2026-11-25 06:18"
+   "captured_at": "2026-11-26 06:18"
   },
   {
    "operator_id": "goto-sangyo",
@@ -336,7 +336,7 @@
      "status": "◯"
     }
    ],
-   "captured_at": "2026-11-25 06:18"
+   "captured_at": "2026-11-26 06:18"
   }
  ]
 }
