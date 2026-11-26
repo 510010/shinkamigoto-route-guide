@@ -91,14 +91,6 @@ def main():
                           f"(times[{idx}]={times[idx] if idx < len(times) else 'OOR'}"
                           f" != {expect})", file=sys.stderr)
                     continue
-                key = (cap_date.isoformat(), point, target.isoformat())
-                if key in existing:
-                    continue
-                w.writerow([cap_date.isoformat(),
-                            now.strftime("%Y-%m-%d %H:%M"),
-                            point, lat, lon, target.isoformat(), lead,
-                            values[idx]])
-                added.append(key)
                 for hour in range(0, 24, 3):
                     idx_h = lead * 24 + hour
                     expect_h = f"{target.isoformat()}T{hour:02d}:00"
@@ -113,6 +105,14 @@ def main():
                                  point, target.isoformat(), lead, hour,
                                  values[idx_h]])
                     existing_3h.add(key3)
+                key = (cap_date.isoformat(), point, target.isoformat())
+                if key in existing:
+                    continue
+                w.writerow([cap_date.isoformat(),
+                            now.strftime("%Y-%m-%d %H:%M"),
+                            point, lat, lon, target.isoformat(), lead,
+                            values[idx]])
+                added.append(key)
     f3.close()
     print(f"added {len(added)} rows")
 
