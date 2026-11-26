@@ -422,7 +422,7 @@ function vesselLabelOf(vesselType, vesselName) {
 }
 const vesselLabel = vesselLabelOf(trip.vessel_type || route.vessel_type || '', trip.vessel_name);
   return `
-  <article class="trip-card${isNext ? ' next-trip' : ''}" data-idx="${idx}" tabindex="0" aria-label="便の詳細を開く">
+  <article class="trip-card${isNext ? ' next-trip' : ''}" data-idx="${idx}" tabindex="0" role="button" aria-expanded="false" aria-label="便の詳細を開く">
     <div class="trip-top">
       <span class="trip-op">${esc(op.name || '')}</span>
       ${isNext ? '<span class="next-badge">次の便</span>' : ''}
@@ -509,9 +509,12 @@ function doSearch() {
           detail.innerHTML = tripDetailHtml(results[Number(card.dataset.idx)], dateStr);
           detail.hidden = false;
         } else detail.hidden = true;
+        card.setAttribute('aria-expanded', detail.hidden ? 'false' : 'true');
       };
       card.addEventListener('click', (e) => { if (!e.target.closest('a')) toggle(); });
-      card.addEventListener('keydown', (e) => { if (e.key === 'Enter') toggle(); });
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
     });
   } else if (anyCandidate) {
     box.innerHTML = head + `<div class="empty-box"><span class="big">この日は運休です</span>${suspendedNotes.map(esc).join('／')}<br>別の日付でお試しください。</div>`;
