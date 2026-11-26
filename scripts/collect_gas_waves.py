@@ -22,6 +22,9 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HIST = os.path.join(BASE, "history")
 OUT_CSV = os.path.join(HIST, "gas_wave_forecasts.csv")
 OUT_3H_CSV = os.path.join(HIST, "gas_wave_3hourly.csv")
+OUT_SAIL_CSV = os.path.join(HIST, "sailing_wave_forecasts.csv")
+KYUSHU_RESULTS = os.path.join(HIST, "kyushu_results.csv")
+GOTO_RESULTS = os.path.join(HIST, "goto_sangyo_results.csv")
 RAW_DIR = os.path.join(HIST, "marine_raw")
 
 POINTS = {
@@ -34,6 +37,30 @@ HEADER = ["capture_date", "captured_at", "point", "lat", "lon", "target_date",
           "lead_days", "wave_height_m"]
 HEADER_3H = ["capture_date", "captured_at", "point", "target_date",
              "lead_days", "hour", "wave_height_m"]
+HEADER_SAIL = ["capture_date", "captured_at", "target_date", "lead_days",
+               "route", "vessel", "port", "time", "point", "wave_height_m"]
+
+
+def sailing_template(cap_date):
+    """直近14日の運航実績から (route, vessel, port, time, point) の便一覧を作る。"""
+    since = (cap_date - timedelta(days=14)).isoformat()
+    tpl = {}
+    if os.path.exists(KYUSHU_RESULTS):
+        with open(KYUSHU_RESULTS, newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                if row["date"] < since:
+                    continue
+                point = "有川航路" if row["route"].startswith("佐世保") else "奈良尾航路"
+                key = (row["route"], row["vessel"], row["port"], row["time"])
+                tpl[key] = point
+    if os.path.exists(GOTO_RESULTS):
+        with open(GOTO_RESULTS, newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                if row["date"] < since:
+                    continue
+                key = ("鯛ノ浦〜長崎", "フェリー", row["port"], row["time"])
+                tpl[key] = "奈良尾航路"
+    return tpl
 
 
 def fetch(lat, lon):
@@ -55,6 +82,20 @@ def main():
                 existing.add((row["capture_date"], row["point"],
                               row["target_date"]))
     new_file = not os.path.exists(OUT_CSV)
+
+    template = sailing_template(cap_date)
+    existing_sail = set()
+    if os.path.exists(OUT_SAIL_CSV):
+        with open(OUT_SAIL_CSV, newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                existing_sail.add((row["capture_date"], row["target_date"],
+                                   row["lead_days"], row["route"],
+                                   row["vessel"], row["port"], row["time"]))
+    new_sail_file = not os.path.exists(OUT_SAIL_CSV)
+    fs = open(OUT_SAIL_CSV, "a", newline="", encoding="utf-8")
+    ws = csv.writer(fs)
+    if new_sail_file:
+        ws.writerow(HEADER_SAIL)
 
     existing_3h = set()
     if os.path.exists(OUT_3H_CSV):
@@ -105,6 +146,23 @@ def main():
                                  point, target.isoformat(), lead, hour,
                                  values[idx_h]])
                     existing_3h.add(key3)
+                for (route, vessel, port, dep), pt in template.items():
+                    if pt != point:
+                        continue
+                    hh, mm = map(int, dep.split(":"))
+                    hour = (hh + (1 if mm >= 30 else 0)) % 24
+                    idx_s = lead * 24 + hour
+                    if idx_s >= len(times):
+                        continue
+                    keys = (cap_date.isoformat(), target.isoformat(),
+                            str(lead), route, vessel, port, dep)
+                    if keys in existing_sail:
+                        continue
+                    ws.writerow([cap_date.isoformat(),
+                                 now.strftime("%Y-%m-%d %H:%M"),
+                                 target.isoformat(), lead, route, vessel,
+                                 port, dep, point, values[idx_s]])
+                    existing_sail.add(keys)
                 key = (cap_date.isoformat(), point, target.isoformat())
                 if key in existing:
                     continue
@@ -114,6 +172,7 @@ def main():
                             values[idx]])
                 added.append(key)
     f3.close()
+    fs.close()
     print(f"added {len(added)} rows")
 
 
