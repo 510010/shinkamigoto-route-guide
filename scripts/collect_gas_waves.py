@@ -21,6 +21,7 @@ JST = timezone(timedelta(hours=9))
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HIST = os.path.join(BASE, "history")
 OUT_CSV = os.path.join(HIST, "gas_wave_forecasts.csv")
+OUT_3H_CSV = os.path.join(HIST, "gas_wave_3hourly.csv")
 RAW_DIR = os.path.join(HIST, "marine_raw")
 
 POINTS = {
@@ -31,6 +32,8 @@ URL = ("https://marine-api.open-meteo.com/v1/marine?latitude={lat}&longitude={lo
        "&hourly=wave_height&timezone=Asia%2FTokyo")
 HEADER = ["capture_date", "captured_at", "point", "lat", "lon", "target_date",
           "lead_days", "wave_height_m"]
+HEADER_3H = ["capture_date", "captured_at", "point", "target_date",
+             "lead_days", "hour", "wave_height_m"]
 
 
 def fetch(lat, lon):
@@ -52,6 +55,18 @@ def main():
                 existing.add((row["capture_date"], row["point"],
                               row["target_date"]))
     new_file = not os.path.exists(OUT_CSV)
+
+    existing_3h = set()
+    if os.path.exists(OUT_3H_CSV):
+        with open(OUT_3H_CSV, newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                existing_3h.add((row["capture_date"], row["point"],
+                                 row["target_date"], row["hour"]))
+    new_3h_file = not os.path.exists(OUT_3H_CSV)
+    f3 = open(OUT_3H_CSV, "a", newline="", encoding="utf-8")
+    w3 = csv.writer(f3)
+    if new_3h_file:
+        w3.writerow(HEADER_3H)
 
     added = []
     with open(OUT_CSV, "a", newline="", encoding="utf-8") as f:
@@ -84,6 +99,21 @@ def main():
                             point, lat, lon, target.isoformat(), lead,
                             values[idx]])
                 added.append(key)
+                for hour in range(0, 24, 3):
+                    idx_h = lead * 24 + hour
+                    expect_h = f"{target.isoformat()}T{hour:02d}:00"
+                    if idx_h >= len(times) or times[idx_h] != expect_h:
+                        continue
+                    key3 = (cap_date.isoformat(), point,
+                            target.isoformat(), str(hour))
+                    if key3 in existing_3h:
+                        continue
+                    w3.writerow([cap_date.isoformat(),
+                                 now.strftime("%Y-%m-%d %H:%M"),
+                                 point, target.isoformat(), lead, hour,
+                                 values[idx_h]])
+                    existing_3h.add(key3)
+    f3.close()
     print(f"added {len(added)} rows")
 
 
