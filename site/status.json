@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-28 07:18",
+ "generated_at": "2026-11-28 08:18",
  "date": "2026-11-28",
  "operators": [
   {
@@ -200,7 +200,7 @@
      "vessel": "高速",
      "port": "小値賀",
      "time": "13:45",
-     "status": "△"
+     "status": "✕"
     },
     {
      "route": "佐世保〜上五島",
@@ -221,14 +221,14 @@
      "vessel": "高速",
      "port": "宇久平",
      "time": "14:10",
-     "status": "△"
+     "status": "✕"
     },
     {
      "route": "佐世保〜上五島",
      "vessel": "高速",
      "port": "宇久平",
      "time": "17:20",
-     "status": "△"
+     "status": "✕"
     },
     {
      "route": "佐世保〜上五島",
@@ -242,14 +242,14 @@
      "vessel": "高速",
      "port": "佐世保",
      "time": "12:05",
-     "status": "△"
+     "status": "✕"
     },
     {
      "route": "佐世保〜上五島",
      "vessel": "高速",
      "port": "佐世保",
      "time": "15:50",
-     "status": "△"
+     "status": "✕"
     },
     {
      "route": "佐世保〜上五島",
@@ -301,7 +301,7 @@
      "status": "◯"
     }
    ],
-   "captured_at": "2026-11-28 07:18"
+   "captured_at": "2026-11-28 08:18"
   },
   {
    "operator_id": "goto-sangyo",
