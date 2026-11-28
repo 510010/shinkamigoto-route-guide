@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-28 16:34",
+ "generated_at": "2026-11-28 17:18",
  "date": "2026-11-28",
  "operators": [
   {
@@ -39,7 +39,10 @@
      "vessel": "JF",
      "port": "長崎",
      "time": "7:40",
-     "status": "◯"
+     "status": "◯",
+     "skips": [
+      "奈良尾"
+     ]
     },
     {
      "route": "長崎〜五島",
@@ -228,7 +231,11 @@
      "vessel": "高速",
      "port": "佐世保",
      "time": "8:35",
-     "status": "◯"
+     "status": "◯",
+     "skips": [
+      "小値賀",
+      "宇久平"
+     ]
     },
     {
      "route": "佐世保〜上五島",
@@ -298,7 +305,10 @@
      "vessel": "Fe",
      "port": "佐世保",
      "time": "10:40",
-     "status": "◯"
+     "status": "◯",
+     "skips": [
+      "小値賀"
+     ]
     },
     {
      "route": "佐世保〜上五島",
@@ -329,7 +339,7 @@
      "status": "✕"
     }
    ],
-   "captured_at": "2026-11-28 16:33"
+   "captured_at": "2026-11-28 17:18"
   },
   {
    "operator_id": "goto-sangyo",
@@ -347,7 +357,7 @@
      "vessel": "",
      "port": "鯛ノ浦",
      "time": "13:30",
-     "status": "✕"
+     "status": "◯"
     },
     {
      "route": "鯛ノ浦〜長崎",
@@ -361,10 +371,10 @@
      "vessel": "",
      "port": "長崎",
      "time": "16:00",
-     "status": "✕"
+     "status": "◯"
     }
    ],
-   "captured_at": "2026-11-28 06:18"
+   "captured_at": "2026-11-28 17:18"
   }
  ]
 }

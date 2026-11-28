@@ -2,12 +2,12 @@
  "date": "2026-11-28",
  "operators": {
   "kyushu": {
-   "sig": "b432d23d244aef5f0f605ab73ac64feab4091e58e42f158d54088dc0c36e0cee",
-   "since": "2026-11-28 16:33"
+   "sig": "17bf8f231b139034658c1ce8d41191f6c3d79c4194628498e2405a6980997792",
+   "since": "2026-11-28 17:18"
   },
   "goto-sangyo": {
-   "sig": "f234a05d068a1519806b7d3de694e19fcc28eb7b9d7115ff89e8c3dc86f7c66d",
-   "since": "2026-11-28 06:18"
+   "sig": "ff7f1371dc26443eea55383ce303710669b3dee8f514157fd50e5ec7ec3ffeb5",
+   "since": "2026-11-28 17:18"
   }
  }
 }
