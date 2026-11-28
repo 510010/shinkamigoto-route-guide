@@ -72,8 +72,12 @@ def strip_tags(html):
 
 
 def marker_date(page_date, th_text):
-    """th の (M/D) 付き日付を date に変換する。付きでなければ None。"""
-    m = re.search(r"\((\d{1,2})/(\d{1,2})\)", th_text)
+    """th の (M/D) 付き日付を date に変換する。付きでなければ None。
+
+    ページの表記は全角括弧「（11/28）」のため、半角・全角の両方に対応する
+    （2026-11-28: 全角に対応しておらず翌日分の早朝便が当日分を上書きした）。
+    """
+    m = re.search(r"[(（](\d{1,2})/(\d{1,2})[)）]", th_text)
     if not m:
         return None
     mo, dd = int(m.group(1)), int(m.group(2))
