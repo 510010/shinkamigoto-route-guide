@@ -783,6 +783,12 @@ function statusUsable() {
 
 function statusChip(s) {
   // チップは「時刻＋記号」で短くし、意味は状況欄の冒頭の凡例で示す（スマホで4便が1行に収まるように）
+  // 抜港（運航するが一部の港に寄らない）は「抜」で示す（2026-11-28 追加）
+  if (s.status === '◯' && Array.isArray(s.skips) && s.skips.length) {
+    return '<span class="svc-chip st-skip" aria-label="' + esc(s.time) +
+      ' 抜港（' + esc(s.skips.join('・')) + 'に寄港しません）">' +
+      esc(s.time) + ' 抜</span>';
+  }
   const label = s.status === '◯' ? '運航' : (s.status === '✕' ? '欠航' : '未定');
   const cls = s.status === '◯' ? 'st-ok' : (s.status === '✕' ? 'st-ng' : 'st-un');
   const sym = s.status === '◯' ? '○' : (s.status === '✕' ? '✕' : '△');
@@ -832,7 +838,7 @@ function statusSectionHtml(op) {
   }
   if (curPort !== null) body += '</div>';
   return '<div class="status-body">' +
-    '<p class="small status-legend">○ 運航　✕ 欠航　△ 未定</p>' + body +
+    '<p class="small status-legend">○ 運航　✕ 欠航　△ 未定　抜 抜港（一部の港に寄りません）</p>' + body +
     '<p class="small">公式ページから自動取得した情報です。</p></div>';
 }
 function renderStatus() {

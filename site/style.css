@@ -367,6 +367,7 @@ table.fare-mini td:first-child, table.fare-table td:first-child { text-align: le
 }
 .svc-chip.st-ng { background: #ffe9e9; border-color: var(--danger); color: var(--danger); font-weight: 700; }
 .svc-chip.st-un { background: var(--warn-bg); border-color: var(--warn-line); }
+.svc-chip.st-skip { background: var(--warn-bg); border-color: var(--warn-line); font-weight: 700; }
 
 /* 次の便マーカー */
 .trip-card.next-trip {
