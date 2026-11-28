@@ -109,6 +109,14 @@ def kyushu_block(today, now):
         sk = [p for p in (r.get("skips") or "").split("・") if p]
         if sk:
             svc["skips"] = sk
+        # 行き先別表記（行き先ごとに状態が分かれる便）があれば持たせる
+        dm = {}
+        for part in (r.get("dest_status") or "").split("・"):
+            if ":" in part:
+                n, s = part.split(":", 1)
+                dm[n] = s
+        if dm:
+            svc["dest"] = dm
         return svc
     services = [_svc(r) for r in today_rows if r["captured_at"] == fetched]
     ok = KYUSHU_BAND[0] <= len(services) <= KYUSHU_BAND[1] \
