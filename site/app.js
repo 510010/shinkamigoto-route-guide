@@ -100,6 +100,42 @@ function portOptionsHtml(allowed) {
 }
 // trips から「同一便の stops に順序どおり両港が含まれる」ペアを到達可能として計算
 let reachMap = new Map();
+// 折り返しペア（DB.connections：同一航路・同一パターンで終点に45分以内に
+// 接続する便同士）の一覧
+function connectionTrips() {
+  if (!Array.isArray(DB.connections)) return [];
+  const byId = new Map(DB.trips.map((t) => [t.id, t]));
+  const pairs = [];
+  for (const conn of DB.connections) {
+    const A = byId.get(conn.a), B = byId.get(conn.b);
+    if (A && B && A.route_id === B.route_id) pairs.push({ A, B, at: conn.at });
+  }
+  return pairs;
+}
+
+// 折り返しペアから作れる通し区間の一覧。便Aだけでは届かず、降りる港が
+// 便Aの寄港地（折り返して戻る先）で、組み合わせ区間で同じ港を二度
+// 通らないものだけ（一般の乗り換えは対象外のまま）。
+function thruSegments(A, B) {
+  const out = [];
+  const aPorts = new Set(A.stops.map((s) => s.port_id));
+  for (let i = 0; i < A.stops.length; i++) {
+    const fs = A.stops[i];
+    if (!fs.dep) continue;
+    for (let j = 0; j < B.stops.length; j++) {
+      const ts = B.stops[j];
+      if (!ts.arr || ts.port_id === fs.port_id) continue;
+      if (!aPorts.has(ts.port_id)) continue;
+      if (A.stops.slice(i + 1).some((s) => s.port_id === ts.port_id && s.arr)) continue;
+      const seq = A.stops.slice(i).map((s) => s.port_id)
+        .concat(B.stops.slice(1, j + 1).map((s) => s.port_id));
+      if (new Set(seq).size !== seq.length) continue;
+      out.push({ fromStop: fs, toStop: ts });
+    }
+  }
+  return out;
+}
+
 function buildReachability() {
   reachMap = new Map();
   for (const trip of DB.trips) {
@@ -112,6 +148,14 @@ function buildReachability() {
         if (!reachMap.has(stops[i].port_id)) reachMap.set(stops[i].port_id, new Set());
         reachMap.get(stops[i].port_id).add(stops[j].port_id);
       }
+    }
+  }
+  // 折り返し便の通し区間も到達可能として扱う
+  for (const { A, B } of connectionTrips()) {
+    for (const seg of thruSegments(A, B)) {
+      const from = seg.fromStop.port_id;
+      if (!reachMap.has(from)) reachMap.set(from, new Set());
+      reachMap.get(from).add(seg.toStop.port_id);
     }
   }
 }
@@ -198,6 +242,22 @@ function searchTrips(fromId, toId, dateStr) {
     const S = addDays(D, -depOff);
     if (!patternApplies(trip.pattern, S)) continue;
     candidates.push({ trip, fromStop: pair.fromStop, toStop: pair.toStop, S });
+  }
+  // 折り返し便の通し候補（2026-11-28 追加）：DB.connections のペアに限り、
+  // 便Aに乗って便Bで降りる結果を作る。一般の乗り換えは対象外のまま。
+  for (const { A, B, at } of connectionTrips()) {
+    for (const seg of thruSegments(A, B)) {
+      if (seg.fromStop.port_id !== fromId || seg.toStop.port_id !== toId) continue;
+      const S = addDays(D, -(seg.fromStop.dep_off || 0));
+      if (!patternApplies(A.pattern, S) || !patternApplies(B.pattern, S)) continue;
+      if (exceptionHit(B, S)) continue;
+      const viaA = A.stops[A.stops.length - 1];
+      const stops = A.stops.slice(0, -1).concat([{
+        port_id: viaA.port_id, arr: viaA.arr, arr_off: viaA.arr_off,
+        dep: B.stops[0].dep, dep_off: B.stops[0].dep_off }], B.stops.slice(1));
+      candidates.push({ trip: A, fromStop: seg.fromStop, toStop: seg.toStop, S,
+        thru: { at, tripB: B }, stops });
+    }
   }
   // 例外パターンの優先：同 route で「例外」kind の便が適用される場合、通常・季節の便を除外
   const exceptionRoutes = new Set(
@@ -387,8 +447,7 @@ function findNextTripIndex(results, dateStr, now) {
   const nowMin = now.getHours() * 60 + now.getMinutes();
   for (let i = 0; i < results.length; i++) {
     if (timeToMin(results[i].fromStop.dep) <= nowMin) continue;
-    const st = segmentStatus(results[i].trip, results[i].fromStop,
-      results[i].toStop, dateStr);
+    const st = segmentStatus(results[i], dateStr);
     if (st && (st.skip || st.status === '✕')) continue;
     return i;
   }
@@ -407,7 +466,7 @@ const STATUS_ROUTE_KEY = {
 // 対象は九州商船と五島産業（便別状況を持つ2社）のみ。今日以外の日付、
 // 状況が ok でない事業者、対応する行がない便は null（情報なし）。
 // 戻り値: { status: '◯'|'✕'|'△' } / { skip: '港名' }（抜港でこの区間は使えない）
-function segmentStatus(trip, fromStop, toStop, dateStr) {
+function segmentStatusDirect(trip, fromStop, toStop, dateStr) {
   if (dateStr !== todayStr() || !statusUsable()) return null;
   const op = operatorById[trip.operator_id] || {};
   const entry = statusEntryFor(op);
@@ -457,8 +516,23 @@ function segmentStatus(trip, fromStop, toStop, dateStr) {
   return { status: svc.status };
 }
 
-function todayStatusChip(trip, fromStop, toStop, dateStr) {
-  const st = segmentStatus(trip, fromStop, toStop, dateStr);
+// 検索結果1件に対する本日の運航状態。折り返し通しの場合は2区間を
+// それぞれ判定し、悪い方を採る（✕ > 抜港 > △ > ◯）。
+function segmentStatus(c, dateStr) {
+  if (!c.thru) return segmentStatusDirect(c.trip, c.fromStop, c.toStop, dateStr);
+  const viaA = c.trip.stops[c.trip.stops.length - 1];
+  const stA = segmentStatusDirect(c.trip, c.fromStop, viaA, dateStr);
+  const stB = segmentStatusDirect(c.thru.tripB, c.thru.tripB.stops[0],
+    c.toStop, dateStr);
+  const rank = (st) => (!st ? -1
+    : (st.skip ? 2 : (st.status === '✕' ? 3 : (st.status === '△' ? 1 : 0))));
+  if (!stA) return stB;
+  if (!stB) return stA;
+  return rank(stA) >= rank(stB) ? stA : stB;
+}
+
+function todayStatusChip(c, dateStr) {
+  const st = segmentStatus(c, dateStr);
   if (!st) return '';
   if (st.skip) {
     return ' <span class="svc-chip st-ng" aria-label="本日の運航状況：抜港（' +
@@ -503,14 +577,14 @@ function vesselLabelOf(vesselType, vesselName) {
   return vt + '（' + vn + '）';                        // フェリー + 太古 → フェリー（太古）
 }
 const vesselLabel = vesselLabelOf(trip.vessel_type || route.vessel_type || '', trip.vessel_name);
-  const chip = todayStatusChip(trip, fromStop, toStop, dateStr);
+  const chip = todayStatusChip(c, dateStr);
   const unusable = chip.includes('st-ng'); // ✕欠航・✕抜港（この区間は使えない便は薄くする）
   return `
   <article class="trip-card${isNext ? ' next-trip' : ''}${unusable ? ' is-unusable' : ''}" data-idx="${idx}" tabindex="0" role="button" aria-expanded="false" aria-label="便の詳細を開く">
     <div class="trip-top">
       <span class="trip-op">${esc(op.name || '')}</span>
       ${isNext ? '<span class="next-badge">次の便</span>' : ''}
-      <span class="trip-vessel">${esc(vesselLabel)}${trip.direction ? ' ／ ' + esc(trip.direction) : ''}</span>
+      <span class="trip-vessel">${esc(vesselLabel)}${c.thru ? '' : (trip.direction ? ' ／ ' + esc(trip.direction) : '')}</span>
     </div>
     <div class="trip-times">
       <span class="trip-time-big">${esc(fromStop.dep)}</span>${chip}
@@ -518,6 +592,7 @@ const vesselLabel = vesselLabelOf(trip.vessel_type || route.vessel_type || '', t
       <span class="trip-time-big">${esc(toStop.arr)}${offLabel(relArr)}</span>
       <span class="trip-dur">${esc(portName(fromStop.port_id))} 発 ／ ${esc(portName(toStop.port_id))} 着 ・ ${durText(arrMin - depMin)}</span>
     </div>
+    ${c.thru ? '<div class="trip-thru">' + esc(portName(c.thru.at)) + 'で折り返し（乗り換えなし）</div>' : ''}
     <div class="trip-fare">${fareLine}</div>
     <div class="trip-detail" hidden></div>
   </article>`;
@@ -528,7 +603,7 @@ function tripDetailHtml(c, dateStr) {
   const op = operatorById[trip.operator_id] || {};
   const route = routeById[trip.route_id] || {};
   const baseOff = fromStop.dep_off || 0;
-  const stopsHtml = trip.stops.map((s) => {
+  const stopsHtml = (c.stops || trip.stops).map((s) => {
     const aRel = (s.arr_off != null ? s.arr_off : (s.dep_off || 0)) - baseOff;
     const dRel = (s.dep_off != null ? s.dep_off : (s.arr_off || 0)) - baseOff;
     const parts = [];
@@ -555,6 +630,7 @@ function tripDetailHtml(c, dateStr) {
   }
   if (route.reservation_required === '1' || route.reservation_required === 1 || route.reservation_required === true) notes.push('乗船には予約が必要です。');
   if (route.checkin_deadline_min) notes.push('受付締切：出発の' + route.checkin_deadline_min + '分前');
+  if (c.thru) notes.push(portName(c.thru.at) + 'で折り返し（同じ船にそのまま乗車できます）');
   if (trip.note) notes.push(trip.note);
   if (trip.pattern && trip.pattern.name) notes.push('ダイヤ：' + trip.pattern.name);
   if (route.note) notes.push(route.note);

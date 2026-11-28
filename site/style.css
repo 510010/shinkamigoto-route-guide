@@ -193,6 +193,7 @@ main { max-width: 960px; margin: 0 auto; padding: 14px 14px 28px; }
 .trip-card.is-unusable .trip-time-big,
 .trip-card.is-unusable .trip-op { color: var(--muted); }
 .trip-card.is-unusable .trip-arrow { color: var(--muted); }
+.trip-thru { font-size: .85rem; color: var(--muted); margin-top: 3px; }
 .trip-top { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
 .trip-op { font-weight: 700; color: var(--navy); }
 .trip-vessel { color: var(--muted); font-size: .92rem; }

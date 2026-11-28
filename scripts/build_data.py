@@ -77,6 +77,32 @@ for t in trips_raw:
                     "recurs": recurs},
         "stops": stops})
 
+# 折り返し接続（2026-11-28 追加）：同一航路・同一パターンで、便Aの終点
+# （着のみ）に便Bが45分以内に発つペア。検索側はこのペアに限り、便Aに
+# 乗って便Bで降りる「通し」の結果を作る（一般の乗り換えは対象外のまま）。
+def derive_connections(trips):
+    def key(t):
+        p = t["pattern"]
+        return (p["name"], p["kind"], p["valid_from"], p["valid_to"])
+    conns = []
+    for a in trips:
+        last = a["stops"][-1]
+        if not last["arr"] or last["dep"]:
+            continue
+        for b in trips:
+            if b["id"] == a["id"] or b["route_id"] != a["route_id"]:
+                continue
+            if key(b) != key(a):
+                continue
+            first = b["stops"][0]
+            if first["port_id"] != last["port_id"] or not first["dep"]:
+                continue
+            if 0 <= t2m(first["dep"]) - t2m(last["arr"]) <= 45:
+                conns.append({"a": a["id"], "b": b["id"], "at": last["port_id"]})
+    return conns
+
+connections = derive_connections(trips)
+
 out = {
     "meta": {"title": "上五島航路案内", "generated_at": date.today().isoformat()},
     "ports": [{**p, "lat": float(p["lat"]), "lon": float(p["lon"]),
@@ -84,6 +110,7 @@ out = {
     "operators": operators,
     "routes": [{**r, "suspended": r["suspended"] == "1"} for r in routes],
     "trips": trips,
+    "connections": connections,
     "fares": [{**f, "adult_oneway": num(f["adult_oneway"]), "child_oneway": num(f["child_oneway"]),
                "adult_roundtrip": num(f["adult_roundtrip"]), "child_roundtrip": num(f["child_roundtrip"])}
               for f in fares],
@@ -94,4 +121,6 @@ out = {
 path = os.path.join(SITE, "data.json")
 with open(path, "w", encoding="utf-8") as f:
     json.dump(out, f, ensure_ascii=False, indent=1)
-print(f"wrote {path}: trips={len(trips)} fares={len(out['fares'])} ports={len(ports)}")
+print(f"wrote {path}: trips={len(trips)} fares={len(out['fares'])} ports={len(ports)} connections={len(connections)}")
+for c in connections:
+    print(f"  connection: {c['a']} -> {c['b']} at {c['at']}")
