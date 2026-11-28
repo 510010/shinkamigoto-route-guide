@@ -673,6 +673,7 @@ function doSearch() {
       };
       card.addEventListener('click', (e) => { if (!e.target.closest('a')) toggle(); });
       card.addEventListener('keydown', (e) => {
+        if (e.target !== card) return;
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
       });
     });
