@@ -1,9 +1,10 @@
 {
- "generated_at": "2026-11-28 21:18",
+ "generated_at": "2026-11-28 21:23",
  "date": "2026-11-28",
  "operators": [
   {
    "operator_id": "kyushu",
+   "tomorrow": null,
    "ok": true,
    "services": [
     {
@@ -351,10 +352,14 @@
      "status": "✕"
     }
    ],
-   "captured_at": "2026-11-28 17:50"
+   "captured_at": "2026-11-28 21:23"
   },
   {
    "operator_id": "goto-sangyo",
+   "tomorrow": {
+    "date": "2026-11-29",
+    "plan": "通常運航予定"
+   },
    "ok": true,
    "services": [
     {
@@ -369,7 +374,7 @@
      "vessel": "",
      "port": "鯛ノ浦",
      "time": "13:30",
-     "status": "◯"
+     "status": "✕"
     },
     {
      "route": "鯛ノ浦〜長崎",
@@ -383,10 +388,10 @@
      "vessel": "",
      "port": "長崎",
      "time": "16:00",
-     "status": "◯"
+     "status": "✕"
     }
    ],
-   "captured_at": "2026-11-28 17:18"
+   "captured_at": "2026-11-28 21:23"
   }
  ]
 }

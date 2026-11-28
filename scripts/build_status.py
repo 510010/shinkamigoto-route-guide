@@ -5,7 +5,11 @@
 collect_operations.py の直後に実行する想定で、「今日（JST）」の分だけを出す。
 
 掲載方針との対応:
-- 表示は今日だけ： status.json には今日の便しか入れない。
+- 表示は今日が主体。2026-11-28 追加：事業者が翌日分を先行して出すため
+  （五島産業は夕方に翌日の予定へ切替、九州商船は今日と明日を併記）、
+  いつの状況か分かるよう日付を明示し、翌日分が揃っている場合は
+  「明日の運航予定」として分けて入れる。五島産業の夕方の包括指定は
+  実績に混ぜず goto_plan.json 経由で予定としてだけ出す。
 - 取得時刻の併記： 事業者ごとに captured_at を持たせる。ただし表示する時刻は
   「その内容が確定した時刻」とする（2026-11-24 追加改定：内容が変わらないのに
   取得時刻だけ毎時進むのは違和感がある、というユーザーの指摘）。内部的には
@@ -85,6 +89,7 @@ def kyushu_block(today, now):
     path = os.path.join(HIST, "kyushu_results.csv")
     today_rows, fetched = [], None
     tomorrow = (now + timedelta(days=1)).strftime("%Y-%m-%d")
+    tomorrow_rows, t_fetched = [], None
     alive = None
     if os.path.exists(path):
         with open(path, newline="", encoding="utf-8") as f:
@@ -92,6 +97,11 @@ def kyushu_block(today, now):
                 if r["date"] in (today, tomorrow) and (
                         alive is None or r["captured_at"] > alive):
                     alive = r["captured_at"]
+                if r["date"] == tomorrow:
+                    tomorrow_rows.append(r)
+                    if t_fetched is None or r["captured_at"] > t_fetched:
+                        t_fetched = r["captured_at"]
+                    continue
                 if r["date"] != today:
                     continue
                 today_rows.append(r)
@@ -121,37 +131,75 @@ def kyushu_block(today, now):
     services = [_svc(r) for r in today_rows if r["captured_at"] == fetched]
     ok = KYUSHU_BAND[0] <= len(services) <= KYUSHU_BAND[1] \
         and not _stale(alive, now)
+    # 明日分は最新バッチが揃っている場合だけ「明日の運航予定」として出す
+    # （2026-11-28 追加：公式ページが今日と明日を並べるため、いつの状況か
+    # 日付で区別して出す。部分的な表は出さない）
+    t_services = [_svc(r) for r in tomorrow_rows
+                  if r["captured_at"] == t_fetched]
+    tomorrow_block = None
+    if KYUSHU_BAND[0] <= len(t_services) <= KYUSHU_BAND[1] \
+            and not _stale(alive, now):
+        tomorrow_block = {"date": tomorrow,
+                          "services": sort_services(t_services)}
     return {"operator_id": "kyushu", "fetched_at": fetched,
             "raw_services": sort_services(services),
+            "raw_tomorrow": tomorrow_block["services"] if tomorrow_block else [],
+            "tomorrow": tomorrow_block,
             "ok": ok, "services": sort_services(services) if ok else []}
 
 
 def goto_block(today, now):
     path = os.path.join(HIST, "goto_sangyo_results.csv")
-    services = []
+    tomorrow = (now + timedelta(days=1)).strftime("%Y-%m-%d")
+    services, t_services = [], []
     if os.path.exists(path):
         with open(path, newline="", encoding="utf-8") as f:
             for r in csv.DictReader(f):
-                if r["date"] != today:
-                    continue
-                services.append({"route": "鯛ノ浦〜長崎", "vessel": "",
-                                 "port": r["port"], "time": r["time"],
-                                 "status": r["status"]})
+                svc = {"route": "鯛ノ浦〜長崎", "vessel": "",
+                       "port": r["port"], "time": r["time"],
+                       "status": r["status"]}
+                if r["date"] == today:
+                    services.append(svc)
+                elif r["date"] == tomorrow:
+                    t_services.append(svc)
         fetched = datetime.fromtimestamp(
             os.path.getmtime(path), JST).strftime("%Y-%m-%d %H:%M")
     else:
         fetched = None
     ok = GOTO_BAND[0] <= len(services) <= GOTO_BAND[1] \
         and not _stale(fetched, now)
+    # 明日の欄：明記の予告（欠航予告など）があれば便別に、なければ夕方に
+    # 記録された包括指定の予定（goto_plan.json）だけを出す（2026-11-28 追加）
+    tomorrow_block = None
+    if GOTO_BAND[0] <= len(t_services) <= GOTO_BAND[1]:
+        tomorrow_block = {"date": tomorrow,
+                          "services": sort_services(t_services)}
+    else:
+        plan_path = os.path.join(HIST, "goto_plan.json")
+        if os.path.exists(plan_path):
+            try:
+                with open(plan_path, encoding="utf-8") as f:
+                    plan = json.load(f)
+                if plan.get("for_date") == tomorrow:
+                    tomorrow_block = {"date": tomorrow,
+                                      "plan": plan.get("status", "通常運航予定")}
+            except (ValueError, OSError):
+                pass
     return {"operator_id": "goto-sangyo", "fetched_at": fetched,
             "raw_services": sort_services(services),
+            "raw_tomorrow": tomorrow_block["services"]
+            if tomorrow_block and "services" in tomorrow_block else [],
+            "tomorrow": tomorrow_block,
             "ok": ok, "services": sort_services(services) if ok else []}
 
 
 def _signature(block):
-    """表示内容の署名。内容が変わったかどうかだけを見る。"""
-    payload = json.dumps(block["raw_services"], ensure_ascii=False,
-                         sort_keys=True)
+    """表示内容の署名。内容が変わったかどうかだけを見る（明日の欄を含む）。"""
+    payload = json.dumps(
+        {"today": block["raw_services"],
+         "tomorrow": block.get("raw_tomorrow", []),
+         "plan": (block.get("tomorrow") or {}).get("plan")},
+        ensure_ascii=False, sort_keys=True)
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
@@ -187,7 +235,7 @@ def main():
     blocks = [kyushu_block(today, now), goto_block(today, now)]
     _display_times(blocks, today)
     for b in blocks:
-        del b["fetched_at"], b["raw_services"]
+        del b["fetched_at"], b["raw_services"], b["raw_tomorrow"]
     data = {
         "generated_at": now.strftime("%Y-%m-%d %H:%M"),
         "date": today,

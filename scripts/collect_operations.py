@@ -9,7 +9,10 @@
   夕方の翌日切替（リセット）検知を行う（parse_kyushu の docstring 参照）。
 - 五島産業汽船： トップページのテキストを parse_goto_sangyo.parse_captures で解析し、
   history/goto_sangyo_results.csv に 2026-11-06 以降分を upsert する
-  （それ以前は GAS 由来の既存行が正本）。
+  （それ以前は GAS 由来の既存行が正本）。解析には前日夕方〜当日の取得を
+  まとめて渡し、明記が包括指定より優先される解析器の規則で夕方の
+  「通常運航予定」による上書きを防ぐ（2026-11-28 対策）。夕方の包括指定は
+  翌日の運航予定として history/goto_plan.json に別途残す。
 
 使い方: python3 scripts/collect_operations.py
 """
@@ -259,6 +262,106 @@ def upsert_csv(path, header, key_idx, new_rows):
     return len(store)
 
 
+SNAP = os.path.join(HIST, "snapshots")
+GOTO_PLAN = os.path.join(HIST, "goto_plan.json")
+
+
+def _snap_captures(day, min_hour=None):
+    """history/snapshots の day 分の goto_top.txt を (取得日時, テキスト) で返す。
+    時刻は rebuild_history.py と同じ名目時刻（-hHH=HH:18 / -midday=11:10 /
+    無印=17:15）。"""
+    out = []
+    if not os.path.isdir(SNAP):
+        return out
+    pat = re.compile(re.escape(day) + r"(?:-h(\d{2})|-midday)?$")
+    for name in sorted(os.listdir(SNAP)):
+        m = pat.fullmatch(name)
+        if not m:
+            continue
+        p = os.path.join(SNAP, name, "goto_top.txt")
+        if not os.path.exists(p):
+            continue
+        if m.group(1):
+            t = datetime.fromisoformat(f"{day}T{m.group(1)}:18:00")
+        elif name.endswith("-midday"):
+            t = datetime.fromisoformat(f"{day}T11:10:00")
+        else:
+            t = datetime.fromisoformat(f"{day}T17:15:00")
+        if min_hour is not None and t.hour < min_hour:
+            continue
+        with open(p, encoding="utf-8", errors="replace") as f:
+            out.append((t.replace(tzinfo=JST), strip_tags(f.read())))
+    return sorted(out)
+
+
+def goto_captures(now, fresh_text):
+    """解析器へ渡す取得列：前日の17時台以降（翌日分の予告が出る時間帯）＋
+    当日分スナップショット＋今回の取得。1日分をまとめて解析することで、
+    便ごとの明記が夕方の包括指定（通常運航予定）に消されなくなる
+    （2026-11-28 対策：11/24・11/28 の欠航が夕方の文面で上書きされた件）。"""
+    today = now.strftime("%Y-%m-%d")
+    yday = (now - timedelta(days=1)).strftime("%Y-%m-%d")
+    caps = []
+    for t, txt in _snap_captures(yday, min_hour=17) + _snap_captures(today):
+        caps.append((t.strftime("%Y/%m/%d %H:%M:%S"),
+                     t.strftime("%Y/%m/%d"), txt))
+    caps.append((now.strftime("%Y/%m/%d %H:%M:%S"),
+                 today.replace("-", "/"), fresh_text))
+    return caps
+
+
+def upsert_goto(new_rows):
+    """五島産業専用の upsert。既存の明記（明記・全便欠航）を包括指定で
+    置き換えない（まとめて解析する対策への二重の歯止め）。"""
+    store = {}
+    if os.path.exists(GOTO_CSV):
+        with open(GOTO_CSV, newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                vals = [row.get(h, "") for h in GOTO_HEADER]
+                store[(vals[0], vals[1], vals[2])] = vals
+    for r in new_rows:
+        key = (r[0], r[1], r[2])
+        cur = store.get(key)
+        if cur and cur[4] in ("明記", "全便欠航") and r[4] == "包括指定":
+            continue
+        store[key] = r
+    with open(GOTO_CSV, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(GOTO_HEADER)
+        for k in sorted(store):
+            w.writerow(store[k])
+    return len(store)
+
+
+def record_goto_plan(now, fresh_rows, merged_rows):
+    """夕方の包括指定は翌日の運航予定として出ている（最終便の出発後に
+    事業者が翌日分へ切り替える）。実績CSVには混ぜず、表示用に別ファイルへ
+    残す。明記（翌日分の予告）が実績側に出たら、そちらが優先されるため
+    予定ファイルは消す。"""
+    import json
+    tomorrow = (now + timedelta(days=1)).strftime("%Y-%m-%d")
+    if any(r[0] == tomorrow and r[4] in ("明記", "全便欠航")
+           for r in merged_rows):
+        if os.path.exists(GOTO_PLAN):
+            os.remove(GOTO_PLAN)
+        return
+    todays = [r for r in merged_rows if r[0] == now.strftime("%Y-%m-%d")]
+    if not todays or not fresh_rows:
+        return
+    if not all(r[4] == "包括指定" and r[3] == "◯" for r in fresh_rows):
+        return
+    last_dep = max(int(r[2].split(":")[0]) * 60 + int(r[2].split(":")[1])
+                   for r in todays)
+    if now.hour * 60 + now.minute < last_dep + 45:
+        return
+    with open(GOTO_PLAN, "w", encoding="utf-8") as f:
+        json.dump({"for_date": tomorrow,
+                   "captured_at": now.strftime("%Y-%m-%d %H:%M"),
+                   "status": "通常運航予定"}, f, ensure_ascii=False)
+    print(f"goto plan: {tomorrow} 通常運航予定 (captured "
+          f"{now.strftime('%H:%M')})")
+
+
 def read_store(path, header):
     store = {}
     if os.path.exists(path):
@@ -310,13 +413,15 @@ def main():
 
     top = fetch("https://www.goto-sangyo.co.jp/")
     text = strip_tags(top)
-    cap = [(now.strftime("%Y/%m/%d %H:%M:%S"), now.strftime("%Y/%m/%d"), text)]
+    caps = goto_captures(now, text)
     grows = []
-    for r in parse_captures(cap):
+    for r in parse_captures(caps):
         if r[0] >= GOTO_MOKO_FROM:
             grows.append(r + ["天候" if r[3] == "✕" else ""])
     if grows:
-        n2 = upsert_csv(GOTO_CSV, GOTO_HEADER, [0, 1, 2], grows)
+        n2 = upsert_goto(grows)
+        fresh_rows = parse_captures([caps[-1]])
+        record_goto_plan(now, fresh_rows, grows)
     else:
         # 0行＝ページから状況欄が読めなかった。CSVを書き換えると更新時刻だけが
         # 進み、build_status が「取得できた」ように見せてしまうため触らない

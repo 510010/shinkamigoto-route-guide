@@ -920,17 +920,10 @@ function statusCapHtml(op) {
   return '<span class="status-cap">' + (cap.getMonth() + 1) + '月' + cap.getDate() + '日 ' +
     pad2(cap.getHours()) + ':' + pad2(cap.getMinutes()) + ' 時点</span>';
 }
-// 事業者カード内の運航状況欄（九州商船・五島産業汽船のみ。それ以外は空）
-function statusSectionHtml(op) {
-  if (!STATUS_LOADED) return '';
-  const entry = statusEntryFor(op);
-  if (!entry) return '';
-  if (!statusUsable() || !entry.ok) {
-    return '<p class="status-fallback">本日の運航状況は確認できません。公式情報でご確認ください。</p>';
-  }
-  // 航路→船種→港 の順にグループ化する（services は生成側で整列済み）
+// 便リストを 航路→船種→港 の順にグループ化する（services は生成側で整列済み）
+function statusChipsGrouped(services) {
   let body = '', curRV = null, curPort = null;
-  for (const s of entry.services) {
+  for (const s of services) {
     const rv = s.route + '|' + (s.vessel || '');
     if (rv !== curRV) {
       if (curPort !== null) { body += '</div>'; curPort = null; }
@@ -946,9 +939,34 @@ function statusSectionHtml(op) {
     body += statusChip(s);
   }
   if (curPort !== null) body += '</div>';
-  return '<div class="status-body">' +
-    '<p class="small status-legend">○ 運航　✕ 欠航　△ 未定　抜 抜港（一部の港に寄りません）　○✕ 行き先により異なります</p>' + body +
-    '<p class="small">公式ページから自動取得した情報です。</p></div>';
+  return body;
+}
+// 事業者カード内の運航状況欄（九州商船・五島産業汽船のみ。それ以外は空）
+// 2026-11-28 追加：事業者が翌日分を先行して出す（五島産業は夕方に翌日の
+// 予定へ切替、九州商船は今日と明日を併記）ため、いつの状況か日付で明示し、
+// 翌日分は「明日の運航予定」として分けて出す。
+function statusSectionHtml(op) {
+  if (!STATUS_LOADED) return '';
+  const entry = statusEntryFor(op);
+  if (!entry) return '';
+  if (!statusUsable() || !entry.ok) {
+    return '<p class="status-fallback">本日の運航状況は確認できません。公式情報でご確認ください。</p>';
+  }
+  let html = '<div class="status-body">' +
+    '<div class="status-date">' + esc(dateLabel(STATUS_JSON.date)) + 'の運航状況</div>' +
+    '<p class="small status-legend">○ 運航　✕ 欠航　△ 未定　抜 抜港（一部の港に寄りません）　○✕ 行き先により異なります</p>' +
+    statusChipsGrouped(entry.services) +
+    '<p class="small">公式ページから自動取得した情報です。</p>';
+  const tm = entry.tomorrow;
+  if (tm && tm.date) {
+    html += '<div class="status-date">明日 ' + esc(dateLabel(tm.date)) + 'の運航予定</div>';
+    if (Array.isArray(tm.services) && tm.services.length) {
+      html += statusChipsGrouped(tm.services);
+    } else if (tm.plan) {
+      html += '<p class="small">' + esc(tm.plan) + 'です（最終確定は出航1時間前です）。</p>';
+    }
+  }
+  return html + '</div>';
 }
 function renderStatus() {
   $('#operator-cards').innerHTML = DB.operators.map((op) => `
