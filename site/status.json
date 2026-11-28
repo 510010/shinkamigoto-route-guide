@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-28 16:22",
+ "generated_at": "2026-11-28 16:34",
  "date": "2026-11-28",
  "operators": [
   {
@@ -95,13 +95,6 @@
      "vessel": "Fe",
      "port": "福江",
      "time": "8:00",
-     "status": "◯"
-    },
-    {
-     "route": "長崎〜五島",
-     "vessel": "Fe",
-     "port": "福江",
-     "time": "11:45",
      "status": "◯"
     },
     {
@@ -290,13 +283,6 @@
      "route": "佐世保〜上五島",
      "vessel": "Fe",
      "port": "小値賀",
-     "time": "19:20",
-     "status": "◯"
-    },
-    {
-     "route": "佐世保〜上五島",
-     "vessel": "Fe",
-     "port": "小値賀",
      "time": "19:45",
      "status": "✕"
     },
@@ -325,13 +311,6 @@
      "route": "佐世保〜上五島",
      "vessel": "Fe",
      "port": "佐世保",
-     "time": "16:40",
-     "status": "◯"
-    },
-    {
-     "route": "佐世保〜上五島",
-     "vessel": "Fe",
-     "port": "佐世保",
      "time": "17:05",
      "status": "✕"
     },
@@ -346,18 +325,11 @@
      "route": "佐世保〜上五島",
      "vessel": "Fe",
      "port": "有川",
-     "time": "13:35",
-     "status": "◯"
-    },
-    {
-     "route": "佐世保〜上五島",
-     "vessel": "Fe",
-     "port": "有川",
      "time": "16:35",
      "status": "✕"
     }
    ],
-   "captured_at": "2026-11-28 16:19"
+   "captured_at": "2026-11-28 16:33"
   },
   {
    "operator_id": "goto-sangyo",

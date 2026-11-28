@@ -83,7 +83,7 @@ def sort_services(services):
 
 def kyushu_block(today, now):
     path = os.path.join(HIST, "kyushu_results.csv")
-    services, fetched = [], None
+    today_rows, fetched = [], None
     tomorrow = (now + timedelta(days=1)).strftime("%Y-%m-%d")
     alive = None
     if os.path.exists(path):
@@ -94,11 +94,17 @@ def kyushu_block(today, now):
                     alive = r["captured_at"]
                 if r["date"] != today:
                     continue
-                services.append({"route": r["route"], "vessel": r["vessel"],
-                                 "port": r["port"], "time": r["time"],
-                                 "status": r["status"]})
+                today_rows.append(r)
                 if fetched is None or r["captured_at"] > fetched:
                     fetched = r["captured_at"]
+    # 表示は最新の取得バッチの行だけにする（2026-11-28 追加）。蓄積は
+    # 追加・上書きのみのため、公式の表から消えた行（0:00掲載のドック
+    # ダイヤ行が10:18の通常ダイヤ表への差し替え後も残った等）が
+    # 「幽霊行」として表示され続けてしまう。最新バッチ＝現行の公式表。
+    services = [{"route": r["route"], "vessel": r["vessel"],
+                 "port": r["port"], "time": r["time"],
+                 "status": r["status"]}
+                for r in today_rows if r["captured_at"] == fetched]
     ok = KYUSHU_BAND[0] <= len(services) <= KYUSHU_BAND[1] \
         and not _stale(alive, now)
     return {"operator_id": "kyushu", "fetched_at": fetched,
