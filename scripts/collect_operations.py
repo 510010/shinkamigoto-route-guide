@@ -28,7 +28,7 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HIST = os.path.join(BASE, "history")
 KYUSHU_CSV = os.path.join(HIST, "kyushu_results.csv")
 KYUSHU_HEADER = ["date", "route", "vessel", "port", "time", "status",
-                 "reason", "captured_at"]
+                 "reason", "captured_at", "skips"]
 CHANGES_CSV = os.path.join(HIST, "status_changes.csv")
 GOTO_CSV = os.path.join(HIST, "goto_sangyo_results.csv")
 GOTO_HEADER = ["date", "port", "time", "status", "note", "reason"]
@@ -108,8 +108,9 @@ def parse_kyushu(html, now, stored_status=None):
       「欠航の巻き戻し」がある（✕は当日中には戻らない。2件以上、
       または夕方17時以降の更新で1件以上）。
     stored_status: {(date, route, vessel, port, time): status}（検知用、任意）。
-    戻り値: (rows, warnings)。rows は reason を含まない7列
-    [date, route, vessel, port, time, status, captured_at]。
+    戻り値: (rows, warnings)。rows は reason を含まない8列
+    [date, route, vessel, port, time, status, captured_at, skips]。
+    skips は抜港先の港名を「・」でつないだ文字列（なければ空）。
     """
     m = re.search(r"更新：(\d{4})年(\d{1,2})月(\d{1,2})日(?:\([^)]*\))?\s*(\d{1,2}):(\d{2})", html)
     if not m:
@@ -148,6 +149,7 @@ def parse_kyushu(html, now, stored_status=None):
                 tm = re.search(r"(\d{1,2}):(\d{2})\s*発", th_text)
                 if not tm:
                     continue
+                skips = []
                 icon = re.search(r"status-(\w+)\.webp", tr)
                 if icon:
                     if icon.group(1) not in ICONS:
@@ -159,6 +161,17 @@ def parse_kyushu(html, now, stored_status=None):
                     td_text = re.sub(r"<[^>]+>", "", td.group(1)).strip() if td else ""
                     if "寄港なし" in td_text:
                         status = "◯"  # 部分運航（運航するが一部港に寄港しない）
+                        # 抜港先の港名を構造化する（2026-11-28 追加）。既知の
+                        # 形式「○(小値賀港･宇久平港への寄港なし)」に一致した
+                        # ときだけ拾い、読めなければ空（従来どおり◯扱い）。
+                        sm = re.search(r"[○〇]?\s*[（(]?([^()（）]*?)への寄港なし",
+                                       td_text)
+                        if sm:
+                            for name in re.split(r"[･・、]", sm.group(1)):
+                                name = name.strip().rstrip("港")
+                                if name:
+                                    skips.append(
+                                        "奈留" if name == "奈留島" else name)
                     else:
                         warnings.append(
                             f"{ROUTES[key]}/{vessel}/{port} {th_text}: "
@@ -172,6 +185,7 @@ def parse_kyushu(html, now, stored_status=None):
                     "marker": marker_date(page_date, th_text),
                     "time": f"{int(tm.group(1))}:{tm.group(2)}",
                     "status": status,
+                    "skips": skips,
                 })
 
     def assign(main_date):
@@ -182,7 +196,8 @@ def parse_kyushu(html, now, stored_status=None):
                 if r["marker"] is not None:
                     cur = r["marker"]
                 rows.append([cur.isoformat(), g["route"], g["vessel"],
-                             g["port"], r["time"], r["status"], cap])
+                             g["port"], r["time"], r["status"], cap,
+                             "・".join(r["skips"])])
         return rows
 
     rows = assign(page_date)

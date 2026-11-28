@@ -399,7 +399,7 @@ const STATUS_ROUTE_KEY = {
   'kyushu-sasebo-kamigoto-hs': ['佐世保〜上五島', '高速'],
   'kyushu-sasebo-kamigoto-ferry': ['佐世保〜上五島', 'Fe'],
 };
-function todayStatusChip(trip, fromStop, dateStr) {
+function todayStatusChip(trip, fromStop, toStop, dateStr) {
   if (dateStr !== todayStr() || !statusUsable()) return '';
   const op = operatorById[trip.operator_id] || {};
   const entry = statusEntryFor(op);
@@ -415,6 +415,33 @@ function todayStatusChip(trip, fromStop, dateStr) {
     if (!key) return '';
     svc = entry.services.find((s) => s.route === key[0] && s.vessel === key[1] &&
       s.port === port && s.time === time);
+  }
+  // 抜港の出し分け（2026-11-28 追加）：便の始発行に付いた skips（寄港しない
+  // 港）に乗る港・降りる港が含まれれば、その区間は使えないので「✕ 抜港」に
+  // する。欠航・未定が決まっている便には付けない（そちらが優先）。
+  if (trip.operator_id === 'kyushu' && (!svc || svc.status === '◯')) {
+    const key = STATUS_ROUTE_KEY[trip.route_id];
+    const oStop = (trip.stops || [])[0];
+    if (key && oStop) {
+      const norm = (pid) => {
+        const n = portName(pid);
+        return n === '奈留島' ? '奈留' : n;
+      };
+      const oTime = String(oStop.dep || '').replace(/^0/, '');
+      const oSvc = entry.services.find((s) => s.route === key[0] &&
+        s.vessel === key[1] && s.port === norm(oStop.port_id) &&
+        s.time === oTime);
+      if (oSvc && Array.isArray(oSvc.skips) && oSvc.skips.length) {
+        const hit = oSvc.skips.includes(norm(fromStop.port_id))
+          ? norm(fromStop.port_id)
+          : (oSvc.skips.includes(norm(toStop.port_id))
+            ? norm(toStop.port_id) : null);
+        if (hit) {
+          return ' <span class="svc-chip st-ng" aria-label="本日の運航状況：抜港（' +
+            esc(hit) + 'に寄港しません）">✕ 抜港</span>';
+        }
+      }
+    }
   }
   if (!svc) return '';
   const label = svc.status === '◯' ? '運航' : (svc.status === '✕' ? '欠航' : '未定');
@@ -464,7 +491,7 @@ const vesselLabel = vesselLabelOf(trip.vessel_type || route.vessel_type || '', t
       <span class="trip-vessel">${esc(vesselLabel)}${trip.direction ? ' ／ ' + esc(trip.direction) : ''}</span>
     </div>
     <div class="trip-times">
-      <span class="trip-time-big">${esc(fromStop.dep)}</span>${todayStatusChip(trip, fromStop, dateStr)}
+      <span class="trip-time-big">${esc(fromStop.dep)}</span>${todayStatusChip(trip, fromStop, toStop, dateStr)}
       <span class="trip-arrow">→</span>
       <span class="trip-time-big">${esc(toStop.arr)}${offLabel(relArr)}</span>
       <span class="trip-dur">${esc(portName(fromStop.port_id))} 発 ／ ${esc(portName(toStop.port_id))} 着 ・ ${durText(arrMin - depMin)}</span>
