@@ -22,7 +22,10 @@ collect_operations.py の直後に実行する想定で、「今日（JST）」�
   その事業者も ok=False にする（片方の取得だけ止まった場合に、古い状況を
   出し続けないため。
   2026-11-24 五島産業の状況欄消失で、CSV更新時刻ベースの captured_at が
-  実態より新しく見えた件を受けた追加）。
+  実態より新しく見えた件を受けた追加）。ただし九州商船は、公式ページの
+  主日付が翌日に切り替わると当日行が更新されなくなるため、陳腐化判定は
+  当日＋翌日行の最新 captured_at（＝直近で解析に成功した時刻）で行う
+  （2026-11-28、ページが昼前に翌日へ切り替わり当日分が誤って落ちた件）。
 - フロント側は generated_at の古さでは表示を落とさない（2026-11-24 改定：
   デプロイ失敗で「取得できているのに出ない」が繰り返されたため。日付が
   今日でないJSONはフロントが弾く）。事業者単位の陳腐化は上記の ok 判定で担保する。
@@ -81,9 +84,14 @@ def sort_services(services):
 def kyushu_block(today, now):
     path = os.path.join(HIST, "kyushu_results.csv")
     services, fetched = [], None
+    tomorrow = (now + timedelta(days=1)).strftime("%Y-%m-%d")
+    alive = None
     if os.path.exists(path):
         with open(path, newline="", encoding="utf-8") as f:
             for r in csv.DictReader(f):
+                if r["date"] in (today, tomorrow) and (
+                        alive is None or r["captured_at"] > alive):
+                    alive = r["captured_at"]
                 if r["date"] != today:
                     continue
                 services.append({"route": r["route"], "vessel": r["vessel"],
@@ -92,7 +100,7 @@ def kyushu_block(today, now):
                 if fetched is None or r["captured_at"] > fetched:
                     fetched = r["captured_at"]
     ok = KYUSHU_BAND[0] <= len(services) <= KYUSHU_BAND[1] \
-        and not _stale(fetched, now)
+        and not _stale(alive, now)
     return {"operator_id": "kyushu", "fetched_at": fetched,
             "raw_services": sort_services(services),
             "ok": ok, "services": sort_services(services) if ok else []}
