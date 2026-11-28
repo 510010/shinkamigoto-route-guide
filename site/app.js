@@ -389,6 +389,41 @@ function findNextTripIndex(results, dateStr, now) {
   return -1;
 }
 
+// 今日の検索結果カードに運航状況チップを付ける（2026-11-28 本番反映）。
+// status.json の services は「航路グループ×船種×出発港×出発時刻」で引く。
+// 対象は九州商船と五島産業（便別状況を持つ2社）のみ。今日以外の日付、
+// 状況が ok でない事業者、解釈できない行（行き先別表記など）には付けない。
+const STATUS_ROUTE_KEY = {
+  'kyushu-nagasaki-goto-jf': ['長崎〜五島', 'JF'],
+  'kyushu-nagasaki-goto-ferry': ['長崎〜五島', 'Fe'],
+  'kyushu-sasebo-kamigoto-hs': ['佐世保〜上五島', '高速'],
+  'kyushu-sasebo-kamigoto-ferry': ['佐世保〜上五島', 'Fe'],
+};
+function todayStatusChip(trip, fromStop, dateStr) {
+  if (dateStr !== todayStr() || !statusUsable()) return '';
+  const op = operatorById[trip.operator_id] || {};
+  const entry = statusEntryFor(op);
+  if (!entry || !entry.ok || !Array.isArray(entry.services)) return '';
+  let port = portName(fromStop.port_id);
+  if (port === '奈留島') port = '奈留';
+  const time = String(fromStop.dep || '').replace(/^0/, '');
+  let svc = null;
+  if (trip.operator_id === 'goto-sangyo') {
+    svc = entry.services.find((s) => s.port === port && s.time === time);
+  } else {
+    const key = STATUS_ROUTE_KEY[trip.route_id];
+    if (!key) return '';
+    svc = entry.services.find((s) => s.route === key[0] && s.vessel === key[1] &&
+      s.port === port && s.time === time);
+  }
+  if (!svc) return '';
+  const label = svc.status === '◯' ? '運航' : (svc.status === '✕' ? '欠航' : '未定');
+  const cls = svc.status === '◯' ? 'st-ok' : (svc.status === '✕' ? 'st-ng' : 'st-un');
+  const sym = svc.status === '◯' ? '○' : (svc.status === '✕' ? '✕' : '△');
+  return ' <span class="svc-chip ' + cls + '" aria-label="本日の運航状況：' + label + '">' +
+    sym + ' ' + label + '</span>';
+}
+
 function tripCard(c, idx, dateStr, isNext) {
   const { trip, fromStop, toStop } = c;
   const op = operatorById[trip.operator_id] || {};
@@ -429,7 +464,7 @@ const vesselLabel = vesselLabelOf(trip.vessel_type || route.vessel_type || '', t
       <span class="trip-vessel">${esc(vesselLabel)}${trip.direction ? ' ／ ' + esc(trip.direction) : ''}</span>
     </div>
     <div class="trip-times">
-      <span class="trip-time-big">${esc(fromStop.dep)}</span>
+      <span class="trip-time-big">${esc(fromStop.dep)}</span>${todayStatusChip(trip, fromStop, dateStr)}
       <span class="trip-arrow">→</span>
       <span class="trip-time-big">${esc(toStop.arr)}${offLabel(relArr)}</span>
       <span class="trip-dur">${esc(portName(fromStop.port_id))} 発 ／ ${esc(portName(toStop.port_id))} 着 ・ ${durText(arrMin - depMin)}</span>
@@ -709,6 +744,7 @@ async function loadStatus() {
   }
   STATUS_LOADED = true;
   renderStatus();
+  autoSearch(); // 検索結果が先に描画されていた場合に、運航状況チップを付け直す
 }
 
 // 今日のデータかどうかだけを見る（生成時刻の古さでは落とさない。2026-11-24 改定。
