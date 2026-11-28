@@ -188,6 +188,11 @@ main { max-width: 960px; margin: 0 auto; padding: 14px 14px 28px; }
   cursor: pointer;
   box-shadow: 0 1px 4px rgba(7, 55, 99, .06);
 }
+/* 欠航・抜港（検索区間では使えない）便は薄くして、運航便を目立たせる */
+.trip-card.is-unusable { background: #f2f5f7; }
+.trip-card.is-unusable .trip-time-big,
+.trip-card.is-unusable .trip-op { color: var(--muted); }
+.trip-card.is-unusable .trip-arrow { color: var(--muted); }
 .trip-top { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
 .trip-op { font-weight: 700; color: var(--navy); }
 .trip-vessel { color: var(--muted); font-size: .92rem; }

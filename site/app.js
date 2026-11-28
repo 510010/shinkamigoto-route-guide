@@ -380,73 +380,93 @@ function updateFavButton() {
 
 // 今日の検索でのみ、現在時刻より後で最も早い便の index を返す（なければ -1）。
 // 結果は出発時刻順に並んでいる前提。運休便は結果に含まれないため対象にならない。
+// 欠航・抜港（この区間）と分かっている便は「次の便」にしない（2026-11-28 追加。
+// 状態が不明な便は従来どおり候補に残す。候補がすべて使えない場合は付けない）。
 function findNextTripIndex(results, dateStr, now) {
   if (dateStr !== fmtDate(now)) return -1;
   const nowMin = now.getHours() * 60 + now.getMinutes();
   for (let i = 0; i < results.length; i++) {
-    if (timeToMin(results[i].fromStop.dep) > nowMin) return i;
+    if (timeToMin(results[i].fromStop.dep) <= nowMin) continue;
+    const st = segmentStatus(results[i].trip, results[i].fromStop,
+      results[i].toStop, dateStr);
+    if (st && (st.skip || st.status === '✕')) continue;
+    return i;
   }
   return -1;
 }
 
-// 今日の検索結果カードに運航状況チップを付ける（2026-11-28 本番反映）。
-// status.json の services は「航路グループ×船種×出発港×出発時刻」で引く。
-// 対象は九州商船と五島産業（便別状況を持つ2社）のみ。今日以外の日付、
-// 状況が ok でない事業者、解釈できない行（行き先別表記など）には付けない。
 const STATUS_ROUTE_KEY = {
   'kyushu-nagasaki-goto-jf': ['長崎〜五島', 'JF'],
   'kyushu-nagasaki-goto-ferry': ['長崎〜五島', 'Fe'],
   'kyushu-sasebo-kamigoto-hs': ['佐世保〜上五島', '高速'],
   'kyushu-sasebo-kamigoto-ferry': ['佐世保〜上五島', 'Fe'],
 };
-function todayStatusChip(trip, fromStop, toStop, dateStr) {
-  if (dateStr !== todayStr() || !statusUsable()) return '';
+
+// 便の「検索区間に対する」本日の運航状態を返す（2026-11-28）。
+// status.json の services は「航路グループ×船種×出発港×出発時刻」で引く。
+// 対象は九州商船と五島産業（便別状況を持つ2社）のみ。今日以外の日付、
+// 状況が ok でない事業者、対応する行がない便は null（情報なし）。
+// 戻り値: { status: '◯'|'✕'|'△' } / { skip: '港名' }（抜港でこの区間は使えない）
+function segmentStatus(trip, fromStop, toStop, dateStr) {
+  if (dateStr !== todayStr() || !statusUsable()) return null;
   const op = operatorById[trip.operator_id] || {};
   const entry = statusEntryFor(op);
-  if (!entry || !entry.ok || !Array.isArray(entry.services)) return '';
-  let port = portName(fromStop.port_id);
-  if (port === '奈留島') port = '奈留';
+  if (!entry || !entry.ok || !Array.isArray(entry.services)) return null;
+  const norm = (pid) => {
+    const n = portName(pid);
+    return n === '奈留島' ? '奈留' : n;
+  };
   const time = String(fromStop.dep || '').replace(/^0/, '');
   let svc = null;
   if (trip.operator_id === 'goto-sangyo') {
-    svc = entry.services.find((s) => s.port === port && s.time === time);
+    svc = entry.services.find((s) => s.port === norm(fromStop.port_id) &&
+      s.time === time);
   } else {
     const key = STATUS_ROUTE_KEY[trip.route_id];
-    if (!key) return '';
+    if (!key) return null;
     svc = entry.services.find((s) => s.route === key[0] && s.vessel === key[1] &&
-      s.port === port && s.time === time);
+      s.port === norm(fromStop.port_id) && s.time === time);
   }
-  // 抜港の出し分け（2026-11-28 追加）：便の始発行に付いた skips（寄港しない
-  // 港）に乗る港・降りる港が含まれれば、その区間は使えないので「✕ 抜港」に
-  // する。欠航・未定が決まっている便には付けない（そちらが優先）。
+  // 行き先別表記（福江11:45型）：降りる港の状態が分かればそれを優先する
+  if (svc && svc.dest) {
+    const d = svc.dest[norm(toStop.port_id)];
+    if (d) return { status: d };
+  }
+  // 抜港の出し分け：便の始発行に付いた skips（寄港しない港）に乗る港・
+  // 降りる港が含まれれば、その区間は使えない。欠航・未定が決まっている
+  // 便には付けない（そちらが優先）。
   if (trip.operator_id === 'kyushu' && (!svc || svc.status === '◯')) {
     const key = STATUS_ROUTE_KEY[trip.route_id];
     const oStop = (trip.stops || [])[0];
     if (key && oStop) {
-      const norm = (pid) => {
-        const n = portName(pid);
-        return n === '奈留島' ? '奈留' : n;
-      };
       const oTime = String(oStop.dep || '').replace(/^0/, '');
       const oSvc = entry.services.find((s) => s.route === key[0] &&
         s.vessel === key[1] && s.port === norm(oStop.port_id) &&
         s.time === oTime);
       if (oSvc && Array.isArray(oSvc.skips) && oSvc.skips.length) {
-        const hit = oSvc.skips.includes(norm(fromStop.port_id))
-          ? norm(fromStop.port_id)
-          : (oSvc.skips.includes(norm(toStop.port_id))
-            ? norm(toStop.port_id) : null);
-        if (hit) {
-          return ' <span class="svc-chip st-ng" aria-label="本日の運航状況：抜港（' +
-            esc(hit) + 'に寄港しません）">✕ 抜港</span>';
+        if (oSvc.skips.includes(norm(fromStop.port_id))) {
+          return { skip: norm(fromStop.port_id) };
+        }
+        if (oSvc.skips.includes(norm(toStop.port_id))) {
+          return { skip: norm(toStop.port_id) };
         }
       }
     }
   }
-  if (!svc) return '';
-  const label = svc.status === '◯' ? '運航' : (svc.status === '✕' ? '欠航' : '未定');
-  const cls = svc.status === '◯' ? 'st-ok' : (svc.status === '✕' ? 'st-ng' : 'st-un');
-  const sym = svc.status === '◯' ? '○' : (svc.status === '✕' ? '✕' : '△');
+  if (!svc) return null;
+  return { status: svc.status };
+}
+
+function todayStatusChip(trip, fromStop, toStop, dateStr) {
+  const st = segmentStatus(trip, fromStop, toStop, dateStr);
+  if (!st) return '';
+  if (st.skip) {
+    return ' <span class="svc-chip st-ng" aria-label="本日の運航状況：抜港（' +
+      esc(st.skip) + 'に寄港しません）">✕ 抜港</span>';
+  }
+  const label = st.status === '◯' ? '運航' : (st.status === '✕' ? '欠航' : '未定');
+  const cls = st.status === '◯' ? 'st-ok' : (st.status === '✕' ? 'st-ng' : 'st-un');
+  const sym = st.status === '◯' ? '○' : (st.status === '✕' ? '✕' : '△');
   return ' <span class="svc-chip ' + cls + '" aria-label="本日の運航状況：' + label + '">' +
     sym + ' ' + label + '</span>';
 }
@@ -483,15 +503,17 @@ function vesselLabelOf(vesselType, vesselName) {
   return vt + '（' + vn + '）';                        // フェリー + 太古 → フェリー（太古）
 }
 const vesselLabel = vesselLabelOf(trip.vessel_type || route.vessel_type || '', trip.vessel_name);
+  const chip = todayStatusChip(trip, fromStop, toStop, dateStr);
+  const unusable = chip.includes('st-ng'); // ✕欠航・✕抜港（この区間は使えない便は薄くする）
   return `
-  <article class="trip-card${isNext ? ' next-trip' : ''}" data-idx="${idx}" tabindex="0" role="button" aria-expanded="false" aria-label="便の詳細を開く">
+  <article class="trip-card${isNext ? ' next-trip' : ''}${unusable ? ' is-unusable' : ''}" data-idx="${idx}" tabindex="0" role="button" aria-expanded="false" aria-label="便の詳細を開く">
     <div class="trip-top">
       <span class="trip-op">${esc(op.name || '')}</span>
       ${isNext ? '<span class="next-badge">次の便</span>' : ''}
       <span class="trip-vessel">${esc(vesselLabel)}${trip.direction ? ' ／ ' + esc(trip.direction) : ''}</span>
     </div>
     <div class="trip-times">
-      <span class="trip-time-big">${esc(fromStop.dep)}</span>${todayStatusChip(trip, fromStop, toStop, dateStr)}
+      <span class="trip-time-big">${esc(fromStop.dep)}</span>${chip}
       <span class="trip-arrow">→</span>
       <span class="trip-time-big">${esc(toStop.arr)}${offLabel(relArr)}</span>
       <span class="trip-dur">${esc(portName(fromStop.port_id))} 発 ／ ${esc(portName(toStop.port_id))} 着 ・ ${durText(arrMin - depMin)}</span>
@@ -783,6 +805,16 @@ function statusUsable() {
 
 function statusChip(s) {
   // チップは「時刻＋記号」で短くし、意味は状況欄の冒頭の凡例で示す（スマホで4便が1行に収まるように）
+  // 行き先別（行き先によって運航・欠航が分かれる便）は記号を並べて示す
+  if (s.dest) {
+    const syms = [...new Set(Object.values(s.dest))]
+      .map((v) => (v === '◯' ? '○' : v)).join('');
+    const parts = Object.entries(s.dest).map(([d, st]) =>
+      d + '行き' + (st === '◯' ? '運航' : (st === '✕' ? '欠航' : '未定'))).join('、');
+    return '<span class="svc-chip st-skip" aria-label="' + esc(s.time) +
+      ' 行き先により異なります（' + esc(parts) + '）">' +
+      esc(s.time) + ' ' + esc(syms) + '</span>';
+  }
   // 抜港（運航するが一部の港に寄らない）は「抜」で示す（2026-11-28 追加）
   if (s.status === '◯' && Array.isArray(s.skips) && s.skips.length) {
     return '<span class="svc-chip st-skip" aria-label="' + esc(s.time) +
@@ -838,7 +870,7 @@ function statusSectionHtml(op) {
   }
   if (curPort !== null) body += '</div>';
   return '<div class="status-body">' +
-    '<p class="small status-legend">○ 運航　✕ 欠航　△ 未定　抜 抜港（一部の港に寄りません）</p>' + body +
+    '<p class="small status-legend">○ 運航　✕ 欠航　△ 未定　抜 抜港（一部の港に寄りません）　○✕ 行き先により異なります</p>' + body +
     '<p class="small">公式ページから自動取得した情報です。</p></div>';
 }
 function renderStatus() {
